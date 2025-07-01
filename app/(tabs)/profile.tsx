@@ -1,9 +1,9 @@
 import { View, Text, StyleSheet, ScrollView } from "react-native";
 
-export default function HomeScreen() {
+export default function Profile() {
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.text}>🏠 Página Inicial</Text>
+      <Text style={styles.text}>👤 Perfil</Text>
     </ScrollView>
   );
 }
@@ -15,7 +15,5 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#f2f2f2",
   },
-  text: {
-    fontSize: 24,
-  },
+  text: { fontSize: 24 },
 });
