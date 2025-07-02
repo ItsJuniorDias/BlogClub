@@ -8,8 +8,6 @@ export const Container = styled.View`
 
 export const Content = styled.TouchableOpacity`
   width: 100%;
-  /* background-color: blue; */
-  align-items: flex-end;
 `;
 
 export const Thumbnail = styled(Image)`
