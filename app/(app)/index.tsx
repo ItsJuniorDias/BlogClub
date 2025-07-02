@@ -11,7 +11,7 @@ export default function SplashScreen() {
 
   useEffect(() => {
     setTimeout(() => {
-      return router.push("/(tabs)");
+      return router.push("/(onboarding)");
     }, 2000);
   }, [router]);
 
