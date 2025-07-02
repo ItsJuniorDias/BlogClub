@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, ScrollView } from "react-native";
 
-import { Card } from "../(home)/components";
+import { Card, CarouselComponent } from "../(home)/components";
 import { Header } from "@/components/ui";
 
 export default function HomeScreen() {
@@ -9,6 +9,8 @@ export default function HomeScreen() {
       <Header title="Hi, Alexandre!" description="Explore today’s" />
 
       <Card />
+
+      <CarouselComponent />
     </ScrollView>
   );
 }
