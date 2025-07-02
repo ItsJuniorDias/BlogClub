@@ -1,9 +1,11 @@
 import { View, Text, StyleSheet, ScrollView } from "react-native";
 
+import { Card } from "../(home)/components";
+
 export default function HomeScreen() {
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.text}>🏠 Página Inicial</Text>
+      <Card />
     </ScrollView>
   );
 }
@@ -16,6 +18,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#f2f2f2",
   },
   text: {
+    fontFamily: "MontserratSemiBold",
     fontSize: 24,
   },
 });
