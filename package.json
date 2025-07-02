@@ -39,7 +39,8 @@
     "react-native-web": "~0.20.0",
     "react-native-webview": "13.13.5",
     "styled-components": "^6.1.19",
-    "react-native-svg": "15.11.2"
+    "react-native-svg": "15.11.2",
+    "expo-linear-gradient": "~14.1.5"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
