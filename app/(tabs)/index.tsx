@@ -1,10 +1,13 @@
 import { View, Text, StyleSheet, ScrollView } from "react-native";
 
 import { Card } from "../(home)/components";
+import { Header } from "@/components/ui";
 
 export default function HomeScreen() {
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      <Header title="Hi, Alexandre!" description="Explore today’s" />
+
       <Card />
     </ScrollView>
   );
@@ -13,12 +16,6 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
     backgroundColor: "#f2f2f2",
-  },
-  text: {
-    fontFamily: "MontserratSemiBold",
-    fontSize: 24,
   },
 });

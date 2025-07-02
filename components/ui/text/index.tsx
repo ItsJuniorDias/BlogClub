@@ -6,7 +6,7 @@ interface TextProps {
   title: string;
   fontFamily: "regular" | "bold" | "semi-bold";
   fontSize: FontLine;
-  lineHeight: FontLine;
+  lineHeight?: FontLine;
   color: string;
 }
 

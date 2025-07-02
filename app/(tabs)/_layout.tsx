@@ -4,6 +4,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { View, StyleSheet, Platform } from "react-native";
 import { BlurView } from "expo-blur";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { Colors } from "@/constants/Colors";
 
 export default function Layout() {
   const insets = useSafeAreaInsets();
@@ -32,7 +33,7 @@ export default function Layout() {
             style={StyleSheet.absoluteFill}
           />
         ),
-        tabBarActiveTintColor: "#007AFF", // Azul iOS
+        tabBarActiveTintColor: Colors.light.blue, // Azul iOS
         tabBarInactiveTintColor: "#999",
         tabBarLabelStyle: {
           fontWeight: "600",
