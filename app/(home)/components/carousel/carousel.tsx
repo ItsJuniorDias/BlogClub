@@ -41,7 +41,7 @@ export default function CarouselComponent() {
 
   const Item = ({ title, image }) => (
     <>
-      <Content>
+      <Content activeOpacity={0.7}>
         <Thumbnail source={image} />
       </Content>
 

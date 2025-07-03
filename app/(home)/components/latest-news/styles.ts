@@ -18,7 +18,7 @@ export const ContentText = styled.View`
   justify-content: space-between;
 `;
 
-export const Body = styled.View`
+export const Body = styled.TouchableOpacity`
   flex-direction: row;
   gap: 16px;
   background-color: ${Colors.light.background};

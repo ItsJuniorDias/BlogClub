@@ -38,7 +38,7 @@ export default function LatestNews() {
         </TouchableOpacity>
       </ContentText>
 
-      <Body>
+      <Body activeOpacity={0.7} onPress={() => {}}>
         <Thumbnail source={big_data} />
 
         <ContentBody>
