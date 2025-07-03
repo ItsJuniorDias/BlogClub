@@ -2,6 +2,10 @@
 
 This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
 
+### Figma 
+
+https://www.figma.com/design/KgWJivYpORQVK5jKdxJNaa/Blog-Club?node-id=0-1&p=f&t=1arXeNnlYiR4gleh-0
+
 ## Get started
 
 1. Install dependencies
