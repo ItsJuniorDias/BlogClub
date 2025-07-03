@@ -33,7 +33,7 @@ export default function Layout() {
             style={StyleSheet.absoluteFill}
           />
         ),
-        tabBarActiveTintColor: Colors.light.blue, // Azul iOS
+        tabBarActiveTintColor: Colors.light.blue,
         tabBarInactiveTintColor: "#999",
         tabBarLabelStyle: {
           fontWeight: "600",

@@ -1,17 +1,21 @@
 import { View, Text, StyleSheet, ScrollView } from "react-native";
 
-import { Card, CarouselComponent } from "../(home)/components";
+import { Card, CarouselComponent, LatestNews } from "../(home)/components";
 import { Header } from "@/components/ui";
 
 export default function HomeScreen() {
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Header title="Hi, Alexandre!" description="Explore today’s" />
+    <>
+      <ScrollView style={styles.container}>
+        <Header title="Hi, Alexandre!" description="Explore today’s" />
 
-      <Card />
+        <Card />
 
-      <CarouselComponent />
-    </ScrollView>
+        <CarouselComponent />
+
+        <LatestNews />
+      </ScrollView>
+    </>
   );
 }
 
