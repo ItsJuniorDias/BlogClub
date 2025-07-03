@@ -25,4 +25,43 @@ export const ContentBlur = styled(BlurView)`
   padding: 32px;
   gap: 16px;
   margin-bottom: 40px;
+  margin-top: 432px;
+`;
+
+export const ContentProgress = styled.View`
+  position: absolute;
+  z-index: 5;
+  width: 100%;
+  margin-top: 64px;
+  padding-left: 40px;
+  padding-right: 40px;
+  flex-direction: row;
+`;
+
+export const ContentHeader = styled.View`
+  width: 100%;
+  position: absolute;
+  z-index: 2;
+  /* background-color: red; */
+  flex-direction: row;
+  padding-left: 40px;
+  padding-right: 40px;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 96px;
+`;
+
+export const Row = styled.View`
+  flex-direction: row;
+`;
+
+export const Thumbnail = styled.Image`
+  width: 51px;
+  height: 51px;
+`;
+
+export const ContentText = styled.View`
+  /* background-color: green; */
+  margin-left: 16px;
+  gap: 8px;
 `;
