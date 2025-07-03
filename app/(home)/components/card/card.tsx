@@ -24,8 +24,11 @@ import {
   LinearGradientCustom,
   Thumbnail,
 } from "./styles";
+import { useRouter } from "expo-router";
 
 export default function Card() {
+  const router = useRouter();
+
   const DATA = [
     {
       id: "1",
@@ -60,7 +63,7 @@ export default function Card() {
   ];
 
   const Item = ({ title, image, category }) => (
-    <Content>
+    <Content onPress={() => router.push("/(story)")}>
       <LinearGradientCustom>
         <Thumbnail source={image} />
 
