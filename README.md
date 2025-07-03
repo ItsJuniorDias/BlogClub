@@ -2,6 +2,10 @@
 
 This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
 
+### Evidence 
+
+![Frame 1](https://github.com/user-attachments/assets/33f9e68c-8535-495b-aa25-6b5b0aab57eb)
+
 ### Figma 
 
 https://www.figma.com/design/KgWJivYpORQVK5jKdxJNaa/Blog-Club?node-id=0-1&p=f&t=1arXeNnlYiR4gleh-0
