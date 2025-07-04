@@ -1,6 +1,7 @@
-import { TouchableOpacity, Animated } from "react-native";
-import { useEffect, useRef, useState } from "react";
+import { TouchableOpacity, View } from "react-native";
+import { useEffect, useState } from "react";
 import { Colors } from "@/constants/Colors";
+import { useRouter } from "expo-router";
 
 import { ProgressBar, Text } from "../../components/ui";
 
@@ -17,10 +18,15 @@ import {
   ContentText,
   Row,
   ContentProgress,
+  Footer,
+  ContentButton,
+  ContentLike,
 } from "./styles";
 
 export default function StoryScreen() {
   const [progress, setProgress] = useState(0);
+
+  const router = useRouter();
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -61,7 +67,7 @@ export default function StoryScreen() {
           </ContentText>
         </Row>
 
-        <TouchableOpacity onPress={() => {}}>
+        <TouchableOpacity onPress={() => router.back()}>
           <AntDesign name="close" size={32} color="white" />
         </TouchableOpacity>
       </ContentHeader>
@@ -83,6 +89,30 @@ export default function StoryScreen() {
           color="white"
         />
       </ContentBlur>
+
+      <Footer>
+        <View />
+
+        <ContentButton>
+          <Text
+            title="Read More"
+            fontFamily="semi-bold"
+            fontSize={14}
+            color={Colors.light.blue}
+          />
+        </ContentButton>
+
+        <ContentLike>
+          <AntDesign name="heart" size={32} color={"#FF3743"} />
+
+          <Text
+            title="450k"
+            fontFamily="semi-bold"
+            fontSize={16}
+            color={Colors.light.background}
+          />
+        </ContentLike>
+      </Footer>
     </Container>
   );
 }

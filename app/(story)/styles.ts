@@ -65,3 +65,26 @@ export const ContentText = styled.View`
   margin-left: 16px;
   gap: 8px;
 `;
+
+export const Footer = styled.View`
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 40px;
+  padding-right: 40px;
+  margin-top: 32px;
+`;
+
+export const ContentButton = styled.TouchableOpacity`
+  width: 121px;
+  height: 40px;
+  background-color: ${Colors.light.background};
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+`;
+
+export const ContentLike = styled.TouchableOpacity`
+  align-items: center;
+`;
