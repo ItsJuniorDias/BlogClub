@@ -16,8 +16,11 @@ import {
   Row,
   Thumbnail,
 } from "./styles";
+import { useRouter } from "expo-router";
 
 export default function LatestNews() {
+  const router = useRouter();
+
   return (
     <Container>
       <ContentText>
@@ -38,7 +41,7 @@ export default function LatestNews() {
         </TouchableOpacity>
       </ContentText>
 
-      <Body activeOpacity={0.7} onPress={() => {}}>
+      <Body activeOpacity={0.7} onPress={() => router.push("/(article)")}>
         <Thumbnail source={big_data} />
 
         <ContentBody>

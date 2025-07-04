@@ -22,6 +22,7 @@ import {
   ContentButton,
   ContentLike,
 } from "./styles";
+import { StatusBar } from "expo-status-bar";
 
 export default function StoryScreen() {
   const [progress, setProgress] = useState(0);
@@ -42,6 +43,8 @@ export default function StoryScreen() {
         alignItems: "center",
       }}
     >
+      <StatusBar style="light" />
+
       <ContentProgress>
         <ProgressBar progress={progress} color={Colors.light.blue} />
       </ContentProgress>

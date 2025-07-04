@@ -34,6 +34,7 @@ export default function RootLayout() {
           options={{ headerShown: false }}
         />
         <Stack.Screen name="(story)/index" options={{ headerShown: false }} />
+        <Stack.Screen name="(article)/index" options={{ headerShown: false }} />
 
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       </Stack>
