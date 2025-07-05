@@ -47,6 +47,7 @@ export const ContentText = styled.View`
 
 export const Body = styled.View`
   margin-top: 24px;
+  padding-bottom: 96px;
 `;
 
 export const ImageBody = styled(Image)`

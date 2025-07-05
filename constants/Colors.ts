@@ -6,6 +6,8 @@ export const Colors = {
     darkBlue: "#0D253C",
     blueText: "#2D4379",
     blue: "#376AED",
+    darkblueInfo: "#2151cc",
+    blueLight: "#49b0e2",
     darkGray: "#7B8BB2",
     background: "#fff",
     tint: tintColorLight,

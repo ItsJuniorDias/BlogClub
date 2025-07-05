@@ -1,6 +1,7 @@
 import styled from "styled-components/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Image } from "expo-image";
+import { Colors } from "@/constants/Colors";
 
 export const Container = styled.View`
   margin-top: 24px;
@@ -22,7 +23,7 @@ export const LinearGradientCustom = styled.View`
   border-radius: 22px;
   align-items: center;
   justify-content: center;
-  border-color: #49b0e2;
+  border-color: ${Colors.light.blueLight};
 
   background-color: white;
   border-width: 2;

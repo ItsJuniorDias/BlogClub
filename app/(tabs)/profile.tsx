@@ -1,9 +1,11 @@
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+import { View, StyleSheet, ScrollView } from "react-native";
+
+import HeaderProfile from "../(profile)/components/header";
 
 export default function Profile() {
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.text}>👤 Perfil</Text>
+      <HeaderProfile title="Profile" icon="more-horizontal" />
     </ScrollView>
   );
 }
@@ -11,9 +13,6 @@ export default function Profile() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#f2f2f2",
+    backgroundColor: "#f9faff",
   },
-  text: { fontSize: 24 },
 });
