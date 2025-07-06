@@ -8,7 +8,10 @@ import big_data from "../../assets/images/big_data.png";
 export default function HomeScreen() {
   return (
     <>
-      <ScrollView style={styles.container}>
+      <ScrollView
+        contentContainerStyle={{ paddingBottom: 96 }}
+        style={styles.container}
+      >
         <Header title="Hi, Alexandre!" description="Explore today’s" />
 
         <Card />

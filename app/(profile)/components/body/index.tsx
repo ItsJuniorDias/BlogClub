@@ -1,4 +1,5 @@
 import { LatestNews } from "@/components/ui";
+
 import big_data from "../../../../assets/images/big_data.png";
 import card_latest_news from "../../../../assets/images/card_latest_news.png";
 
@@ -21,11 +22,9 @@ export default function Body() {
         isProfile
         image={card_latest_news}
         title="UX DESIGN"
-        isMarginBottom
         description={`Step design sprint for\nUX beginner`}
         numberLike={1.1}
         hours={2}
-        isLike
       />
     </Container>
   );
