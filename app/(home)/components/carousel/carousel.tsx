@@ -1,4 +1,4 @@
-import { View, Dimensions } from "react-native";
+import { View, Dimensions, StyleSheet } from "react-native";
 
 import * as React from "react";
 
@@ -32,15 +32,8 @@ export default function CarouselComponent() {
   const ref = React.useRef<ICarouselInstance>(null);
   const progress = useSharedValue<number>(0);
 
-  const onPressPagination = (index: number) => {
-    ref.current?.scrollTo({
-      count: index - progress.value,
-      animated: true,
-    });
-  };
-
   const Item = ({ title, image }) => (
-    <>
+    <View>
       <Content activeOpacity={0.7}>
         <Thumbnail source={image} />
       </Content>
@@ -53,7 +46,7 @@ export default function CarouselComponent() {
           color={Colors.light.background}
         />
       </LinearGradientCustom>
-    </>
+    </View>
   );
 
   return (

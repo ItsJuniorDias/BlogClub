@@ -4,16 +4,12 @@ import styled from "styled-components/native";
 
 export const Container = styled.View`
   width: 100%;
-  /* height: 192px; */
-  /* background-color: blue; */
   padding-left: 40px;
   padding-right: 40px;
 `;
 
 export const ContentText = styled.View`
-  /* background-color: green; */
   flex-direction: row;
-  /* padding-top: 40px; */
   padding-bottom: 24px;
   justify-content: space-between;
 `;
@@ -23,7 +19,7 @@ export const Body = styled.TouchableOpacity`
   gap: 16px;
   background-color: ${Colors.light.background};
   border-radius: 16px;
-  margin-bottom: 120px;
+  margin-bottom: 24px;
 `;
 
 export const Row = styled.View`

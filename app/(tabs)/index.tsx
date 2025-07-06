@@ -1,7 +1,9 @@
 import { View, Text, StyleSheet, ScrollView } from "react-native";
 
-import { Card, CarouselComponent, LatestNews } from "../(home)/components";
-import { Header } from "@/components/ui";
+import { Card, CarouselComponent } from "../(home)/components";
+import { Header, LatestNews } from "@/components/ui";
+
+import big_data from "../../assets/images/big_data.png";
 
 export default function HomeScreen() {
   return (
@@ -13,7 +15,16 @@ export default function HomeScreen() {
 
         <CarouselComponent />
 
-        <LatestNews />
+        <LatestNews
+          profileTitle="Latest News"
+          image={big_data}
+          title="BIG DATA"
+          isMarginBottom
+          description={`Why Big Data Needs\nThick Data?`}
+          numberLike={2.1}
+          hours={1}
+          isLike
+        />
       </ScrollView>
     </>
   );

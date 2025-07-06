@@ -1,11 +1,9 @@
+import { TouchableOpacity, StyleSheet } from "react-native";
+
 import { Text } from "@/components/ui";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { Colors } from "@/constants/Colors";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-
-import big_data from "../../../../assets/images/big_data.png";
-
-import { TouchableOpacity } from "react-native";
 
 import {
   Body,
@@ -18,43 +16,65 @@ import {
 } from "./styles";
 import { useRouter } from "expo-router";
 
-export default function LatestNews() {
+interface LatestNewsProps {
+  isProfile?: boolean;
+  profileTitle?: string;
+  isLike?: boolean;
+  image: string;
+  title: string;
+  description: string;
+  numberLike: number;
+  hours: number;
+}
+
+export default function LatestNews({
+  isProfile,
+  profileTitle,
+  isLike,
+  image,
+  title,
+  description,
+  numberLike,
+  hours,
+}: LatestNewsProps) {
   const router = useRouter();
 
   return (
-    <Container>
-      <ContentText>
-        <Text
-          title="Latest News"
-          fontFamily="semi-bold"
-          fontSize={20}
-          color={Colors.light.darkBlue}
-        />
-
-        <TouchableOpacity onPress={() => {}}>
+    <Container style={styles.shadowBox}>
+      {!isProfile && (
+        <ContentText>
           <Text
-            title="More"
-            fontFamily="regular"
-            fontSize={14}
-            color={Colors.light.blue}
+            title={profileTitle}
+            fontFamily="semi-bold"
+            fontSize={20}
+            color={Colors.light.darkBlue}
           />
-        </TouchableOpacity>
-      </ContentText>
+
+          <TouchableOpacity onPress={() => {}}>
+            <Text
+              title="More"
+              fontFamily="regular"
+              fontSize={14}
+              color={Colors.light.blue}
+            />
+          </TouchableOpacity>
+        </ContentText>
+      )}
 
       <Body activeOpacity={0.7} onPress={() => router.push("/(article)")}>
-        <Thumbnail source={big_data} />
+        <Thumbnail source={image} />
 
         <ContentBody>
           <ContentTextBody>
             <Text
-              title="Big Data"
+              title={title}
               fontFamily="semi-bold"
               fontSize={14}
               color={Colors.light.blue}
             />
 
             <Text
-              title={`Why Big Data Needs\nThick Data?`}
+              title={description}
               fontFamily="regular"
               fontSize={14}
               color={Colors.light.darkBlue}
@@ -66,7 +86,7 @@ export default function LatestNews() {
               <AntDesign name="like2" size={16} color={Colors.light.blue} />
 
               <Text
-                title={`2.1k`}
+                title={`${numberLike}k`}
                 fontFamily="regular"
                 fontSize={12}
                 color={Colors.light.darkBlue}
@@ -81,7 +101,7 @@ export default function LatestNews() {
               />
 
               <Text
-                title={`1hr ago`}
+                title={`${hours}hr ago`}
                 fontFamily="regular"
                 fontSize={12}
                 color={Colors.light.darkBlue}
@@ -90,7 +110,7 @@ export default function LatestNews() {
 
             <Row>
               <MaterialIcons
-                name="favorite"
+                name={isLike ? "favorite" : "favorite-outline"}
                 size={16}
                 color={Colors.light.blue}
               />
@@ -101,3 +121,16 @@ export default function LatestNews() {
     </Container>
   );
 }
+
+const styles = StyleSheet.create({
+  shadowBox: {
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 3.84,
+    elevation: 4,
+  },
+});
