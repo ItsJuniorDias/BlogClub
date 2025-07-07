@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { TouchableOpacity, StyleSheet } from "react-native";
 
 import SimpleLineIcons from "@expo/vector-icons/SimpleLineIcons";
@@ -13,6 +14,8 @@ import { Colors } from "@/constants/Colors";
 
 import { useRouter } from "expo-router";
 
+import { useDataStore } from "@/store/store";
+
 import {
   Body,
   BodyText,
@@ -27,9 +30,12 @@ import {
   Row,
   Thumbnail,
 } from "./styles";
-import { useState } from "react";
 
 export default function ArticleScreen() {
+  const data = useDataStore((state) => state.data);
+
+  console.log(data, "DATA");
+
   const [isLike, setIsLike] = useState(false);
 
   const router = useRouter();
@@ -57,7 +63,7 @@ export default function ArticleScreen() {
 
         <ContentTitle>
           <Text
-            title="Four Things Every Woman Needs To Know"
+            title={data.title}
             fontFamily="semi-bold"
             fontSize={22}
             lineHeight={32}
@@ -98,18 +104,18 @@ export default function ArticleScreen() {
         </ContentInfo>
 
         <Body>
-          <ImageBody source={image_body} />
+          <ImageBody source={{ uri: data.thumbnail }} />
 
           <BodyText>
             <Text
-              title="A man’s sexuality is never your mind responsibility."
+              title={data.description}
               fontFamily="semi-bold"
               fontSize={18}
               color={Colors.light.darkBlue}
             />
 
             <Text
-              title="This one got an incredible amount of backlash the last time I said it, so I’m going to say it again: a man’s sexuality is never, ever your responsibility, under any circumstances. Whether it’s the fifth date or your twentieth year of marriage, the correct determining factor for whether or not you have sex with your partner isn’t whether you ought to “take care of him” or “put out” because it’s been a while or he’s really horny — the correct determining factor for whether or not you have sex is whether or not you want to have sex."
+              title={data.article}
               fontFamily="regular"
               fontSize={14}
               lineHeight={20}
@@ -131,7 +137,7 @@ export default function ArticleScreen() {
           />
 
           <Text
-            title="2.1k"
+            title={`${data.numberLike}k`}
             fontFamily="regular"
             fontSize={16}
             color={Colors.light.background}

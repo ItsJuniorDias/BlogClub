@@ -1,11 +1,29 @@
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+import { StyleSheet, ScrollView } from "react-native";
+
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "@/firebaseConfig";
+import { useQuery } from "@tanstack/react-query";
 
 import { Card, CarouselComponent } from "../(home)/components";
 import { Header, LatestNews } from "@/components/ui";
 
-import big_data from "../../assets/images/big_data.png";
-
 export default function HomeScreen() {
+  const fetch = async () => {
+    const querySnapshot = await getDocs(collection(db, "posts"));
+
+    const dataList = (querySnapshot?.docs ?? []).map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+    return dataList;
+  };
+
+  const { data } = useQuery({
+    queryKey: ["repoData"],
+    queryFn: () => fetch(),
+  });
+
   return (
     <>
       <ScrollView
@@ -18,15 +36,21 @@ export default function HomeScreen() {
 
         <CarouselComponent />
 
-        <LatestNews
-          profileTitle="Latest News"
-          image={big_data}
-          title="BIG DATA"
-          description={`Why Big Data Needs\nThick Data?`}
-          numberLike={2.1}
-          hours={1}
-          isLike
-        />
+        {data?.map((item, index) => (
+          <>
+            <LatestNews
+              isProfile={index !== 0}
+              profileTitle="Latest News"
+              image={item.thumbnail}
+              title={item.title}
+              description={item.description}
+              article={item.article}
+              numberLike={item.numberLike}
+              hours={item.hours}
+              isLike={item.isLike}
+            />
+          </>
+        ))}
       </ScrollView>
     </>
   );

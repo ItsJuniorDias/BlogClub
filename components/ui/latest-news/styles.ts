@@ -30,14 +30,15 @@ export const Row = styled.View`
 export const Thumbnail = styled(Image)`
   width: 92px;
   height: 141px;
+  border-radius: 16px;
 `;
 
 export const ContentBody = styled.View`
-  /* background-color: red; */
   padding-top: 24px;
   gap: 24px;
 `;
 
 export const ContentTextBody = styled.View`
+  width: 163px;
   gap: 8px;
 `;

@@ -15,6 +15,7 @@ import {
   Thumbnail,
 } from "./styles";
 import { useRouter } from "expo-router";
+import { useDataStore } from "@/store/store";
 
 interface LatestNewsProps {
   isProfile?: boolean;
@@ -23,6 +24,7 @@ interface LatestNewsProps {
   image: string;
   title: string;
   description: string;
+  article: string;
   numberLike: number;
   hours: number;
 }
@@ -34,9 +36,12 @@ export default function LatestNews({
   image,
   title,
   description,
+  article,
   numberLike,
   hours,
 }: LatestNewsProps) {
+  const fetch = useDataStore((state) => state.fetch);
+
   const router = useRouter();
 
   return (
@@ -61,8 +66,23 @@ export default function LatestNews({
         </ContentText>
       )}
 
-      <Body activeOpacity={0.7} onPress={() => router.push("/(article)")}>
-        <Thumbnail source={image} />
+      <Body
+        activeOpacity={0.7}
+        onPress={() => {
+          fetch({
+            isLike,
+            thumbnail: image,
+            title,
+            description,
+            article,
+            numberLike,
+            hours,
+          });
+
+          router.push("/(article)");
+        }}
+      >
+        <Thumbnail source={{ uri: image }} />
 
         <ContentBody>
           <ContentTextBody>
@@ -70,6 +90,7 @@ export default function LatestNews({
               title={title}
               fontFamily="semi-bold"
               fontSize={14}
+              numberOfLines={1}
               color={Colors.light.blue}
             />
 
@@ -77,6 +98,7 @@ export default function LatestNews({
               title={description}
               fontFamily="regular"
               fontSize={14}
+              numberOfLines={2}
               color={Colors.light.darkBlue}
             />
           </ContentTextBody>
