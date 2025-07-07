@@ -5,10 +5,7 @@ import BodyProfile from "../(profile)/components/body";
 
 export default function Profile() {
   return (
-    <ScrollView
-      contentContainerStyle={{ marginBottom: 96 }}
-      style={styles.container}
-    >
+    <ScrollView contentContainerStyle={styles.margin} style={styles.container}>
       <HeaderProfile title="Profile" icon="more-horizontal" />
 
       <BodyProfile />
@@ -20,5 +17,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#f2f2f2",
+  },
+  margin: {
+    marginBottom: 96,
   },
 });

@@ -9,7 +9,7 @@ export default function HomeScreen() {
   return (
     <>
       <ScrollView
-        contentContainerStyle={{ paddingBottom: 96 }}
+        contentContainerStyle={styles.padding}
         style={styles.container}
       >
         <Header title="Hi, Alexandre!" description="Explore today’s" />
@@ -36,5 +36,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#f2f2f2",
+  },
+  padding: {
+    paddingBottom: 96,
   },
 });
