@@ -9,6 +9,7 @@ export const Colors = {
     darkblueInfo: "#2151cc",
     blueLight: "#49b0e2",
     darkGray: "#7B8BB2",
+    lightGray: "#d8deea",
     background: "#fff",
     tint: tintColorLight,
     icon: "#687076",
