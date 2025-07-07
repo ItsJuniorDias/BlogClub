@@ -22,7 +22,6 @@ export default function HomeScreen() {
           profileTitle="Latest News"
           image={big_data}
           title="BIG DATA"
-          isMarginBottom
           description={`Why Big Data Needs\nThick Data?`}
           numberLike={2.1}
           hours={1}

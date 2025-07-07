@@ -1,13 +1,15 @@
 // app/_layout.tsx
-import { Tabs } from "expo-router";
+import { Tabs, useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
-import { View, StyleSheet, Platform } from "react-native";
+import { StyleSheet } from "react-native";
 import { BlurView } from "expo-blur";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Colors } from "@/constants/Colors";
+import TabBar from "../(new-article)/components/tab-bar/tab-bar";
 
 export default function Layout() {
   const insets = useSafeAreaInsets();
+  const router = useRouter();
 
   return (
     <Tabs
@@ -46,6 +48,16 @@ export default function Layout() {
           tabBarLabel: "Início",
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="home-outline" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="new-article"
+        options={{
+          tabBarLabel: "",
+
+          tabBarIcon: ({ color, size }) => (
+            <TabBar onPress={() => router.push("/new-article")} />
           ),
         }}
       />
