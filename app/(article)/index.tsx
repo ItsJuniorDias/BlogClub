@@ -34,8 +34,6 @@ import {
 export default function ArticleScreen() {
   const data = useDataStore((state) => state.data);
 
-  console.log(data, "DATA");
-
   const [isLike, setIsLike] = useState(false);
 
   const router = useRouter();

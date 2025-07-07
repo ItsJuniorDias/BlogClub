@@ -4,28 +4,44 @@ import big_data from "../../../../assets/images/big_data.png";
 import card_latest_news from "../../../../assets/images/card_latest_news.png";
 
 import { Container } from "./styles";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "@/firebaseConfig";
+import { useQuery } from "@tanstack/react-query";
 
 export default function Body() {
+  const fetch = async () => {
+    const querySnapshot = await getDocs(collection(db, "posts"));
+
+    const dataList = (querySnapshot?.docs ?? []).map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+    return dataList;
+  };
+
+  const { data } = useQuery({
+    queryKey: ["repoData"],
+    queryFn: () => fetch(),
+  });
+
   return (
     <Container>
-      <LatestNews
-        image={big_data}
-        profileTitle="My Posts"
-        title="BIG DATA"
-        description={`Why Big Data Needs\nThick Data?`}
-        numberLike={2.1}
-        hours={1}
-        isLike
-      />
-
-      <LatestNews
-        isProfile
-        image={card_latest_news}
-        title="UX DESIGN"
-        description={`Step design sprint for\nUX beginner`}
-        numberLike={1.1}
-        hours={2}
-      />
+      {data?.map((item, index) => (
+        <>
+          <LatestNews
+            isProfile={index !== 0}
+            profileTitle="My Posts"
+            image={item.thumbnail}
+            title={item.title}
+            description={item.description}
+            article={item.article}
+            numberLike={item.numberLike}
+            hours={item.hours}
+            isLike={item.isLike}
+          />
+        </>
+      ))}
     </Container>
   );
 }

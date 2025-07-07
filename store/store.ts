@@ -1,16 +1,18 @@
 import { create } from "zustand";
 
+type DataProps = {
+  title: string;
+  description: string;
+  article: string;
+  isLike: boolean;
+  hours: number;
+  numberLike: number;
+  thumbnail: string;
+};
+
 type DataStore = {
-  data: {
-    title: string;
-    description: string;
-    article: string;
-    isLike: boolean;
-    hours: number;
-    numberLike: number;
-    thumbnail: string;
-  };
-  fetch: (item: {}) => void;
+  data: DataProps;
+  fetch: (item: DataProps) => void;
 };
 
 export const useDataStore = create<DataStore>((set) => ({
@@ -23,5 +25,5 @@ export const useDataStore = create<DataStore>((set) => ({
     numberLike: 0,
     thumbnail: "",
   },
-  fetch: (item) => set(() => ({ data: item })),
+  fetch: (item: DataProps) => set(() => ({ data: item })),
 }));
