@@ -63,7 +63,7 @@ export default function NewArticle() {
     }
   };
 
-  const mutation = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: handleSubmit,
     onSuccess: () => {
       // Invalidate and refetch
@@ -83,7 +83,8 @@ export default function NewArticle() {
           onChangeTextProduct={onChangeTextProduct}
           textArticle={textArticle}
           onChangeTextArticle={onChangeTextArticle}
-          handleSubmit={() => mutation.mutate()}
+          handleSubmit={() => mutate()}
+          isPending={isPending}
         />
       </ScrollView>
       <Toast />

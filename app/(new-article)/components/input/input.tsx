@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { TouchableOpacity } from "react-native";
+import { ActivityIndicator, TouchableOpacity } from "react-native";
 import { Colors } from "@/constants/Colors";
 import { Tag, Text } from "@/components/ui";
 
@@ -21,6 +21,7 @@ interface InputProps {
   textArticle: string;
   onChangeTextArticle: (item: string) => void;
   handleSubmit: () => void;
+  isPending: boolean;
 }
 
 export default function Input({
@@ -31,6 +32,7 @@ export default function Input({
   textArticle,
   onChangeTextArticle,
   handleSubmit,
+  isPending,
 }: InputProps) {
   return (
     <Container>
@@ -82,12 +84,16 @@ export default function Input({
       />
 
       <Button activeOpacity={0.7} onPress={handleSubmit}>
-        <Text
-          title="Create new post"
-          fontFamily="semi-bold"
-          fontSize={18}
-          color={Colors.light.background}
-        />
+        {isPending ? (
+          <ActivityIndicator size="small" color={Colors.light.background} />
+        ) : (
+          <Text
+            title="Create new post"
+            fontFamily="semi-bold"
+            fontSize={18}
+            color={Colors.light.background}
+          />
+        )}
       </Button>
     </Container>
   );
