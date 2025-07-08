@@ -8,6 +8,14 @@ export const Container = styled.View`
   padding-right: 40px;
 `;
 
+export const Skeleton = styled.View`
+  width: 100%;
+  height: 141px;
+  background-color: #ddd;
+  border-radius: 26px;
+  margin-bottom: 24px;
+`;
+
 export const ContentText = styled.View`
   flex-direction: row;
   padding-bottom: 24px;

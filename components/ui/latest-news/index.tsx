@@ -1,4 +1,4 @@
-import { TouchableOpacity, StyleSheet } from "react-native";
+import { TouchableOpacity, StyleSheet, ActivityIndicator } from "react-native";
 
 import { Text } from "@/components/ui";
 import AntDesign from "@expo/vector-icons/AntDesign";
@@ -12,12 +12,14 @@ import {
   ContentText,
   ContentTextBody,
   Row,
+  Skeleton,
   Thumbnail,
 } from "./styles";
 import { useRouter } from "expo-router";
 import { useDataStore } from "@/store/store";
 
 interface LatestNewsProps {
+  isLoading: boolean;
   isProfile?: boolean;
   profileTitle?: string;
   isLike?: boolean;
@@ -30,6 +32,7 @@ interface LatestNewsProps {
 }
 
 export default function LatestNews({
+  isLoading,
   isProfile,
   profileTitle,
   isLike,
@@ -45,102 +48,108 @@ export default function LatestNews({
   const router = useRouter();
 
   return (
-    <Container style={styles.shadowBox}>
-      {!isProfile && (
-        <ContentText>
-          <Text
-            title={profileTitle}
-            fontFamily="semi-bold"
-            fontSize={20}
-            color={Colors.light.darkBlue}
-          />
-
-          <TouchableOpacity onPress={() => {}}>
+    <>
+      <Container style={styles.shadowBox}>
+        {!isProfile && (
+          <ContentText>
             <Text
-              title="More"
-              fontFamily="regular"
-              fontSize={14}
-              color={Colors.light.blue}
-            />
-          </TouchableOpacity>
-        </ContentText>
-      )}
-
-      <Body
-        activeOpacity={0.7}
-        onPress={() => {
-          fetch({
-            isLike,
-            thumbnail: image,
-            title,
-            description,
-            article,
-            numberLike,
-            hours,
-          });
-
-          router.push("/(article)");
-        }}
-      >
-        <Thumbnail source={{ uri: image }} />
-
-        <ContentBody>
-          <ContentTextBody>
-            <Text
-              title={title}
+              title={profileTitle}
               fontFamily="semi-bold"
-              fontSize={14}
-              numberOfLines={1}
-              color={Colors.light.blue}
-            />
-
-            <Text
-              title={description}
-              fontFamily="regular"
-              fontSize={14}
-              numberOfLines={2}
+              fontSize={20}
               color={Colors.light.darkBlue}
             />
-          </ContentTextBody>
 
-          <Row>
-            <Row>
-              <AntDesign name="like2" size={16} color={Colors.light.blue} />
-
+            <TouchableOpacity onPress={() => {}}>
               <Text
-                title={`${numberLike}k`}
+                title="More"
                 fontFamily="regular"
-                fontSize={12}
-                color={Colors.light.darkBlue}
-              />
-            </Row>
-
-            <Row>
-              <AntDesign
-                name="clockcircleo"
-                size={16}
+                fontSize={14}
                 color={Colors.light.blue}
               />
+            </TouchableOpacity>
+          </ContentText>
+        )}
 
-              <Text
-                title={`${hours}hr ago`}
-                fontFamily="regular"
-                fontSize={12}
-                color={Colors.light.darkBlue}
-              />
-            </Row>
+        {isLoading && <Skeleton />}
 
-            <Row>
-              <MaterialIcons
-                name={isLike ? "favorite" : "favorite-outline"}
-                size={16}
-                color={Colors.light.blue}
-              />
-            </Row>
-          </Row>
-        </ContentBody>
-      </Body>
-    </Container>
+        {!isLoading && (
+          <Body
+            activeOpacity={0.7}
+            onPress={() => {
+              fetch({
+                isLike,
+                thumbnail: image,
+                title,
+                description,
+                article,
+                numberLike,
+                hours,
+              });
+
+              router.push("/(article)");
+            }}
+          >
+            <Thumbnail source={{ uri: image }} />
+
+            <ContentBody>
+              <ContentTextBody>
+                <Text
+                  title={title}
+                  fontFamily="semi-bold"
+                  fontSize={14}
+                  numberOfLines={1}
+                  color={Colors.light.blue}
+                />
+
+                <Text
+                  title={description}
+                  fontFamily="regular"
+                  fontSize={14}
+                  numberOfLines={2}
+                  color={Colors.light.darkBlue}
+                />
+              </ContentTextBody>
+
+              <Row>
+                <Row>
+                  <AntDesign name="like2" size={16} color={Colors.light.blue} />
+
+                  <Text
+                    title={`${numberLike}k`}
+                    fontFamily="regular"
+                    fontSize={12}
+                    color={Colors.light.darkBlue}
+                  />
+                </Row>
+
+                <Row>
+                  <AntDesign
+                    name="clockcircleo"
+                    size={16}
+                    color={Colors.light.blue}
+                  />
+
+                  <Text
+                    title={`${hours}hr ago`}
+                    fontFamily="regular"
+                    fontSize={12}
+                    color={Colors.light.darkBlue}
+                  />
+                </Row>
+
+                <Row>
+                  <MaterialIcons
+                    name={isLike ? "favorite" : "favorite-outline"}
+                    size={16}
+                    color={Colors.light.blue}
+                  />
+                </Row>
+              </Row>
+            </ContentBody>
+          </Body>
+        )}
+      </Container>
+    </>
   );
 }
 

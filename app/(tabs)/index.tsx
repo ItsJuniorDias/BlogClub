@@ -6,8 +6,11 @@ import { useQuery } from "@tanstack/react-query";
 
 import { Card, CarouselComponent } from "../(home)/components";
 import { Header, LatestNews } from "@/components/ui";
+import { useState } from "react";
 
 export default function HomeScreen() {
+  const [isLoading, setIsLoading] = useState(true);
+
   const fetch = async () => {
     const querySnapshot = await getDocs(collection(db, "posts"));
 
@@ -16,6 +19,10 @@ export default function HomeScreen() {
       ...doc.data(),
     }));
 
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+
     return dataList;
   };
 
@@ -23,6 +30,8 @@ export default function HomeScreen() {
     queryKey: ["repoData"],
     queryFn: () => fetch(),
   });
+
+  console.log(isLoading, "IS LOADING");
 
   return (
     <>
@@ -39,6 +48,7 @@ export default function HomeScreen() {
         {data?.map((item, index) => (
           <>
             <LatestNews
+              isLoading={isLoading}
               isProfile={index !== 0}
               profileTitle="Latest News"
               image={item.thumbnail}

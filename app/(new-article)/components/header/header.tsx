@@ -1,6 +1,3 @@
-import { useState } from "react";
-import * as ImagePicker from "expo-image-picker";
-
 import { Colors } from "@/constants/Colors";
 import { Text } from "../../../../components/ui";
 
@@ -8,26 +5,11 @@ import { Container } from "./styles";
 import { TouchableOpacity } from "react-native";
 import Feather from "@expo/vector-icons/Feather";
 
-export default function HeaderNewArticle() {
-  const [image, setImage] = useState<string | null>(null);
+interface HeaderNewArticleProps {
+  pickImage: () => void;
+}
 
-  const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ["images", "videos"],
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-
-    console.log(result);
-
-    if (!result.canceled) {
-      setImage(result.assets[0].uri);
-    }
-  };
-
-  console.log(image, "IMAGE");
-
+export default function HeaderNewArticle({ pickImage }: HeaderNewArticleProps) {
   return (
     <>
       <Container>

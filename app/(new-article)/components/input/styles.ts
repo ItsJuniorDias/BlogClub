@@ -47,3 +47,13 @@ export const InputArticle = styled.TextInput`
   line-height: 22px;
   margin-top: 16px;
 `;
+
+export const Button = styled.TouchableOpacity`
+  width: 100%;
+  height: 44px;
+  align-items: center;
+  justify-content: center;
+  background-color: ${Colors.light.blue};
+  border-radius: 16px;
+  margin-top: 24px;
+`;
