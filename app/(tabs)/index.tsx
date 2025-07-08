@@ -27,11 +27,9 @@ export default function HomeScreen() {
   };
 
   const { data } = useQuery({
-    queryKey: ["repoData"],
+    queryKey: ["posts"],
     queryFn: () => fetch(),
   });
-
-  console.log(isLoading, "IS LOADING");
 
   return (
     <>

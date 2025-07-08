@@ -8,8 +8,11 @@ import Input from "../(new-article)/components/input/input";
 import { addDoc, collection } from "firebase/firestore";
 import { db } from "@/firebaseConfig";
 import { Colors } from "@/constants/Colors";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export default function NewArticle() {
+  const queryClient = useQueryClient();
+
   const [image, setImage] = useState<string | null>(null);
 
   const [text, onChangeText] = useState("");
@@ -60,6 +63,14 @@ export default function NewArticle() {
     }
   };
 
+  const mutation = useMutation({
+    mutationFn: handleSubmit,
+    onSuccess: () => {
+      // Invalidate and refetch
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
+    },
+  });
+
   return (
     <>
       <ScrollView style={styles.container}>
@@ -72,7 +83,7 @@ export default function NewArticle() {
           onChangeTextProduct={onChangeTextProduct}
           textArticle={textArticle}
           onChangeTextArticle={onChangeTextArticle}
-          handleSubmit={handleSubmit}
+          handleSubmit={() => mutation.mutate()}
         />
       </ScrollView>
       <Toast />
