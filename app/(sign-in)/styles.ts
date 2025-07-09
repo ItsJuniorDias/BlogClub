@@ -44,3 +44,38 @@ export const Body = styled.View`
   padding-top: 32px;
   margin-top: -28px;
 `;
+
+export const ContentButton = styled.View`
+  margin-top: 32px;
+`;
+
+export const Footer = styled.View`
+  padding-left: 40px;
+  padding-right: 40px;
+  margin-top: 24px;
+  align-items: center;
+`;
+
+export const Row = styled.View`
+  flex-direction: row;
+  gap: 8px;
+`;
+
+export const RowAuth = styled.View`
+  flex-direction: row;
+  gap: 32px;
+`;
+
+export const ContentFooter = styled.View`
+  width: 172px;
+  height: 70px;
+
+  margin-top: 32px;
+  align-items: center;
+  gap: 16px;
+`;
+
+export const IconLogo = styled(Image)`
+  width: 36px;
+  height: 36px;
+`;

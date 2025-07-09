@@ -1,16 +1,37 @@
 import { Colors } from "@/constants/Colors";
+
 import logo from "../../assets/images/logo_signin.png";
 
-import { Text } from "../../components/ui";
+import logo_google from "../../assets/images/logo_google.png";
+import logo_facebook from "../../assets/images/logo_facebook.png";
 
-import { Body, Container, Header, Logo, Tabs, Touchable } from "./styles";
+import { Text, Input, Button } from "../../components/ui";
+
+import {
+  Body,
+  Container,
+  ContentButton,
+  ContentFooter,
+  Footer,
+  Header,
+  IconLogo,
+  Logo,
+  Row,
+  RowAuth,
+  Tabs,
+  Touchable,
+} from "./styles";
 import { useState } from "react";
+import { TouchableOpacity } from "react-native";
 
 export default function SignInScreen() {
   const [activeTab, setActiveTab] = useState({
     isActiveLogin: true,
     isActiveSignIn: false,
   });
+
+  const [email, onChangeTextEmail] = useState("");
+  const [password, onChangeTextPassword] = useState("");
 
   return (
     <Container>
@@ -70,8 +91,69 @@ export default function SignInScreen() {
           fontSize={14}
           color={Colors.light.darkBlue}
           lineHeight={40}
+          style={{ marginBottom: 8 }}
         />
+
+        <Input
+          value={email}
+          onChangeText={onChangeTextEmail}
+          title="Username"
+          placeholder="Enter with e-mail"
+          keyboardType="email-address"
+        />
+
+        <Input
+          value={password}
+          onChangeText={onChangeTextPassword}
+          title="Password"
+          placeholder="Enter with password"
+          keyboardType="visible-password"
+          secureTextEntry
+        />
+
+        <ContentButton>
+          <Button title="LOGIN" onPress={() => {}} />
+        </ContentButton>
       </Body>
+
+      <Footer>
+        <Row>
+          <Text
+            title="Forgot your password?"
+            fontFamily="regular"
+            fontSize={14}
+            color={Colors.light.darkBlue}
+          />
+
+          <TouchableOpacity onPress={() => {}}>
+            <Text
+              title="Reset here"
+              fontFamily="regular"
+              fontSize={14}
+              color={Colors.light.blue}
+            />
+          </TouchableOpacity>
+        </Row>
+
+        <ContentFooter>
+          <Text
+            title="OR SIGN IN WITH"
+            fontFamily="regular"
+            fontSize={14}
+            color={Colors.light.darkBlue}
+          />
+
+          <RowAuth>
+            <TouchableOpacity onPress={() => {}}>
+              <IconLogo source={logo_google} />
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => {}}>
+              <IconLogo source={logo_facebook} />
+            </TouchableOpacity>
+          </RowAuth>
+        </ContentFooter>
+      </Footer>
     </Container>
   );
 }
