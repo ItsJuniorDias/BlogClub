@@ -45,7 +45,7 @@ export default function OnboardingScreen() {
         <Footer>
           <View />
 
-          <Button onPress={() => router.push("/(tabs)")} activeOpacity={0.7}>
+          <Button onPress={() => router.push("/(sign-in)")} activeOpacity={0.7}>
             <Feather name="arrow-right" size={24} color="white" />
           </Button>
         </Footer>

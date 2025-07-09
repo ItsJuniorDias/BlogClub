@@ -1,8 +1,10 @@
+import { TextProps } from "react-native";
+
 import { TextCustom } from "./styles";
 
 type FontLine = 12 | 14 | 16 | 18 | 20 | 22 | 24 | 32 | 40;
 
-interface TextProps {
+interface TextPropsCustom extends TextProps {
   title: string;
   fontFamily: "regular" | "bold" | "semi-bold";
   numberOfLines?: number;
@@ -18,7 +20,8 @@ export default function Text({
   fontFamily,
   fontSize,
   lineHeight,
-}: TextProps) {
+  ...props
+}: TextPropsCustom) {
   const objectFont = {
     regular: "MontserratRegular",
     bold: "MontserratBold",
@@ -27,6 +30,7 @@ export default function Text({
 
   return (
     <TextCustom
+      {...props}
       fontFamily={objectFont[fontFamily]}
       fontSize={fontSize}
       numberOfLines={numberOfLines}
