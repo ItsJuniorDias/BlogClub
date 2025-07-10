@@ -1,8 +1,15 @@
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+
 import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Container, ContentButton } from "./styles";
 import { Button, Input } from "@/components/ui";
+import { useRouter } from "expo-router";
+import { Alert } from "react-native";
+import { useMutation } from "@tanstack/react-query";
+import { doc, serverTimestamp, setDoc } from "firebase/firestore";
+import { db } from "@/firebaseConfig";
 
 const schema = z
   .object({
@@ -30,6 +37,10 @@ const schema = z
 type FormData = z.infer<typeof schema>;
 
 export default function InputSignUp() {
+  const auth = getAuth();
+
+  const router = useRouter();
+
   const {
     control,
     handleSubmit,
@@ -40,9 +51,72 @@ export default function InputSignUp() {
     mode: "onSubmit",
   });
 
-  const onSubmit = (data: FormData) => {
-    console.log("Dados válidos Login:", data);
+  const createUserInFirestore = async () => {
+    const user = auth.currentUser;
+
+    if (user) {
+      const uid = user.uid;
+      const userRef = doc(db, "users", uid);
+
+      const userData = {
+        id: uid,
+        email: user.email,
+        name: control._formValues.name,
+        createdAt: serverTimestamp(),
+      };
+
+      await setDoc(userRef, userData, { merge: true });
+    } else {
+      console.error("No authenticated user found.");
+    }
   };
+
+  const onSubmit = async (data: FormData) => {
+    return createUserWithEmailAndPassword(auth, data.email, data.password)
+      .then(async (userCredential) => {
+        const user = userCredential.user;
+
+        await createUserInFirestore();
+
+        Alert.alert(
+          "User document created/updated successfully.",
+          "user created/updated with success",
+          [
+            {
+              text: "Cancel",
+              onPress: () => console.log("Cancel Pressed"),
+              style: "cancel",
+            },
+            {
+              text: "OK",
+              onPress: () => {
+                if (user) {
+                  router.push("/(tabs)");
+                }
+              },
+            },
+          ]
+        );
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+
+        Alert.alert(errorCode, errorMessage, [
+          {
+            text: "Cancel",
+            onPress: () => console.log("Cancel Pressed"),
+            style: "cancel",
+          },
+          { text: "OK", onPress: () => console.log("OK Pressed") },
+        ]);
+      });
+  };
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: handleSubmit(onSubmit),
+    onSuccess: () => {},
+  });
 
   return (
     <Container>
@@ -133,7 +207,11 @@ export default function InputSignUp() {
       />
 
       <ContentButton>
-        <Button title="LOGIN" onPress={handleSubmit(onSubmit)} />
+        <Button
+          isLoading={isPending}
+          title="LOGIN"
+          onPress={() => mutate({})}
+        />
       </ContentButton>
     </Container>
   );
