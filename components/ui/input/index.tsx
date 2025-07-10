@@ -5,11 +5,13 @@ import { Text } from "../../ui";
 
 import { Container, InputCustom } from "./styles";
 import { Colors } from "@/constants/Colors";
+import { FieldError } from "react-hook-form";
 
 interface InputPros extends TextInputProps {
   title: string;
   placeholder: string;
   keyboardType: KeyboardTypeOptions;
+  errors: FieldError | undefined;
 }
 
 export default function Input({
@@ -19,6 +21,7 @@ export default function Input({
   placeholder,
   keyboardType,
   secureTextEntry,
+  errors,
 }: InputPros) {
   return (
     <Container>
@@ -37,6 +40,15 @@ export default function Input({
         placeholderTextColor={Colors.light.darkBlue}
         secureTextEntry={secureTextEntry}
       />
+
+      {errors?.message && (
+        <Text
+          title={errors?.message}
+          fontFamily="regular"
+          fontSize={14}
+          color={"red"}
+        />
+      )}
     </Container>
   );
 }

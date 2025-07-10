@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@expo/vector-icons": "^14.1.0",
+    "@hookform/resolvers": "^5.1.1",
     "@react-native-async-storage/async-storage": "^1.24.0",
     "@react-native-community/blur": "^4.4.1",
     "@react-navigation/bottom-tabs": "^7.3.10",
@@ -36,6 +37,7 @@
     "firebase": "^11.10.0",
     "react": "19.0.0",
     "react-dom": "19.0.0",
+    "react-hook-form": "^7.60.0",
     "react-native": "0.79.4",
     "react-native-gesture-handler": "~2.24.0",
     "react-native-reanimated": "~3.17.4",
@@ -47,6 +49,7 @@
     "react-native-web": "~0.20.0",
     "react-native-webview": "13.13.5",
     "styled-components": "^6.1.19",
+    "zod": "^4.0.2",
     "zustand": "^5.0.6"
   },
   "devDependencies": {

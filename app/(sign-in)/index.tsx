@@ -1,3 +1,9 @@
+import { useState } from "react";
+import { TouchableOpacity } from "react-native";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
 import { Colors } from "@/constants/Colors";
 
 import logo from "../../assets/images/logo_signin.png";
@@ -21,8 +27,15 @@ import {
   Tabs,
   Touchable,
 } from "./styles";
-import { useState } from "react";
-import { TouchableOpacity } from "react-native";
+
+const schema = z.object({
+  email: z.string().email({ message: "Invalid email address" }),
+  password: z
+    .string()
+    .min(6, { message: "Password must be at least 6 characters long" }),
+});
+
+type FormData = z.infer<typeof schema>;
 
 export default function SignInScreen() {
   const [activeTab, setActiveTab] = useState({
@@ -30,8 +43,18 @@ export default function SignInScreen() {
     isActiveSignIn: false,
   });
 
-  const [email, onChangeTextEmail] = useState("");
-  const [password, onChangeTextPassword] = useState("");
+  const {
+    register,
+    setValue,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>({
+    resolver: zodResolver(schema),
+  });
+
+  const onSubmit = (data: FormData) => {
+    console.log("Dados válidos:", data);
+  };
 
   return (
     <Container>
@@ -95,24 +118,26 @@ export default function SignInScreen() {
         />
 
         <Input
-          value={email}
-          onChangeText={onChangeTextEmail}
+          {...register("email")}
+          onChangeText={(text) => setValue("email", text)}
           title="Username"
           placeholder="Enter with e-mail"
           keyboardType="email-address"
+          errors={errors.email}
         />
 
         <Input
-          value={password}
-          onChangeText={onChangeTextPassword}
+          {...register("password")}
+          onChangeText={(text) => setValue("password", text)}
           title="Password"
           placeholder="Enter with password"
           keyboardType="visible-password"
           secureTextEntry
+          errors={errors.password}
         />
 
         <ContentButton>
-          <Button title="LOGIN" onPress={() => {}} />
+          <Button title="LOGIN" onPress={handleSubmit(onSubmit)} />
         </ContentButton>
       </Body>
 
