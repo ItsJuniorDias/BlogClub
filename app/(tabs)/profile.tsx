@@ -11,7 +11,7 @@ export default function Profile() {
       }}
       style={styles.container}
     >
-      <HeaderProfile title="Profile" icon="more-horizontal" />
+      <HeaderProfile title="Profile" icon="exit-to-app" />
 
       <BodyProfile />
     </ScrollView>

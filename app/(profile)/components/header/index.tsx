@@ -1,8 +1,10 @@
+import { getAuth, signOut } from "firebase/auth";
+
 import { TouchableOpacity, StyleSheet } from "react-native";
 import { Text } from "../../../../components/ui";
 import { Colors } from "@/constants/Colors";
 
-import { Feather } from "@expo/vector-icons";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
 import thumbnail_profile from "../../../../assets/images/thumbnail_profile.png";
 
@@ -19,6 +21,7 @@ import {
   Row,
   Thumbnail,
 } from "./styles";
+import { useRouter } from "expo-router";
 
 interface HeaderProfileProps {
   title: string;
@@ -26,6 +29,22 @@ interface HeaderProfileProps {
 }
 
 export default function HeaderProfile({ title, icon }: HeaderProfileProps) {
+  const auth = getAuth();
+
+  const router = useRouter();
+
+  const handleSignOut = async () => {
+    return signOut(auth)
+      .then(() => {
+        console.log("User signed out!");
+
+        router.push("/(sign-in)");
+      })
+      .catch((error) => {
+        console.error("Sign out error:", error);
+      });
+  };
+
   return (
     <>
       <Container>
@@ -36,8 +55,8 @@ export default function HeaderProfile({ title, icon }: HeaderProfileProps) {
           color={Colors.light.darkBlue}
         />
 
-        <TouchableOpacity onPress={() => {}}>
-          <Feather name={icon} size={32} color={Colors.light.darkBlue} />
+        <TouchableOpacity onPress={handleSignOut}>
+          <MaterialIcons name={icon} size={32} color={Colors.light.darkBlue} />
         </TouchableOpacity>
       </Container>
 
