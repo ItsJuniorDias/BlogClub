@@ -69,10 +69,10 @@ export const RowAuth = styled.View`
 export const ContentFooter = styled.View`
   width: 172px;
   height: 70px;
-
   margin-top: 32px;
   align-items: center;
   gap: 16px;
+  margin-bottom: 64px;
 `;
 
 export const IconLogo = styled(Image)`

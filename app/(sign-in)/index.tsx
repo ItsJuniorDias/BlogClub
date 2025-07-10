@@ -1,8 +1,5 @@
 import { useState } from "react";
 import { TouchableOpacity } from "react-native";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Colors } from "@/constants/Colors";
 
@@ -27,29 +24,13 @@ import {
   Tabs,
   Touchable,
 } from "./styles";
-
-const schema = z.object({
-  email: z.string().email({ message: "Invalid email address" }),
-  password: z
-    .string()
-    .min(6, { message: "Password must be at least 6 characters long" }),
-});
-
-type FormData = z.infer<typeof schema>;
+import InputLogin from "./components/input-login";
+import InputSignUp from "./components/input-signup";
 
 export default function SignInScreen() {
   const [activeTab, setActiveTab] = useState({
     isActiveLogin: true,
-    isActiveSignIn: false,
-  });
-
-  const {
-    register,
-    setValue,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<FormData>({
-    resolver: zodResolver(schema),
+    isActiveSignUp: false,
   });
 
   const onSubmit = (data: FormData) => {
@@ -68,7 +49,7 @@ export default function SignInScreen() {
             setActiveTab((prevState) => ({
               ...prevState,
               isActiveLogin: true,
-              isActiveSignIn: false,
+              isActiveSignUp: false,
             }))
           }
         >
@@ -86,7 +67,7 @@ export default function SignInScreen() {
             setActiveTab((prevState) => ({
               ...prevState,
               isActiveLogin: false,
-              isActiveSignIn: true,
+              isActiveSignUp: true,
             }))
           }
         >
@@ -95,7 +76,7 @@ export default function SignInScreen() {
             fontFamily="semi-bold"
             fontSize={18}
             color={Colors.light.background}
-            style={{ opacity: activeTab.isActiveSignIn ? 1 : 0.3 }}
+            style={{ opacity: activeTab.isActiveSignUp ? 1 : 0.3 }}
           />
         </Touchable>
       </Tabs>
@@ -117,28 +98,9 @@ export default function SignInScreen() {
           style={{ marginBottom: 8 }}
         />
 
-        <Input
-          {...register("email")}
-          onChangeText={(text) => setValue("email", text)}
-          title="Username"
-          placeholder="Enter with e-mail"
-          keyboardType="email-address"
-          errors={errors.email}
-        />
+        {activeTab.isActiveLogin && <InputLogin />}
 
-        <Input
-          {...register("password")}
-          onChangeText={(text) => setValue("password", text)}
-          title="Password"
-          placeholder="Enter with password"
-          keyboardType="visible-password"
-          secureTextEntry
-          errors={errors.password}
-        />
-
-        <ContentButton>
-          <Button title="LOGIN" onPress={handleSubmit(onSubmit)} />
-        </ContentButton>
+        {activeTab.isActiveSignUp && <InputSignUp />}
       </Body>
 
       <Footer>
