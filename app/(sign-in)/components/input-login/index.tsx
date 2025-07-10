@@ -1,4 +1,4 @@
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -18,12 +18,13 @@ type FormData = z.infer<typeof schema>;
 
 export default function InputLogin() {
   const {
-    register,
-    setValue,
+    control,
     handleSubmit,
     formState: { errors },
+    clearErrors,
   } = useForm<FormData>({
     resolver: zodResolver(schema),
+    mode: "onSubmit",
   });
 
   const onSubmit = (data: FormData) => {
@@ -32,23 +33,47 @@ export default function InputLogin() {
 
   return (
     <Container>
-      <Input
-        {...register("email")}
-        onChangeText={(text) => setValue("email", text)}
-        title="E-mail"
-        placeholder="Enter with e-mail"
-        keyboardType="email-address"
-        errors={errors.email}
+      <Controller
+        control={control}
+        name="email"
+        render={({ field: { onChange, value } }) => (
+          <Input
+            value={value}
+            onChangeText={(text) => {
+              onChange(text);
+
+              if (errors.email) {
+                clearErrors("email");
+              }
+            }}
+            title="E-mail"
+            placeholder="Enter with e-mail"
+            keyboardType="email-address"
+            errors={errors.email}
+          />
+        )}
       />
 
-      <Input
-        {...register("password")}
-        onChangeText={(text) => setValue("password", text)}
-        title="Password"
-        placeholder="Enter with password"
-        keyboardType="visible-password"
-        secureTextEntry
-        errors={errors.password}
+      <Controller
+        control={control}
+        name="password"
+        render={({ field: { onChange, value } }) => (
+          <Input
+            value={value}
+            onChangeText={(text) => {
+              onChange(text);
+
+              if (errors.password) {
+                clearErrors("password");
+              }
+            }}
+            title="Password"
+            placeholder="Enter with password"
+            keyboardType="visible-password"
+            secureTextEntry
+            errors={errors.password}
+          />
+        )}
       />
 
       <ContentButton>

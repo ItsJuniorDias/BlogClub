@@ -39,6 +39,7 @@ export default function Input({
         keyboardType={keyboardType}
         placeholderTextColor={Colors.light.darkBlue}
         secureTextEntry={secureTextEntry}
+        isError={errors?.message}
       />
 
       {errors?.message && (

@@ -8,12 +8,11 @@ import logo from "../../assets/images/logo_signin.png";
 import logo_google from "../../assets/images/logo_google.png";
 import logo_facebook from "../../assets/images/logo_facebook.png";
 
-import { Text, Input, Button } from "../../components/ui";
+import { Text } from "../../components/ui";
 
 import {
   Body,
   Container,
-  ContentButton,
   ContentFooter,
   Footer,
   Header,
@@ -32,10 +31,6 @@ export default function SignInScreen() {
     isActiveLogin: true,
     isActiveSignUp: false,
   });
-
-  const onSubmit = (data: FormData) => {
-    console.log("Dados válidos:", data);
-  };
 
   return (
     <Container>
