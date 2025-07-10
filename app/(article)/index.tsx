@@ -14,7 +14,7 @@ import { Colors } from "@/constants/Colors";
 
 import { useRouter } from "expo-router";
 
-import { useDataStore } from "@/store/store";
+import { useDataStore } from "@/store/useDataStore";
 
 import {
   Body,

@@ -16,7 +16,7 @@ import {
   Thumbnail,
 } from "./styles";
 import { useRouter } from "expo-router";
-import { useDataStore } from "@/store/store";
+import { useDataStore } from "@/store/useDataStore";
 
 interface LatestNewsProps {
   isLoading: boolean;
