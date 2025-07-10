@@ -31,15 +31,9 @@ interface HeaderProfileProps {
 export default function HeaderProfile({ title, icon }: HeaderProfileProps) {
   const auth = getAuth();
 
-  const router = useRouter();
-
   const handleSignOut = async () => {
     return signOut(auth)
-      .then(() => {
-        console.log("User signed out!");
-
-        router.push("/(sign-in)");
-      })
+      .then(() => {})
       .catch((error) => {
         console.error("Sign out error:", error);
       });
