@@ -5,7 +5,7 @@ import { TextCustom } from "./styles";
 type FontLine = 12 | 14 | 16 | 18 | 20 | 22 | 24 | 32 | 40;
 
 interface TextPropsCustom extends TextProps {
-  title: string;
+  title: string | undefined;
   fontFamily: "regular" | "bold" | "semi-bold";
   numberOfLines?: number;
   fontSize: FontLine;

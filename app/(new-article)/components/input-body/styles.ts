@@ -1,5 +1,10 @@
 import { Colors } from "@/constants/Colors";
 import styled from "styled-components/native";
+import { boolean } from "zod";
+
+interface TextInputProps {
+  isError: boolean;
+}
 
 export const Container = styled.View`
   padding-left: 40px;
@@ -8,20 +13,20 @@ export const Container = styled.View`
   gap: 16px;
 `;
 
-export const InputCustom = styled.TextInput`
+export const InputCustom = styled.TextInput<TextInputProps>`
   width: 100%;
   height: 38px;
   border-bottom-width: 2px;
-  border-color: ${Colors.light.lightGray};
+  border-color: ${({ isError }) => (isError ? "red" : Colors.light.lightGray)};
   font-family: "MontserratSemiBold";
   font-size: 22px;
 `;
 
-export const InputProduct = styled.TextInput`
+export const InputProduct = styled.TextInput<TextInputProps>`
   width: 100%;
   height: 38px;
   border-bottom-width: 2px;
-  border-color: ${Colors.light.lightGray};
+  border-color: ${({ isError }) => (isError ? "red" : Colors.light.lightGray)};
   font-family: "MontserratRegular";
   font-size: 18px;
 `;
@@ -37,11 +42,11 @@ export const Row = styled.View`
   gap: 16px;
 `;
 
-export const InputArticle = styled.TextInput`
+export const InputArticle = styled.TextInput<TextInputProps>`
   width: 100%;
   height: 244px;
   border-bottom-width: 2px;
-  border-color: ${Colors.light.lightGray};
+  border-color: ${({ isError }) => (isError ? "red" : Colors.light.lightGray)};
   font-family: "MontserratRegular";
   font-size: 14px;
   line-height: 22px;
