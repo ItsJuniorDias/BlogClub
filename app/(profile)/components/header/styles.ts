@@ -23,7 +23,7 @@ export const ContainerBody = styled.View`
   padding: 32px;
 `;
 
-export const BorderContainer = styled.View`
+export const BorderContainer = styled.TouchableOpacity`
   width: 84px;
   height: 84px;
   border-radius: 28px;
@@ -36,6 +36,7 @@ export const BorderContainer = styled.View`
 export const Thumbnail = styled(Image)`
   width: 66px;
   height: 66px;
+  border-radius: 16px;
 `;
 
 export const Row = styled.View`

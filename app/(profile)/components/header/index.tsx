@@ -1,10 +1,14 @@
 import { getAuth, signOut } from "firebase/auth";
+import * as ImagePicker from "expo-image-picker";
 
 import { TouchableOpacity, StyleSheet } from "react-native";
 import { Text } from "../../../../components/ui";
 import { Colors } from "@/constants/Colors";
 
+import { useUserStore } from "@/store/useUserStore";
+
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 
 import thumbnail_profile from "../../../../assets/images/thumbnail_profile.png";
 
@@ -21,7 +25,7 @@ import {
   Row,
   Thumbnail,
 } from "./styles";
-import { useRouter } from "expo-router";
+import { useState } from "react";
 
 interface HeaderProfileProps {
   title: string;
@@ -29,6 +33,10 @@ interface HeaderProfileProps {
 }
 
 export default function HeaderProfile({ title, icon }: HeaderProfileProps) {
+  const [image, setImage] = useState<string | null>(null);
+
+  const { data } = useUserStore();
+
   const auth = getAuth();
 
   const handleSignOut = async () => {
@@ -37,6 +45,19 @@ export default function HeaderProfile({ title, icon }: HeaderProfileProps) {
       .catch((error) => {
         console.error("Sign out error:", error);
       });
+  };
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ["images", "videos"],
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
   };
 
   return (
@@ -57,27 +78,34 @@ export default function HeaderProfile({ title, icon }: HeaderProfileProps) {
       <Content>
         <ContainerBody style={styles.shadowBox}>
           <Row>
-            <BorderContainer>
-              <Thumbnail source={thumbnail_profile} />
+            <BorderContainer onPress={pickImage}>
+              {image ? (
+                <Thumbnail source={image} />
+              ) : (
+                <FontAwesome5 name="user" size={40} color="#333" />
+              )}
             </BorderContainer>
 
             <ContentText>
               <Text
-                title="@joviedan"
+                title={data._j.email}
+                numberOfLines={1}
                 fontFamily="regular"
                 fontSize={14}
                 color={Colors.light.blueText}
               />
 
               <Text
-                title="Jovi Daniel"
+                title={data._j.name}
+                numberOfLines={1}
                 fontFamily="semi-bold"
                 fontSize={18}
                 color={Colors.light.darkBlue}
               />
 
               <Text
-                title="UX Designer"
+                title="Mobile Developer"
+                numberOfLines={1}
                 fontFamily="regular"
                 fontSize={16}
                 color={Colors.light.blue}
@@ -94,7 +122,7 @@ export default function HeaderProfile({ title, icon }: HeaderProfileProps) {
             />
 
             <Text
-              title="Madison Blackstone is a director of user experience design, with experience managing global teams."
+              title="Working since the end of 2019 with frameworks such as React and React native, with experience managing global teams."
               fontFamily="regular"
               fontSize={14}
               lineHeight={20}
