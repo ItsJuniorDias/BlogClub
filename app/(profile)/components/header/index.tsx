@@ -1,4 +1,6 @@
 import { getAuth, signOut } from "firebase/auth";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 import * as ImagePicker from "expo-image-picker";
 
 import { TouchableOpacity, StyleSheet } from "react-native";
@@ -23,7 +25,8 @@ import {
   Row,
   Thumbnail,
 } from "./styles";
-import { useState } from "react";
+
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 interface HeaderProfileProps {
   title: string;
@@ -31,11 +34,25 @@ interface HeaderProfileProps {
 }
 
 export default function HeaderProfile({ title, icon }: HeaderProfileProps) {
-  const [image, setImage] = useState<string | null>(null);
+  const queryClient = useQueryClient();
 
   const { data } = useUserStore();
 
   const auth = getAuth();
+
+  const getData = async () => {
+    try {
+      const value = await AsyncStorage.getItem("thumbnail");
+
+      if (value !== null) {
+        return value;
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const query = useQuery({ queryKey: ["thumbnail"], queryFn: getData });
 
   const handleSignOut = async () => {
     return signOut(auth)
@@ -43,6 +60,14 @@ export default function HeaderProfile({ title, icon }: HeaderProfileProps) {
       .catch((error) => {
         console.error("Sign out error:", error);
       });
+  };
+
+  const storeData = async (value) => {
+    try {
+      await AsyncStorage.setItem("thumbnail", value);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   const pickImage = async () => {
@@ -54,9 +79,16 @@ export default function HeaderProfile({ title, icon }: HeaderProfileProps) {
     });
 
     if (!result.canceled) {
-      setImage(result.assets[0].uri);
+      storeData(result.assets[0].uri);
     }
   };
+
+  const mutation = useMutation({
+    mutationFn: pickImage,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["thumbnail"] });
+    },
+  });
 
   return (
     <>
@@ -76,9 +108,9 @@ export default function HeaderProfile({ title, icon }: HeaderProfileProps) {
       <Content>
         <ContainerBody style={styles.shadowBox}>
           <Row>
-            <BorderContainer onPress={pickImage}>
-              {image ? (
-                <Thumbnail source={image} />
+            <BorderContainer onPress={() => mutation.mutate({})}>
+              {query.data ? (
+                <Thumbnail source={query.data} />
               ) : (
                 <FontAwesome5 name="user" size={40} color="#333" />
               )}
