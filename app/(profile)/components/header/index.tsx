@@ -10,8 +10,6 @@ import { useUserStore } from "@/store/useUserStore";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 
-import thumbnail_profile from "../../../../assets/images/thumbnail_profile.png";
-
 import {
   BorderContainer,
   ColumnInfo,
@@ -88,7 +86,7 @@ export default function HeaderProfile({ title, icon }: HeaderProfileProps) {
 
             <ContentText>
               <Text
-                title={data._j.email}
+                title={data?._j?.email}
                 numberOfLines={1}
                 fontFamily="regular"
                 fontSize={14}
@@ -96,7 +94,7 @@ export default function HeaderProfile({ title, icon }: HeaderProfileProps) {
               />
 
               <Text
-                title={data._j.name}
+                title={data?._j?.name}
                 numberOfLines={1}
                 fontFamily="semi-bold"
                 fontSize={18}

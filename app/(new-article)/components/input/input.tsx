@@ -1,10 +1,9 @@
 import { useState } from "react";
 import { ActivityIndicator, TouchableOpacity } from "react-native";
 import { Colors } from "@/constants/Colors";
-import { Tag, Text } from "@/components/ui";
+import { Tag, Text, Button } from "@/components/ui";
 
 import {
-  Button,
   Container,
   ContentTag,
   InputArticle,
@@ -83,18 +82,11 @@ export default function Input({
         textAlignVertical="top"
       />
 
-      <Button activeOpacity={0.7} onPress={handleSubmit}>
-        {isPending ? (
-          <ActivityIndicator size="small" color={Colors.light.background} />
-        ) : (
-          <Text
-            title="Create new post"
-            fontFamily="semi-bold"
-            fontSize={18}
-            color={Colors.light.background}
-          />
-        )}
-      </Button>
+      <Button
+        isLoading={isPending}
+        title="CREATE NEW POST"
+        onPress={handleSubmit}
+      />
     </Container>
   );
 }
