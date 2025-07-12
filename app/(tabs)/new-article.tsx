@@ -19,11 +19,9 @@ export default function NewArticle() {
   const bottomSheetRef = useRef(null);
 
   const searchPhotos = async () => {
-    const per_page = 30;
-
     try {
       const response = await axios.get(
-        `https://api.unsplash.com/search/photos?query=${queryUnplash}&per_page=50&page=1`,
+        `https://api.unsplash.com/search/photos?query=nature&per_page=30&page=1`,
         {
           headers: {
             Authorization: `Client-ID ${UNSPLASH_ACCESS_KEY}`,
@@ -41,8 +39,6 @@ export default function NewArticle() {
     queryKey: ["photos"],
     queryFn: searchPhotos,
   });
-
-  console.log(data, "DATA");
 
   return (
     <>

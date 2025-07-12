@@ -1,6 +1,6 @@
 import { Input } from "@/components/ui";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 import { FlatList, TouchableOpacity, View } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
@@ -19,7 +19,10 @@ import {
 } from "./styles";
 
 type ItemProps = {
-  download: string;
+  item: {
+    liked_by_user: boolean;
+  };
+  image: string;
 };
 
 interface BottomSheetContentProps {
@@ -35,22 +38,38 @@ export default function BottomSheetContent({
 }: BottomSheetContentProps) {
   const [value, setValue] = useState("");
 
-  const Item = ({ image }: ItemProps) => (
-    <Touchable activeOpacity={0.7} onPress={() => {}}>
-      <Thumbnail
-        source={{
-          uri: image,
-        }}
-      />
-    </Touchable>
-  );
+  const [showGif, setShowGif] = useState(null);
 
-  const ItemSkeleton = () => (
-    <TouchableSkeleton
-      activeOpacity={0.7}
-      onPress={() => {}}
-    ></TouchableSkeleton>
-  );
+  const handleLiked = (id: string) => {
+    setShowGif(id);
+
+    // setTimeout(() => setShowGif(null), 1500);
+  };
+
+  console.log(isLoading, "IS LOADING");
+  console.log(data, "DATA");
+
+  const Item = ({ id, item, image }: ItemProps) => {
+    const showLikeGif = showGif === item.user.id;
+
+    return (
+      <>
+        {isLoading && <TouchableSkeleton activeOpacity={0.7} />}
+
+        {!isLoading && (
+          <Touchable activeOpacity={0.7} onPress={() => handleLiked(id)}>
+            <Thumbnail
+              source={{
+                uri: image,
+              }}
+            />
+
+            {showLikeGif && <Checked source={success_checked} />}
+          </Touchable>
+        )}
+      </>
+    );
+  };
 
   return (
     <Container>
@@ -73,11 +92,12 @@ export default function BottomSheetContent({
       <FlatList
         data={data}
         numColumns={2}
-        renderItem={({ item }) =>
-          isLoading ? <ItemSkeleton /> : <Item image={item.links.download} />
-        }
+        renderItem={({ item }) => (
+          <Item id={item.user.id} item={item} image={item.links.download} />
+        )}
         keyExtractor={(item) => item.id}
         showsVerticalScrollIndicator={false}
+        extraData={showGif}
       />
     </Container>
   );
