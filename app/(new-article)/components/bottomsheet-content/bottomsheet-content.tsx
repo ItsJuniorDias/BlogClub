@@ -1,6 +1,6 @@
 import { Input } from "@/components/ui";
 
-import { useRef, useState } from "react";
+import { useState } from "react";
 
 import { FlatList, TouchableOpacity, View } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
@@ -17,8 +17,11 @@ import {
   Touchable,
   TouchableSkeleton,
 } from "./styles";
+import axios from "axios";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 type ItemProps = {
+  id: string;
   item: {
     liked_by_user: boolean;
   };
@@ -31,40 +34,61 @@ interface BottomSheetContentProps {
   isLoading: boolean;
 }
 
+const YOUR_ACCESS_TOKEN = "-Jly_R_E6OQDhkCGJdYbdo8065H14QGir9VaDqSxumg";
+
 export default function BottomSheetContent({
   data,
   onClose,
   isLoading,
 }: BottomSheetContentProps) {
+  const queryClient = useQueryClient();
+
   const [value, setValue] = useState("");
 
-  const [showGif, setShowGif] = useState(null);
+  const handleLiked = async (id: string) => {
+    console.log(id, "ID");
 
-  const handleLiked = (id: string) => {
-    setShowGif(id);
+    try {
+      const response = await axios.post(
+        `https://api.unsplash.com/photos/${id}/like`,
+        {
+          headers: {
+            Authorization: `Bearer ${YOUR_ACCESS_TOKEN}`,
+          },
+        }
+      );
 
-    // setTimeout(() => setShowGif(null), 1500);
+      return response.data;
+    } catch (error) {
+      console.error("Erro ao dar like na imagem", error.message);
+    }
   };
+
+  const { mutate } = useMutation({
+    mutationFn: handleLiked,
+    onSuccess: () => {
+      // Invalidate and refetch
+      queryClient.invalidateQueries({ queryKey: ["photos"] });
+    },
+  });
 
   console.log(isLoading, "IS LOADING");
   console.log(data, "DATA");
 
   const Item = ({ id, item, image }: ItemProps) => {
-    const showLikeGif = showGif === item.user.id;
-
     return (
       <>
         {isLoading && <TouchableSkeleton activeOpacity={0.7} />}
 
         {!isLoading && (
-          <Touchable activeOpacity={0.7} onPress={() => handleLiked(id)}>
+          <Touchable activeOpacity={0.7} onPress={() => mutate(id)}>
             <Thumbnail
               source={{
                 uri: image,
               }}
             />
 
-            {showLikeGif && <Checked source={success_checked} />}
+            {item.liked_by_user && <Checked source={success_checked} />}
           </Touchable>
         )}
       </>
@@ -84,7 +108,6 @@ export default function BottomSheetContent({
           value={value}
           onChangeText={(item) => setValue(item)}
           placeholder="Search"
-          title=""
           keyboardType="default"
         />
       </ContentInput>
@@ -93,11 +116,10 @@ export default function BottomSheetContent({
         data={data}
         numColumns={2}
         renderItem={({ item }) => (
-          <Item id={item.user.id} item={item} image={item.links.download} />
+          <Item id={item.id} item={item} image={item.links.download} />
         )}
         keyExtractor={(item) => item.id}
         showsVerticalScrollIndicator={false}
-        extraData={showGif}
       />
     </Container>
   );
