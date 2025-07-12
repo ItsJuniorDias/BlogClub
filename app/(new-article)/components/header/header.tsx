@@ -6,10 +6,10 @@ import { TouchableOpacity } from "react-native";
 import Feather from "@expo/vector-icons/Feather";
 
 interface HeaderNewArticleProps {
-  pickImage: () => void;
+  onPress: () => void;
 }
 
-export default function HeaderNewArticle({ pickImage }: HeaderNewArticleProps) {
+export default function HeaderNewArticle({ onPress }: HeaderNewArticleProps) {
   return (
     <>
       <Container>
@@ -20,7 +20,7 @@ export default function HeaderNewArticle({ pickImage }: HeaderNewArticleProps) {
           color={Colors.light.darkBlue}
         />
 
-        <TouchableOpacity onPress={pickImage}>
+        <TouchableOpacity onPress={onPress}>
           <Feather name={"upload"} size={32} color={Colors.light.darkBlue} />
         </TouchableOpacity>
       </Container>

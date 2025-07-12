@@ -25,12 +25,14 @@ export default function Input({
 }: InputPros) {
   return (
     <Container>
-      <Text
-        title={title}
-        fontFamily="regular"
-        fontSize={14}
-        color={Colors.light.darkBlue}
-      />
+      {title && (
+        <Text
+          title={title}
+          fontFamily="regular"
+          fontSize={14}
+          color={Colors.light.darkBlue}
+        />
+      )}
 
       <InputCustom
         value={value}
