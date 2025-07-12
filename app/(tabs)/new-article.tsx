@@ -19,9 +19,16 @@ export default function NewArticle() {
   const bottomSheetRef = useRef(null);
 
   const searchPhotos = async () => {
+    const per_page = 30;
+
     try {
       const response = await axios.get(
-        `https://api.unsplash.com/search/photos?page=1&query=${queryUnplash}&client_id=${UNSPLASH_ACCESS_KEY}`
+        `https://api.unsplash.com/search/photos?query=${queryUnplash}&per_page=50&page=1`,
+        {
+          headers: {
+            Authorization: `Client-ID ${UNSPLASH_ACCESS_KEY}`,
+          },
+        }
       );
 
       return response.data;
@@ -30,7 +37,12 @@ export default function NewArticle() {
     }
   };
 
-  const query = useQuery({ queryKey: ["photos"], queryFn: searchPhotos });
+  const { data, isLoading } = useQuery({
+    queryKey: ["photos"],
+    queryFn: searchPhotos,
+  });
+
+  console.log(data, "DATA");
 
   return (
     <>
@@ -42,7 +54,8 @@ export default function NewArticle() {
 
       <BottomSheet ref={bottomSheetRef}>
         <BottomSheetContent
-          data={query?.data?.results}
+          isLoading={isLoading}
+          data={data?.results}
           onClose={() => bottomSheetRef.current?.close()}
         />
       </BottomSheet>

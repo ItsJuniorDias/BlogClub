@@ -15,6 +15,7 @@ import {
   Thumbnail,
   Checked,
   Touchable,
+  TouchableSkeleton,
 } from "./styles";
 
 type ItemProps = {
@@ -24,11 +25,13 @@ type ItemProps = {
 interface BottomSheetContentProps {
   onClose: () => void;
   data: string[];
+  isLoading: boolean;
 }
 
 export default function BottomSheetContent({
   data,
   onClose,
+  isLoading,
 }: BottomSheetContentProps) {
   const [value, setValue] = useState("");
 
@@ -40,6 +43,13 @@ export default function BottomSheetContent({
         }}
       />
     </Touchable>
+  );
+
+  const ItemSkeleton = () => (
+    <TouchableSkeleton
+      activeOpacity={0.7}
+      onPress={() => {}}
+    ></TouchableSkeleton>
   );
 
   return (
@@ -63,7 +73,9 @@ export default function BottomSheetContent({
       <FlatList
         data={data}
         numColumns={2}
-        renderItem={({ item }) => <Item image={item.links.download} />}
+        renderItem={({ item }) =>
+          isLoading ? <ItemSkeleton /> : <Item image={item.links.download} />
+        }
         keyExtractor={(item) => item.id}
         showsVerticalScrollIndicator={false}
       />

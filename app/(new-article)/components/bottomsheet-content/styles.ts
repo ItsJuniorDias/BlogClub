@@ -25,6 +25,15 @@ export const Touchable = styled.TouchableOpacity`
   justify-content: center;
 `;
 
+export const TouchableSkeleton = styled.TouchableOpacity`
+  width: 150px;
+  height: 240px;
+  border-radius: 24px;
+  margin-right: 16px;
+  margin-top: 16px;
+  background-color: #ddd;
+`;
+
 export const ContentInput = styled.View`
   margin-bottom: 8px;
   border-radius: 50px;
