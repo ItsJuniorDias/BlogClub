@@ -12,11 +12,26 @@ export const Thumbnail = styled(Image)`
   height: 240px;
   border-radius: 24px;
   margin-right: 16px;
-  margin-top: 24px;
+  margin-top: 16px;
 `;
 
 export const Row = styled.View`
   width: 100%;
-
   align-items: flex-end;
+`;
+
+export const Touchable = styled.TouchableOpacity`
+  align-items: center;
+  justify-content: center;
+`;
+
+export const ContentInput = styled.View`
+  margin-bottom: 8px;
+  border-radius: 50px;
+`;
+
+export const Checked = styled(Image)`
+  width: 80px;
+  height: 80px;
+  position: absolute;
 `;

@@ -5,37 +5,15 @@ import React, {
   forwardRef,
   useCallback,
 } from "react";
-import {
-  View,
-  StyleSheet,
-  Animated,
-  PanResponder,
-  Dimensions,
-} from "react-native";
+import { View, StyleSheet, Animated, Dimensions } from "react-native";
 
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
 const BottomSheet = forwardRef((props, ref) => {
-  const sheetHeight = SCREEN_HEIGHT * 0.6;
+  const sheetHeight = SCREEN_HEIGHT * 0.8;
 
   const translateY = useRef(new Animated.Value(sheetHeight)).current;
   const lastTranslateY = useRef(sheetHeight);
-
-  // const panResponder = useRef(
-  //   PanResponder.create({
-  //     onMoveShouldSetPanResponder: (_, gestureState) =>
-  //       Math.abs(gestureState.dy) > 5,
-  //     onPanResponderMove: (_, gestureState) => {
-  //       const newTranslateY = gestureState.dy + lastTranslateY.current;
-  //       translateY.setValue(Math.max(0, Math.min(newTranslateY, sheetHeight)));
-  //     },
-  //     onPanResponderRelease: (_, gestureState) => {
-  //       const shouldOpen = gestureState.vy < 0 || gestureState.dy < -50;
-
-  //       animateTo(shouldOpen ? 0 : sheetHeight);
-  //     },
-  //   })
-  // ).current;
 
   const animateTo = useCallback((toValue) => {
     Animated.spring(translateY, {
@@ -46,7 +24,6 @@ const BottomSheet = forwardRef((props, ref) => {
     });
   }, []);
 
-  // Expose methods via ref
   useImperativeHandle(ref, () => ({
     open: () => animateTo(0),
     close: () => animateTo(sheetHeight),
@@ -61,7 +38,6 @@ const BottomSheet = forwardRef((props, ref) => {
           transform: [{ translateY }],
         },
       ]}
-      // {...panResponder.panHandlers}
     >
       <View style={styles.handleBar} />
       <View style={styles.content}>{props.children}</View>

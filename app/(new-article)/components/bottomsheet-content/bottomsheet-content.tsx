@@ -2,10 +2,20 @@ import { Input } from "@/components/ui";
 
 import { useState } from "react";
 
-import { Container, Row, Thumbnail } from "./styles";
 import { FlatList, TouchableOpacity, View } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { Colors } from "@/constants/Colors";
+
+import success_checked from "../../../../assets/images/success_checked.gif";
+
+import {
+  Container,
+  ContentInput,
+  Row,
+  Thumbnail,
+  Checked,
+  Touchable,
+} from "./styles";
 
 type ItemProps = {
   download: string;
@@ -23,13 +33,13 @@ export default function BottomSheetContent({
   const [value, setValue] = useState("");
 
   const Item = ({ image }: ItemProps) => (
-    <TouchableOpacity activeOpacity={0.7} onPress={() => {}}>
+    <Touchable activeOpacity={0.7} onPress={() => {}}>
       <Thumbnail
         source={{
           uri: image,
         }}
       />
-    </TouchableOpacity>
+    </Touchable>
   );
 
   return (
@@ -40,13 +50,15 @@ export default function BottomSheetContent({
         </TouchableOpacity>
       </Row>
 
-      <Input
-        value={value}
-        onChangeText={(item) => setValue(item)}
-        placeholder="Search"
-        title=""
-        keyboardType="default"
-      />
+      <ContentInput>
+        <Input
+          value={value}
+          onChangeText={(item) => setValue(item)}
+          placeholder="Search"
+          title=""
+          keyboardType="default"
+        />
+      </ContentInput>
 
       <FlatList
         data={data}
