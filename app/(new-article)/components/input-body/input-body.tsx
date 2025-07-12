@@ -20,9 +20,7 @@ import {
   Row,
 } from "./styles";
 
-interface InputProps {
-  image: string | null;
-}
+interface InputProps {}
 
 const formSchema = z.object({
   title: z.string("* Required field"),
@@ -32,7 +30,7 @@ const formSchema = z.object({
 
 type FormData = z.infer<typeof formSchema>;
 
-export default function InputBody({ image }: InputProps) {
+export default function InputBody({}: InputProps) {
   const queryClient = useQueryClient();
 
   const {
@@ -52,7 +50,7 @@ export default function InputBody({ image }: InputProps) {
       const docRef = await addDoc(collection(db, "posts"), {
         title: data.title,
         description: data.description,
-        thumbnail: image,
+        thumbnail: "",
         article: data.article,
         hours: 4,
         numberLike: 5.4,
