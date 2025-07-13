@@ -7,6 +7,14 @@ export const Container = styled.View`
   padding-right: 24px;
 `;
 
+export const ButtonBack = styled.TouchableOpacity`
+  width: 40px;
+  height: 40px;
+
+  align-items: center;
+  justify-content: center;
+`;
+
 export const Thumbnail = styled(Image)`
   width: 150px;
   height: 240px;

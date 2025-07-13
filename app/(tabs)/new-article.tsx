@@ -37,6 +37,10 @@ export default function NewArticle() {
 
       return response.data;
     } catch (error) {
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 2000);
+
       console.error("Erro ao buscar imagens:", error);
     }
   }, [queryUnplash]);
