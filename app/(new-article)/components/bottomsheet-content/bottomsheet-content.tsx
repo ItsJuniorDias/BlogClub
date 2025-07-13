@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { FlatList } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { Colors } from "@/constants/Colors";
@@ -17,6 +17,7 @@ import {
   TouchableSkeleton,
   ButtonBack,
 } from "./styles";
+import { useQueryClient } from "@tanstack/react-query";
 
 type ItemProps = {
   id: string;
@@ -25,7 +26,7 @@ type ItemProps = {
 
 interface BottomSheetContentProps {
   onClose: () => void;
-  data: string[];
+  data: ItemProps[];
   isLoading: boolean;
   setIsLoading: (item: boolean) => void;
   queryUnplash: string;
@@ -40,13 +41,19 @@ export default function BottomSheetContent({
   queryUnplash,
   setQueryUnplash,
 }: BottomSheetContentProps) {
+  const queryClient = useQueryClient();
+
   const [likedItems, setLikedItems] = useState({});
 
+  console.log(data, "DATA");
+
   const toggleLike = (id) => {
-    setLikedItems((prev) => ({
-      ...prev,
-      [id]: !prev[id],
-    }));
+    setLikedItems((prev) => {
+      return {
+        ...prev,
+        [id]: !prev[id],
+      };
+    });
   };
 
   const Item = ({ id, image }: ItemProps) => {
@@ -57,7 +64,14 @@ export default function BottomSheetContent({
         {isLoading && <TouchableSkeleton activeOpacity={0.7} />}
 
         {!isLoading && (
-          <Touchable activeOpacity={0.7} onPress={() => toggleLike(id)}>
+          <Touchable
+            activeOpacity={0.7}
+            onPress={() => {
+              toggleLike(id);
+
+              console.log(image, "IMAGE LINK");
+            }}
+          >
             <Thumbnail
               source={{
                 uri: image,
@@ -88,7 +102,7 @@ export default function BottomSheetContent({
 
             setQueryUnplash(item.toLowerCase() ?? "");
 
-            // mutate({});
+            queryClient.invalidateQueries({ queryKey: ["photos"] });
           }}
           placeholder="Search"
           keyboardType="default"
@@ -104,9 +118,9 @@ export default function BottomSheetContent({
         renderItem={({ item }) => (
           <Item id={item.id} image={item.links.download} />
         )}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item: ItemProps) => item.id}
         showsVerticalScrollIndicator={false}
-        extraData={data}
+        extraData={likedItems}
       />
     </Container>
   );
