@@ -32,6 +32,7 @@ interface BottomSheetContentProps {
   onClose: () => void;
   data: string[];
   isLoading: boolean;
+  setIsLoading: (item: boolean) => void;
   queryUnplash: string;
   setQueryUnplash: (item: string) => void;
 }
@@ -43,6 +44,7 @@ export default function BottomSheetContent({
   data,
   onClose,
   isLoading,
+  setIsLoading,
   queryUnplash,
   setQueryUnplash,
 }: BottomSheetContentProps) {
@@ -75,7 +77,6 @@ export default function BottomSheetContent({
   });
 
   console.log(isLoading, "IS LOADING");
-  console.log(data, "DATA");
 
   const Item = ({ id, item, image }: ItemProps) => {
     return (
@@ -109,6 +110,8 @@ export default function BottomSheetContent({
         <Input
           value={queryUnplash}
           onChangeText={(item) => {
+            setIsLoading(true);
+
             setQueryUnplash(item.toLowerCase() ?? "");
 
             mutate({});
@@ -122,6 +125,7 @@ export default function BottomSheetContent({
       <FlatList
         data={data}
         numColumns={2}
+        refreshing
         renderItem={({ item }) => (
           <Item id={item.id} item={item} image={item.links.download} />
         )}

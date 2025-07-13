@@ -20,6 +20,11 @@ export const Row = styled.View`
   align-items: flex-end;
 `;
 
+export const RowItem = styled.View`
+  width: 100%;
+  flex-direction: row;
+`;
+
 export const Touchable = styled.TouchableOpacity`
   align-items: center;
   justify-content: center;

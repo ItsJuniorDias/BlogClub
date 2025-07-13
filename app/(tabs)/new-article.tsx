@@ -1,5 +1,5 @@
 import { ScrollView, StyleSheet } from "react-native";
-import { useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import axios from "axios";
 
 import Toast from "react-native-toast-message";
@@ -14,13 +14,13 @@ import BottomSheetContent from "../(new-article)/components/bottomsheet-content/
 const UNSPLASH_ACCESS_KEY = "-Jly_R_E6OQDhkCGJdYbdo8065H14QGir9VaDqSxumg";
 
 export default function NewArticle() {
+  const [isLoading, setIsLoading] = useState(true);
+
   const [queryUnplash, setQueryUnplash] = useState();
 
   const bottomSheetRef = useRef(null);
 
-  const searchPhotos = async () => {
-    console.log(queryUnplash, "QUERY");
-
+  const searchPhotos = useCallback(async () => {
     try {
       const response = await axios.get(
         `https://api.unsplash.com/search/photos?query=${queryUnplash}&per_page=30&page=1`,
@@ -31,13 +31,17 @@ export default function NewArticle() {
         }
       );
 
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 10000);
+
       return response.data;
     } catch (error) {
       console.error("Erro ao buscar imagens:", error);
     }
-  };
+  }, [queryUnplash]);
 
-  const { data, isLoading } = useQuery({
+  const { data } = useQuery({
     queryKey: ["photos"],
     queryFn: searchPhotos,
   });
@@ -52,8 +56,9 @@ export default function NewArticle() {
 
       <BottomSheet ref={bottomSheetRef}>
         <BottomSheetContent
-          isLoading={isLoading}
           data={data?.results}
+          isLoading={isLoading}
+          setIsLoading={setIsLoading}
           onClose={() => bottomSheetRef.current?.close()}
           queryUnplash={queryUnplash}
           setQueryUnplash={setQueryUnplash}
