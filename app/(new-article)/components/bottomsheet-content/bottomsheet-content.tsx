@@ -109,12 +109,13 @@ export default function BottomSheetContent({
         <Input
           value={queryUnplash}
           onChangeText={(item) => {
-            setQueryUnplash(item ?? "");
+            setQueryUnplash(item.toLowerCase() ?? "");
 
             mutate({});
           }}
           placeholder="Search"
           keyboardType="default"
+          autoCapitalize="none"
         />
       </ContentInput>
 
@@ -126,7 +127,7 @@ export default function BottomSheetContent({
         )}
         keyExtractor={(item) => item.id}
         showsVerticalScrollIndicator={false}
-        extraData={queryUnplash}
+        extraData={data}
       />
     </Container>
   );
