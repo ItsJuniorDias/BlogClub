@@ -6,7 +6,7 @@ import Toast from "react-native-toast-message";
 
 import HeaderNewArticle from "../(new-article)/components/header/header";
 import InputBody from "../(new-article)/components/input-body/input-body";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 import BottomSheet from "@/components/ui/bottomsheet";
 import BottomSheetContent from "../(new-article)/components/bottomsheet-content/bottomsheet-content";
@@ -14,14 +14,16 @@ import BottomSheetContent from "../(new-article)/components/bottomsheet-content/
 const UNSPLASH_ACCESS_KEY = "-Jly_R_E6OQDhkCGJdYbdo8065H14QGir9VaDqSxumg";
 
 export default function NewArticle() {
-  const [queryUnplash, setQueryUnplash] = useState("photos");
+  const [queryUnplash, setQueryUnplash] = useState();
 
   const bottomSheetRef = useRef(null);
 
   const searchPhotos = async () => {
+    console.log(queryUnplash, "QUERY");
+
     try {
       const response = await axios.get(
-        `https://api.unsplash.com/search/photos?query=nature&per_page=30&page=1`,
+        `https://api.unsplash.com/search/photos?query=${queryUnplash}&per_page=30&page=1`,
         {
           headers: {
             Authorization: `Client-ID ${UNSPLASH_ACCESS_KEY}`,
@@ -53,6 +55,8 @@ export default function NewArticle() {
           isLoading={isLoading}
           data={data?.results}
           onClose={() => bottomSheetRef.current?.close()}
+          queryUnplash={queryUnplash}
+          setQueryUnplash={setQueryUnplash}
         />
       </BottomSheet>
       <Toast />

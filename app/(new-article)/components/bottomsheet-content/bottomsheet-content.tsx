@@ -32,42 +32,44 @@ interface BottomSheetContentProps {
   onClose: () => void;
   data: string[];
   isLoading: boolean;
+  queryUnplash: string;
+  setQueryUnplash: (item: string) => void;
 }
 
-const YOUR_ACCESS_TOKEN = "-Jly_R_E6OQDhkCGJdYbdo8065H14QGir9VaDqSxumg";
+const BEARER_TOKEN =
+  "091343ce13c8ae780065ecb3b13dc903475dd22cb78a05503c2e0c69c5e98044";
 
 export default function BottomSheetContent({
   data,
   onClose,
   isLoading,
+  queryUnplash,
+  setQueryUnplash,
 }: BottomSheetContentProps) {
   const queryClient = useQueryClient();
-
-  const [value, setValue] = useState("");
 
   const handleLiked = async (id: string) => {
     console.log(id, "ID");
 
-    try {
-      const response = await axios.post(
-        `https://api.unsplash.com/photos/${id}/like`,
-        {
-          headers: {
-            Authorization: `Bearer ${YOUR_ACCESS_TOKEN}`,
-          },
-        }
-      );
+    // try {
+    //   const response = await axios.post(
+    //     `https://api.unsplash.com/photos/${id}/like`,
+    //     {
+    //       headers: {
+    //         Authorization: `Bearer ${BEARER_TOKEN}`,
+    //       },
+    //     }
+    //   );
 
-      return response.data;
-    } catch (error) {
-      console.error("Erro ao dar like na imagem", error.message);
-    }
+    //   return response.data;
+    // } catch (error) {
+    //   console.error("Erro ao dar like na imagem", error.message);
+    // }
   };
 
   const { mutate } = useMutation({
     mutationFn: handleLiked,
     onSuccess: () => {
-      // Invalidate and refetch
       queryClient.invalidateQueries({ queryKey: ["photos"] });
     },
   });
@@ -81,7 +83,7 @@ export default function BottomSheetContent({
         {isLoading && <TouchableSkeleton activeOpacity={0.7} />}
 
         {!isLoading && (
-          <Touchable activeOpacity={0.7} onPress={() => mutate(id)}>
+          <Touchable activeOpacity={0.7} onPress={() => {}}>
             <Thumbnail
               source={{
                 uri: image,
@@ -105,8 +107,12 @@ export default function BottomSheetContent({
 
       <ContentInput>
         <Input
-          value={value}
-          onChangeText={(item) => setValue(item)}
+          value={queryUnplash}
+          onChangeText={(item) => {
+            setQueryUnplash(item ?? "");
+
+            mutate({});
+          }}
           placeholder="Search"
           keyboardType="default"
         />
@@ -120,6 +126,7 @@ export default function BottomSheetContent({
         )}
         keyExtractor={(item) => item.id}
         showsVerticalScrollIndicator={false}
+        extraData={queryUnplash}
       />
     </Container>
   );
