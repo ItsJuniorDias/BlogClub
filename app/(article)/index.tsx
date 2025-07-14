@@ -70,8 +70,6 @@ export default function ArticleScreen() {
 
     const likeDoc = await getDoc(likeDocRef);
 
-    console.log(likeDoc.data(), "DATA");
-
     if (!likeDoc.data()?.liked) {
       fetch({
         ...data,
@@ -88,8 +86,6 @@ export default function ArticleScreen() {
       });
 
       queryClient.invalidateQueries({ queryKey: ["posts"] });
-
-      console.log("Like add success");
     } else {
       fetch({
         ...data,
@@ -104,8 +100,6 @@ export default function ArticleScreen() {
       });
 
       queryClient.invalidateQueries({ queryKey: ["posts"] });
-
-      console.log("User already liked");
     }
   };
 

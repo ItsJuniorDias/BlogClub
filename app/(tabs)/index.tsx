@@ -1,4 +1,4 @@
-import { StyleSheet, ScrollView } from "react-native";
+import { StyleSheet, ScrollView, FlatList } from "react-native";
 
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "@/firebaseConfig";
@@ -6,7 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import { Card, CarouselComponent } from "../(home)/components";
 import { Header, LatestNews } from "@/components/ui";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 export default function HomeScreen() {
   const [isLoading, setIsLoading] = useState(true);
@@ -31,6 +31,25 @@ export default function HomeScreen() {
     queryFn: () => fetch(),
   });
 
+  const renderItem = useCallback(
+    ({ item, index }) => (
+      <LatestNews
+        id={item.id}
+        isLoading={isLoading}
+        isProfile={index !== 0}
+        profileTitle="Latest News"
+        image={item.thumbnail}
+        title={item.title}
+        description={item.description}
+        article={item.article}
+        numberLike={item.numberLike}
+        hours={item.hours}
+        isLike={item.isLike}
+      />
+    ),
+    [isLoading]
+  );
+
   return (
     <>
       <ScrollView
@@ -43,23 +62,11 @@ export default function HomeScreen() {
 
         <CarouselComponent />
 
-        {data?.map((item, index) => (
-          <>
-            <LatestNews
-              id={item.id}
-              isLoading={isLoading}
-              isProfile={index !== 0}
-              profileTitle="Latest News"
-              image={item.thumbnail}
-              title={item.title}
-              description={item.description}
-              article={item.article}
-              numberLike={item.numberLike}
-              hours={item.hours}
-              isLike={item.isLike}
-            />
-          </>
-        ))}
+        <FlatList
+          data={data}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id}
+        />
       </ScrollView>
     </>
   );
