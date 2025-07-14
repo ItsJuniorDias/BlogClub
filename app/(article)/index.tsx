@@ -70,32 +70,22 @@ export default function ArticleScreen() {
 
     const likeDoc = await getDoc(likeDocRef);
 
-    console.log(likeDoc.data(), "LIKE DOC");
-
-    if (!likeDoc.exists()) {
-      fetch({
-        ...data,
-        numberLike: data.numberLike + 1,
+    if (!likeDoc.data()?.liked) {
+      await setDoc(likeDocRef, {
+        liked: true,
       });
 
-      await setDoc(likeDocRef, { liked: true });
-      await updateDoc(postRef, { isLike: true, numberLike: increment(1) });
+      await updateDoc(postRef, {
+        isLike: true,
+        numberLike: increment(1),
+      });
 
       queryClient.invalidateQueries({ queryKey: ["posts"] });
 
-      console.log("Like adicionado com sucesso.");
+      console.log("Like add success");
     } else {
-      fetch({
-        ...data,
-        numberLike: data.numberLike - 1,
-      });
-
       await setDoc(likeDocRef, { liked: false });
-      await updateDoc(postRef, { isLike: false });
-
-      queryClient.invalidateQueries({ queryKey: ["posts"] });
-
-      console.log("Usuário já deu like.");
+      console.log("User already liked");
     }
   };
 
