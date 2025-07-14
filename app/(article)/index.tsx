@@ -31,9 +31,16 @@ import {
   Thumbnail,
 } from "./styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { doc, increment, updateDoc } from "firebase/firestore";
+import { db } from "@/firebaseConfig";
+import { getAuth } from "firebase/auth";
 
 export default function ArticleScreen() {
+  const queryClient = useQueryClient();
+
+  const { currentUser } = getAuth();
+
   const data = useDataStore((state) => state.data);
 
   const [isLike, setIsLike] = useState(false);
@@ -53,6 +60,19 @@ export default function ArticleScreen() {
   };
 
   const query = useQuery({ queryKey: ["thumbnail"], queryFn: getData });
+
+  const handleLiked = async () => {
+    setIsLike((prevState) => !prevState);
+
+    const postRef = doc(db, "posts", data.id);
+
+    await updateDoc(postRef, {
+      isLike: true,
+      numberLike: increment(1),
+    });
+
+    queryClient.invalidateQueries({ queryKey: ["posts"] });
+  };
 
   return (
     <>
@@ -140,10 +160,7 @@ export default function ArticleScreen() {
       </Container>
 
       <ContentFloat>
-        <ButtonFloat
-          activeOpacity={0.7}
-          onPress={() => setIsLike((prevState) => !prevState)}
-        >
+        <ButtonFloat activeOpacity={0.7} onPress={() => handleLiked()}>
           <AntDesign
             name={isLike ? "like1" : "like2"}
             size={24}
@@ -151,7 +168,7 @@ export default function ArticleScreen() {
           />
 
           <Text
-            title={`${data.numberLike}k`}
+            title={`${data.numberLike}`}
             fontFamily="regular"
             fontSize={16}
             color={Colors.light.background}

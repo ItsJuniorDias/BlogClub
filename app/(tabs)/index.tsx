@@ -46,6 +46,7 @@ export default function HomeScreen() {
         {data?.map((item, index) => (
           <>
             <LatestNews
+              id={item.id}
               isLoading={isLoading}
               isProfile={index !== 0}
               profileTitle="Latest News"

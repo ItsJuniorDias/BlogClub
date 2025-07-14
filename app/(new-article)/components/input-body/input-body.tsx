@@ -60,8 +60,8 @@ export default function InputBody({ thumbnail, setThumbnail }: InputProps) {
         description: data.description,
         thumbnail: thumbnail,
         article: data.article,
-        hours: 4,
-        numberLike: 5.4,
+        hours: 0,
+        numberLike: 0,
         isLike: false,
         foreign_key: user?.uid,
       });

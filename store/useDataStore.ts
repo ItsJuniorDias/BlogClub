@@ -1,6 +1,7 @@
 import { create } from "zustand";
 
 type DataProps = {
+  id: string;
   title: string;
   description: string;
   article: string;
@@ -17,6 +18,7 @@ type DataStore = {
 
 export const useDataStore = create<DataStore>((set) => ({
   data: {
+    id: "",
     title: "",
     description: "",
     article: "",

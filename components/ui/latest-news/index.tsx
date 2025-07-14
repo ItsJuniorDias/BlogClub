@@ -19,6 +19,7 @@ import { useRouter } from "expo-router";
 import { useDataStore } from "@/store/useDataStore";
 
 interface LatestNewsProps {
+  id: string;
   isLoading: boolean;
   isProfile?: boolean;
   profileTitle?: string;
@@ -32,6 +33,7 @@ interface LatestNewsProps {
 }
 
 export default function LatestNews({
+  id,
   isLoading,
   isProfile,
   profileTitle,
@@ -77,6 +79,7 @@ export default function LatestNews({
             activeOpacity={0.7}
             onPress={() => {
               fetch({
+                id,
                 isLike,
                 thumbnail: image,
                 title,
