@@ -20,7 +20,10 @@ import {
   Row,
 } from "./styles";
 
-interface InputProps {}
+interface InputProps {
+  thumbnail: string;
+  setThumbnail: (item: string) => void;
+}
 
 const formSchema = z.object({
   title: z.string("* Required field"),
@@ -30,7 +33,7 @@ const formSchema = z.object({
 
 type FormData = z.infer<typeof formSchema>;
 
-export default function InputBody({}: InputProps) {
+export default function InputBody({ thumbnail, setThumbnail }: InputProps) {
   const queryClient = useQueryClient();
 
   const {
@@ -38,6 +41,7 @@ export default function InputBody({}: InputProps) {
     handleSubmit,
     formState: { errors },
     clearErrors,
+    setValue,
   } = useForm<FormData>({
     resolver: zodResolver(formSchema),
     mode: "onSubmit",
@@ -50,7 +54,7 @@ export default function InputBody({}: InputProps) {
       const docRef = await addDoc(collection(db, "posts"), {
         title: data.title,
         description: data.description,
-        thumbnail: "",
+        thumbnail: thumbnail,
         article: data.article,
         hours: 4,
         numberLike: 5.4,
@@ -67,6 +71,11 @@ export default function InputBody({}: InputProps) {
           fontSize: 14,
         },
       });
+
+      setValue("title", "");
+      setValue("description", "");
+      setValue("article", "");
+      setThumbnail("");
 
       console.log("Documento criado com ID: ", docRef.id);
     } catch (e) {
@@ -200,6 +209,7 @@ export default function InputBody({}: InputProps) {
       <Button
         isLoading={isPending}
         title="CREATE NEW POST"
+        style={{ marginBottom: 120 }}
         onPress={() => mutate({})}
       />
     </Container>

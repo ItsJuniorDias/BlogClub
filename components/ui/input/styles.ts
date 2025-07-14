@@ -13,7 +13,7 @@ export const Container = styled.View`
 
 export const InputCustom = styled.TextInput<InputCustomProps>`
   width: 100%;
-  height: 32px;
+  height: 40px;
   font-family: "MontserratSemiBold";
   font-size: 14px;
   border-bottom-width: 1px;

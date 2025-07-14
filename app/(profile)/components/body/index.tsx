@@ -26,9 +26,9 @@ export default function Body() {
   });
 
   return (
-    <Container>
-      {data?.map((item, index) => (
-        <>
+    <>
+      <Container>
+        {data?.map((item, index) => (
           <LatestNews
             isProfile={index !== 0}
             profileTitle="My Posts"
@@ -40,8 +40,8 @@ export default function Body() {
             hours={item.hours}
             isLike={item.isLike}
           />
-        </>
-      ))}
-    </Container>
+        ))}
+      </Container>
+    </>
   );
 }

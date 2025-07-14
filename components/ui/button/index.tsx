@@ -11,9 +11,14 @@ interface ButtonProps extends TouchableOpacityProps {
   isLoading: boolean;
 }
 
-export default function Button({ title, onPress, isLoading }: ButtonProps) {
+export default function Button({
+  title,
+  onPress,
+  isLoading,
+  ...props
+}: ButtonProps) {
   return (
-    <Container onPress={onPress} activeOpacity={0.7}>
+    <Container {...props} onPress={onPress} activeOpacity={0.7}>
       {isLoading ? (
         <ActivityIndicator size="small" color={Colors.light.background} />
       ) : (

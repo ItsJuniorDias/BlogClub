@@ -15,7 +15,7 @@ export const Container = styled.View`
 
 export const InputCustom = styled.TextInput<TextInputProps>`
   width: 100%;
-  height: 38px;
+  height: 50px;
   border-bottom-width: 2px;
   border-color: ${({ isError }) => (isError ? "red" : Colors.light.lightGray)};
   font-family: "MontserratSemiBold";
@@ -24,7 +24,7 @@ export const InputCustom = styled.TextInput<TextInputProps>`
 
 export const InputProduct = styled.TextInput<TextInputProps>`
   width: 100%;
-  height: 38px;
+  height: 50px;
   border-bottom-width: 2px;
   border-color: ${({ isError }) => (isError ? "red" : Colors.light.lightGray)};
   font-family: "MontserratRegular";

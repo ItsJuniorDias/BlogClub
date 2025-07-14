@@ -18,6 +18,8 @@ export default function NewArticle() {
 
   const [queryUnplash, setQueryUnplash] = useState();
 
+  const [thumbnail, setThumbnail] = useState("");
+
   const bottomSheetRef = useRef(null);
 
   const searchPhotos = useCallback(async () => {
@@ -55,7 +57,7 @@ export default function NewArticle() {
       <ScrollView style={styles.container}>
         <HeaderNewArticle onPress={() => bottomSheetRef.current?.open()} />
 
-        <InputBody />
+        <InputBody thumbnail={thumbnail} setThumbnail={setThumbnail} />
       </ScrollView>
 
       <BottomSheet ref={bottomSheetRef}>
@@ -66,6 +68,7 @@ export default function NewArticle() {
           onClose={() => bottomSheetRef.current?.close()}
           queryUnplash={queryUnplash}
           setQueryUnplash={setQueryUnplash}
+          onThumbnail={(item: string) => setThumbnail(item)}
         />
       </BottomSheet>
       <Toast />

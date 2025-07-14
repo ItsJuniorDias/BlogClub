@@ -31,6 +31,7 @@ interface BottomSheetContentProps {
   setIsLoading: (item: boolean) => void;
   queryUnplash: string;
   setQueryUnplash: (item: string) => void;
+  onThumbnail: (item: string) => void;
 }
 
 export default function BottomSheetContent({
@@ -40,12 +41,11 @@ export default function BottomSheetContent({
   setIsLoading,
   queryUnplash,
   setQueryUnplash,
+  onThumbnail,
 }: BottomSheetContentProps) {
   const queryClient = useQueryClient();
 
   const [likedItems, setLikedItems] = useState({});
-
-  console.log(data, "DATA");
 
   const toggleLike = (id) => {
     setLikedItems((prev) => {
@@ -69,7 +69,7 @@ export default function BottomSheetContent({
             onPress={() => {
               toggleLike(id);
 
-              console.log(image, "IMAGE LINK");
+              onThumbnail(image);
             }}
           >
             <Thumbnail
