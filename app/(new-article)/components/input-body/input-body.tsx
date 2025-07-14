@@ -40,8 +40,6 @@ export default function InputBody({ thumbnail, setThumbnail }: InputProps) {
   const auth = getAuth();
   const user = auth.currentUser;
 
-  console.log(user?.uid, "USER");
-
   const {
     control,
     handleSubmit,

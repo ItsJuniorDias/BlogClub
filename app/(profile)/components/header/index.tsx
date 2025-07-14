@@ -152,7 +152,7 @@ export default function HeaderProfile({ title, icon }: HeaderProfileProps) {
             />
 
             <Text
-              title="Working since the end of 2019 with frameworks such as React and React native, with experience managing global teams."
+              title="Working since the end of 2019 with frameworks such as React and React native"
               fontFamily="regular"
               fontSize={14}
               lineHeight={20}
