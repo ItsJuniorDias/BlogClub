@@ -32,7 +32,7 @@ import {
 } from "./styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { doc, increment, updateDoc } from "firebase/firestore";
+import { doc, getDoc, increment, setDoc, updateDoc } from "firebase/firestore";
 import { db } from "@/firebaseConfig";
 import { getAuth } from "firebase/auth";
 
@@ -41,9 +41,9 @@ export default function ArticleScreen() {
 
   const { currentUser } = getAuth();
 
-  const data = useDataStore((state) => state.data);
+  const { data, fetch } = useDataStore((state) => state);
 
-  const [isLike, setIsLike] = useState(false);
+  const [isLike, setIsLike] = useState(data.isLike);
 
   const router = useRouter();
 
@@ -64,14 +64,39 @@ export default function ArticleScreen() {
   const handleLiked = async () => {
     setIsLike((prevState) => !prevState);
 
+    const likeDocRef = doc(db, `posts/${data.id}/likes`, currentUser?.uid);
+
     const postRef = doc(db, "posts", data.id);
 
-    await updateDoc(postRef, {
-      isLike: true,
-      numberLike: increment(1),
-    });
+    const likeDoc = await getDoc(likeDocRef);
 
-    queryClient.invalidateQueries({ queryKey: ["posts"] });
+    console.log(likeDoc.data(), "LIKE DOC");
+
+    if (!likeDoc.exists()) {
+      fetch({
+        ...data,
+        numberLike: data.numberLike + 1,
+      });
+
+      await setDoc(likeDocRef, { liked: true });
+      await updateDoc(postRef, { isLike: true, numberLike: increment(1) });
+
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
+
+      console.log("Like adicionado com sucesso.");
+    } else {
+      fetch({
+        ...data,
+        numberLike: data.numberLike - 1,
+      });
+
+      await setDoc(likeDocRef, { liked: false });
+      await updateDoc(postRef, { isLike: false });
+
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
+
+      console.log("Usuário já deu like.");
+    }
   };
 
   return (
