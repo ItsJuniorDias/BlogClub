@@ -19,6 +19,7 @@ import {
   InputProduct,
   Row,
 } from "./styles";
+import { getAuth } from "firebase/auth";
 
 interface InputProps {
   thumbnail: string;
@@ -35,6 +36,11 @@ type FormData = z.infer<typeof formSchema>;
 
 export default function InputBody({ thumbnail, setThumbnail }: InputProps) {
   const queryClient = useQueryClient();
+
+  const auth = getAuth();
+  const user = auth.currentUser;
+
+  console.log(user?.uid, "USER");
 
   const {
     control,
@@ -59,6 +65,7 @@ export default function InputBody({ thumbnail, setThumbnail }: InputProps) {
         hours: 4,
         numberLike: 5.4,
         isLike: false,
+        foreign_key: user?.uid,
       });
 
       Toast.show({

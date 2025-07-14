@@ -7,8 +7,12 @@ import { Container } from "./styles";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "@/firebaseConfig";
 import { useQuery } from "@tanstack/react-query";
+import { getAuth } from "firebase/auth";
 
 export default function Body() {
+  const auth = getAuth();
+  const user = auth.currentUser;
+
   const fetch = async () => {
     const querySnapshot = await getDocs(collection(db, "posts"));
 
@@ -17,7 +21,11 @@ export default function Body() {
       ...doc.data(),
     }));
 
-    return dataList;
+    const filterForeignKeyData = dataList.filter(
+      (item) => item.foreign_key === user?.uid
+    );
+
+    return filterForeignKeyData;
   };
 
   const { data } = useQuery({
