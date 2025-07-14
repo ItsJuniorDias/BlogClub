@@ -39,6 +39,7 @@ export const Thumbnail = styled(Image)`
   width: 38px;
   height: 38px;
   margin-right: -16px;
+  border-radius: 8px;
 `;
 
 export const ContentText = styled.View`

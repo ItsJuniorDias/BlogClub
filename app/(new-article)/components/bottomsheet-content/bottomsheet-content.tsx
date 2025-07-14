@@ -100,7 +100,7 @@ export default function BottomSheetContent({
           onChangeText={(item) => {
             setIsLoading(true);
 
-            setQueryUnplash(item.toLowerCase() ?? "");
+            setQueryUnplash(item ?? "");
 
             queryClient.invalidateQueries({ queryKey: ["photos"] });
           }}

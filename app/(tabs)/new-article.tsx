@@ -22,6 +22,8 @@ export default function NewArticle() {
 
   const bottomSheetRef = useRef(null);
 
+  console.log(queryUnplash, "QUERY UNPLASH");
+
   const searchPhotos = useCallback(async () => {
     try {
       const response = await axios.get(

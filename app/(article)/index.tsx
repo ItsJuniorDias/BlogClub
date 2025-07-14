@@ -30,6 +30,8 @@ import {
   Row,
   Thumbnail,
 } from "./styles";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useQuery } from "@tanstack/react-query";
 
 export default function ArticleScreen() {
   const data = useDataStore((state) => state.data);
@@ -37,6 +39,20 @@ export default function ArticleScreen() {
   const [isLike, setIsLike] = useState(false);
 
   const router = useRouter();
+
+  const getData = async () => {
+    try {
+      const value = await AsyncStorage.getItem("thumbnail");
+
+      if (value !== null) {
+        return value;
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const query = useQuery({ queryKey: ["thumbnail"], queryFn: getData });
 
   return (
     <>
@@ -71,11 +87,11 @@ export default function ArticleScreen() {
 
         <ContentInfo>
           <Row>
-            <Thumbnail source={profile_picture} />
+            <Thumbnail source={query.data} />
 
             <ContentText>
               <Text
-                title="Richard Gervain"
+                title="Alexandre Junior"
                 fontFamily="regular"
                 fontSize={14}
                 color={Colors.light.darkBlue}
