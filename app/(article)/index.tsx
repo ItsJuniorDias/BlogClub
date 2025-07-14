@@ -70,7 +70,14 @@ export default function ArticleScreen() {
 
     const likeDoc = await getDoc(likeDocRef);
 
+    console.log(likeDoc.data(), "DATA");
+
     if (!likeDoc.data()?.liked) {
+      fetch({
+        ...data,
+        numberLike: data.numberLike + 1,
+      });
+
       await setDoc(likeDocRef, {
         liked: true,
       });
@@ -84,7 +91,20 @@ export default function ArticleScreen() {
 
       console.log("Like add success");
     } else {
+      fetch({
+        ...data,
+        numberLike: data.numberLike - 1,
+      });
+
       await setDoc(likeDocRef, { liked: false });
+
+      await updateDoc(postRef, {
+        isLike: false,
+        numberLike: increment(-1),
+      });
+
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
+
       console.log("User already liked");
     }
   };
