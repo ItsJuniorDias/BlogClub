@@ -31,9 +31,14 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 interface HeaderProfileProps {
   title: string;
   icon: string;
+  posts: number;
 }
 
-export default function HeaderProfile({ title, icon }: HeaderProfileProps) {
+export default function HeaderProfile({
+  title,
+  icon,
+  posts,
+}: HeaderProfileProps) {
   const queryClient = useQueryClient();
 
   const { data } = useUserStore();
@@ -166,7 +171,7 @@ export default function HeaderProfile({ title, icon }: HeaderProfileProps) {
         <ContentInfo>
           <ColumnInfo>
             <Text
-              title="52"
+              title={posts.toString()}
               fontFamily="bold"
               fontSize={20}
               color={Colors.light.background}
@@ -182,7 +187,7 @@ export default function HeaderProfile({ title, icon }: HeaderProfileProps) {
 
           <ColumnInfo>
             <Text
-              title="250"
+              title="0"
               fontFamily="bold"
               fontSize={20}
               color={Colors.light.background}
@@ -198,7 +203,7 @@ export default function HeaderProfile({ title, icon }: HeaderProfileProps) {
 
           <ColumnInfo>
             <Text
-              title="4.5K"
+              title="0"
               fontFamily="bold"
               fontSize={20}
               color={Colors.light.background}

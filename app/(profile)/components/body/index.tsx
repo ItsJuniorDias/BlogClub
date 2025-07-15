@@ -8,8 +8,13 @@ import { collection, getDocs } from "firebase/firestore";
 import { db } from "@/firebaseConfig";
 import { useQuery } from "@tanstack/react-query";
 import { getAuth } from "firebase/auth";
+import { FlatList } from "react-native";
 
-export default function Body() {
+interface BodyProps {
+  onForeignKey: (item: []) => void;
+}
+
+export default function Body({ onForeignKey }: BodyProps) {
   const auth = getAuth();
   const user = auth.currentUser;
 
@@ -25,30 +30,40 @@ export default function Body() {
       (item) => item.foreign_key === user?.uid
     );
 
+    onForeignKey(filterForeignKeyData);
+
     return filterForeignKeyData;
   };
 
-  const { data } = useQuery({
+  const { data, isPending } = useQuery({
     queryKey: ["repoData"],
     queryFn: () => fetch(),
   });
 
+  const renderItem = ({ item, index }) => (
+    <LatestNews
+      id={item.id}
+      isLoading={isPending}
+      isProfile={index !== 0}
+      profileTitle="My Posts"
+      image={item.thumbnail}
+      title={item.title}
+      description={item.description}
+      article={item.article}
+      numberLike={item.numberLike}
+      hours={item.hours}
+      isLike={item.isLike}
+    />
+  );
+
   return (
     <>
       <Container>
-        {data?.map((item, index) => (
-          <LatestNews
-            isProfile={index !== 0}
-            profileTitle="My Posts"
-            image={item.thumbnail}
-            title={item.title}
-            description={item.description}
-            article={item.article}
-            numberLike={item.numberLike}
-            hours={item.hours}
-            isLike={item.isLike}
-          />
-        ))}
+        <FlatList
+          data={data}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id}
+        />
       </Container>
     </>
   );

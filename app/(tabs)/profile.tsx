@@ -2,8 +2,13 @@ import { View, StyleSheet, ScrollView } from "react-native";
 
 import HeaderProfile from "../(profile)/components/header";
 import BodyProfile from "../(profile)/components/body";
+import { useState } from "react";
 
 export default function Profile() {
+  const [value, setValue] = useState({
+    post: 0,
+  });
+
   return (
     <ScrollView
       contentContainerStyle={{
@@ -11,9 +16,16 @@ export default function Profile() {
       }}
       style={styles.container}
     >
-      <HeaderProfile title="Profile" icon="exit-to-app" />
+      <HeaderProfile posts={value.post} title="Profile" icon="exit-to-app" />
 
-      <BodyProfile />
+      <BodyProfile
+        onForeignKey={(item) =>
+          setValue((prevState) => ({
+            ...prevState,
+            post: item.length,
+          }))
+        }
+      />
     </ScrollView>
   );
 }
