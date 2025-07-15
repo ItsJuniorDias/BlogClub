@@ -1,4 +1,4 @@
-import { View, Dimensions, StyleSheet } from "react-native";
+import { View, Dimensions } from "react-native";
 
 import * as React from "react";
 
@@ -13,7 +13,13 @@ import { Text } from "../../../../components/ui";
 import { Container, Content, LinearGradientCustom, Thumbnail } from "./styles";
 import { Colors } from "@/constants/Colors";
 
-export default function CarouselComponent() {
+interface CarouselComponentProps {
+  onSnapToItem: (item: number) => void;
+}
+
+export default function CarouselComponent({
+  onSnapToItem,
+}: CarouselComponentProps) {
   const DATA = [
     {
       id: "1",
@@ -34,7 +40,7 @@ export default function CarouselComponent() {
 
   const Item = ({ title, image }) => (
     <View>
-      <Content activeOpacity={0.7}>
+      <Content activeOpacity={0.7} onPress={() => onSnapToItem(progress.value)}>
         <Thumbnail source={image} />
       </Content>
 
@@ -57,11 +63,14 @@ export default function CarouselComponent() {
         loop={false}
         width={width}
         height={400}
+        onSnapToItem={(item) => {
+          onSnapToItem(item);
+        }}
         mode="parallax"
         onProgressChange={progress}
-        renderItem={({ item }) => (
-          <Item title={item.title} image={item.image} />
-        )}
+        renderItem={({ item }) => {
+          return <Item title={item.title} image={item.image} />;
+        }}
       />
     </Container>
   );

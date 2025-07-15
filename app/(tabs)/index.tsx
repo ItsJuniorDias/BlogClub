@@ -9,9 +9,11 @@ import { Header, LatestNews } from "@/components/ui";
 import { useCallback, useState } from "react";
 
 export default function HomeScreen() {
+  const [snapToItem, setSnapToItem] = useState(0);
+
   const [isLoading, setIsLoading] = useState(true);
 
-  const fetch = async () => {
+  const fetch = useCallback(async () => {
     const querySnapshot = await getDocs(collection(db, "posts"));
 
     const dataList = (querySnapshot?.docs ?? []).map((doc) => ({
@@ -19,14 +21,28 @@ export default function HomeScreen() {
       ...doc.data(),
     }));
 
+    const filterDataTechnology = dataList.filter(
+      (item) => item.type === "technology"
+    );
+
+    const filterDataAdventure = dataList.filter(
+      (item) => item.type === "adventure"
+    );
+
     setTimeout(() => {
       setIsLoading(false);
     }, 2000);
 
-    return dataList;
-  };
+    console.log(snapToItem, "SNAP TO ITEM");
 
-  const { data } = useQuery({
+    if (snapToItem === 0) {
+      return filterDataTechnology;
+    } else {
+      return filterDataAdventure;
+    }
+  }, [snapToItem]);
+
+  const { data, refetch } = useQuery({
     queryKey: ["posts"],
     queryFn: () => fetch(),
   });
@@ -60,7 +76,13 @@ export default function HomeScreen() {
 
         <Card />
 
-        <CarouselComponent />
+        <CarouselComponent
+          onSnapToItem={(item) => {
+            setSnapToItem(item);
+
+            refetch();
+          }}
+        />
 
         <FlatList
           data={data}
