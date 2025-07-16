@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import { FlatList, ScrollView } from "react-native";
+import { Alert, FlatList, ScrollView } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { Colors } from "@/constants/Colors";
 
@@ -46,28 +46,26 @@ export default function BottomSheetContent({
 }: BottomSheetContentProps) {
   const queryClient = useQueryClient();
 
-  const [likedItems, setLikedItems] = useState({});
-
-  const toggleLike = (id) => {
-    setLikedItems((prev) => {
-      return {
-        ...prev,
-        [id]: !prev[id],
-      };
-    });
-  };
-
   const Item = ({ id, image }: ItemProps) => {
-    const liked = likedItems[id];
-
     return (
       <>
         <Touchable
           activeOpacity={0.7}
           onPress={() => {
-            // toggleLike(id);
-
             onThumbnail(image);
+
+            Alert.alert(
+              "Photo selected with success",
+              "Your photos by selected",
+              [
+                {
+                  text: "Cancel",
+                  onPress: () => console.log("Cancel Pressed"),
+                  style: "cancel",
+                },
+                { text: "OK", onPress: () => console.log("OK Pressed") },
+              ]
+            );
           }}
         >
           <Thumbnail
@@ -75,8 +73,6 @@ export default function BottomSheetContent({
               uri: image,
             }}
           />
-
-          {/* {liked && <Checked source={success_checked} />} */}
         </Touchable>
       </>
     );
@@ -143,7 +139,6 @@ export default function BottomSheetContent({
           )}
           keyExtractor={(item: ItemProps) => item.id}
           showsVerticalScrollIndicator={false}
-          extraData={likedItems}
         />
       )}
     </Container>

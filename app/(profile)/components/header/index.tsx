@@ -59,6 +59,8 @@ export default function HeaderProfile({
 
   const query = useQuery({ queryKey: ["thumbnail"], queryFn: getData });
 
+  console.log(query, "QUERY");
+
   const handleSignOut = async () => {
     return signOut(auth)
       .then(() => {})
