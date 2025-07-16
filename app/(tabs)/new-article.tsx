@@ -57,7 +57,13 @@ export default function NewArticle() {
   return (
     <>
       <ScrollView style={styles.container}>
-        <HeaderNewArticle onPress={() => bottomSheetRef.current?.open()} />
+        <HeaderNewArticle
+          onPress={() => {
+            bottomSheetRef.current?.open();
+
+            setIsLoading(false);
+          }}
+        />
 
         <InputBody thumbnail={thumbnail} setThumbnail={setThumbnail} />
       </ScrollView>
@@ -69,7 +75,7 @@ export default function NewArticle() {
           setIsLoading={setIsLoading}
           onClose={() => bottomSheetRef.current?.close()}
           queryUnplash={queryUnplash}
-          setQueryUnplash={setQueryUnplash}
+          setQueryUnplash={(item) => setQueryUnplash(item)}
           onThumbnail={(item: string) => setThumbnail(item)}
         />
       </BottomSheet>

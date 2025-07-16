@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import { FlatList } from "react-native";
+import { FlatList, ScrollView } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { Colors } from "@/constants/Colors";
 
@@ -16,6 +16,7 @@ import {
   Touchable,
   TouchableSkeleton,
   ButtonBack,
+  RowItem,
 } from "./styles";
 import { useQueryClient } from "@tanstack/react-query";
 
@@ -61,26 +62,22 @@ export default function BottomSheetContent({
 
     return (
       <>
-        {isLoading && <TouchableSkeleton activeOpacity={0.7} />}
+        <Touchable
+          activeOpacity={0.7}
+          onPress={() => {
+            toggleLike(id);
 
-        {!isLoading && (
-          <Touchable
-            activeOpacity={0.7}
-            onPress={() => {
-              toggleLike(id);
-
-              onThumbnail(image);
+            onThumbnail(image);
+          }}
+        >
+          <Thumbnail
+            source={{
+              uri: image,
             }}
-          >
-            <Thumbnail
-              source={{
-                uri: image,
-              }}
-            />
+          />
 
-            {liked && <Checked source={success_checked} />}
-          </Touchable>
-        )}
+          {liked && <Checked source={success_checked} />}
+        </Touchable>
       </>
     );
   };
@@ -88,7 +85,13 @@ export default function BottomSheetContent({
   return (
     <Container>
       <Row>
-        <ButtonBack onPress={onClose}>
+        <ButtonBack
+          onPress={() => {
+            onClose();
+
+            setIsLoading(true);
+          }}
+        >
           <AntDesign name="close" size={24} color={Colors.light.darkGray} />
         </ButtonBack>
       </Row>
@@ -111,17 +114,38 @@ export default function BottomSheetContent({
         />
       </ContentInput>
 
-      <FlatList
-        data={data}
-        numColumns={2}
-        refreshing
-        renderItem={({ item }) => (
-          <Item id={item.id} image={item.links.download} />
-        )}
-        keyExtractor={(item: ItemProps) => item.id}
-        showsVerticalScrollIndicator={false}
-        extraData={likedItems}
-      />
+      {isLoading && (
+        <ScrollView>
+          <RowItem>
+            <TouchableSkeleton activeOpacity={0.7} />
+            <TouchableSkeleton activeOpacity={0.7} />
+          </RowItem>
+
+          <RowItem>
+            <TouchableSkeleton activeOpacity={0.7} />
+            <TouchableSkeleton activeOpacity={0.7} />
+          </RowItem>
+
+          <RowItem>
+            <TouchableSkeleton activeOpacity={0.7} />
+            <TouchableSkeleton activeOpacity={0.7} />
+          </RowItem>
+        </ScrollView>
+      )}
+
+      {!isLoading && (
+        <FlatList
+          data={data}
+          numColumns={2}
+          refreshing
+          renderItem={({ item }) => (
+            <Item id={item.id} image={item.links.download} />
+          )}
+          keyExtractor={(item: ItemProps) => item.id}
+          showsVerticalScrollIndicator={false}
+          extraData={likedItems}
+        />
+      )}
     </Container>
   );
 }
