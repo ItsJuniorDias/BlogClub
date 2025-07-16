@@ -44,6 +44,11 @@ export default function InputBody({ thumbnail, setThumbnailRef }: InputProps) {
     type: "technology",
   });
 
+  const [checked, setChecked] = useState({
+    technology: false,
+    adventure: false,
+  });
+
   const queryClient = useQueryClient();
 
   const auth = getAuth();
@@ -180,22 +185,36 @@ export default function InputBody({ thumbnail, setThumbnailRef }: InputProps) {
 
           <Row>
             <Tag
-              onPress={(item) =>
+              isChecked={checked.technology}
+              onPress={(item) => {
                 setValueType((prevState) => ({
                   ...prevState,
                   type: item,
-                }))
-              }
+                }));
+
+                setChecked((prevState) => ({
+                  ...prevState,
+                  technology: true,
+                  adventure: false,
+                }));
+              }}
               title="technology"
             />
 
             <Tag
-              onPress={(item) =>
+              isChecked={checked.adventure}
+              onPress={(item) => {
                 setValueType((prevState) => ({
                   ...prevState,
                   type: item,
-                }))
-              }
+                }));
+
+                setChecked((prevState) => ({
+                  ...prevState,
+                  technology: false,
+                  adventure: true,
+                }));
+              }}
               title="adventure"
             />
           </Row>

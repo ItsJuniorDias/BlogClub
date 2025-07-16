@@ -4,15 +4,21 @@ import { Colors } from "@/constants/Colors";
 import { Text } from "../../ui";
 
 import { Container, Button } from "./styles";
+import { useState } from "react";
 
 interface TagProps {
+  isChecked: boolean;
   onPress: (item: "technology" | "adventure") => void;
   title: "technology" | "adventure";
 }
 
-export default function Tag({ onPress, title }: TagProps) {
+export default function Tag({ isChecked, onPress, title }: TagProps) {
   return (
-    <Container onPress={() => onPress(title)}>
+    <Container
+      onPress={() => {
+        onPress(title);
+      }}
+    >
       <Text
         title={title}
         fontFamily="semi-bold"
@@ -20,8 +26,14 @@ export default function Tag({ onPress, title }: TagProps) {
         color={Colors.light.blue}
       />
 
-      <Button>
-        <AntDesign name="close" size={18} color={Colors.light.background} />
+      <Button onPress={() => {}}>
+        {isChecked && (
+          <AntDesign name="check" size={18} color={Colors.light.background} />
+        )}
+
+        {!isChecked && (
+          <AntDesign name="close" size={18} color={Colors.light.background} />
+        )}
       </Button>
     </Container>
   );
