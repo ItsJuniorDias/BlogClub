@@ -8,9 +8,9 @@ export const Container = styled.View`
 `;
 
 export const Content = styled.TouchableOpacity`
-  width: 68px;
+  width: 72px;
   height: 92px;
-  /* background-color: blue; */
+
   margin-left: 40px;
   margin-right: -24px;
   align-items: center;
@@ -32,6 +32,7 @@ export const LinearGradientCustom = styled.View`
 export const Thumbnail = styled(Image)`
   width: 54px;
   height: 54px;
+  border-radius: 16px;
 `;
 
 export const CategoryIcon = styled(Image)`

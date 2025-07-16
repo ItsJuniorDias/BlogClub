@@ -33,8 +33,6 @@ export default function HomeScreen() {
       setIsLoading(false);
     }, 2000);
 
-    console.log(snapToItem, "SNAP TO ITEM");
-
     if (snapToItem === 0) {
       return filterDataTechnology;
     } else {

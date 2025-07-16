@@ -1,6 +1,8 @@
 import { FlatList, View } from "react-native";
 import { Colors } from "@/constants/Colors";
 
+import { getAuth } from "firebase/auth";
+
 import thumbnail_1 from "../../../../assets/images/thumbail_1.png";
 import category_1 from "../../../../assets/images/category_1.png";
 
@@ -25,55 +27,84 @@ import {
   Thumbnail,
 } from "./styles";
 import { useRouter } from "expo-router";
+import { useQuery } from "@tanstack/react-query";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+import {
+  collection,
+  doc,
+  DocumentData,
+  getDoc,
+  getDocs,
+  getFirestore,
+  query,
+  where,
+} from "firebase/firestore";
+import { db } from "@/firebaseConfig";
+import { useEffect, useState } from "react";
 
 export default function Card() {
+  const [data, setData] = useState<DocumentData>([]);
+
+  console.log(data, "DATA");
+
   const router = useRouter();
 
-  const DATA = [
-    {
-      id: "1",
-      title: "Emilio",
-      image: thumbnail_1,
-      category: category_1,
-    },
-    {
-      id: "2",
-      title: "Richard",
-      image: thumbnail_2,
-      category: category_2,
-    },
-    {
-      id: "3",
-      title: "Jasmine",
-      image: thumbnail_3,
-      category: category_3,
-    },
-    {
-      id: "4",
-      title: "Lucas",
-      image: thumbnail_4,
-      category: category_4,
-    },
-    {
-      id: "5",
-      title: "Hendrick",
-      image: thumbnail_5,
-      category: category_1,
-    },
-  ];
+  const { currentUser } = getAuth();
+
+  const queryUserByUID = async (uid: string | undefined) => {
+    const usersRef = collection(db, "users");
+
+    const q = query(usersRef, where("id", "==", uid));
+
+    const querySnapshot = await getDocs(q);
+
+    if (!querySnapshot.empty) {
+      const doc = querySnapshot.docs[0];
+
+      return setData([
+        {
+          ...doc.data(),
+          image: queryThumbnail.data,
+        },
+      ]);
+    } else {
+      return null;
+    }
+  };
+
+  useEffect(() => {
+    queryUserByUID(currentUser?.uid);
+  }, []);
+
+  const getData = async () => {
+    try {
+      const value = await AsyncStorage.getItem("thumbnail");
+
+      if (value !== null) {
+        return value;
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const queryThumbnail = useQuery({
+    queryKey: ["thumbnail"],
+    queryFn: getData,
+  });
 
   const Item = ({ title, image, category }) => (
     <Content onPress={() => router.push("/(story)")}>
       <LinearGradientCustom>
         <Thumbnail source={image} />
-
-        <CategoryIcon source={category} />
       </LinearGradientCustom>
 
       <Text
-        title={title}
+        title={title.split(" ")[0]}
         fontFamily="regular"
         fontSize={14}
+        numberOfLines={1}
         color={Colors.light.blueText}
       />
     </Content>
@@ -82,15 +113,11 @@ export default function Card() {
   return (
     <Container>
       <FlatList
-        data={DATA}
+        data={data}
         horizontal
         showsHorizontalScrollIndicator={false}
         renderItem={({ item }) => (
-          <Item
-            title={item.title}
-            image={item.image}
-            category={item.category}
-          />
+          <Item title={item.name} image={item.image} category={item.category} />
         )}
         keyExtractor={(item) => item.id}
       />
