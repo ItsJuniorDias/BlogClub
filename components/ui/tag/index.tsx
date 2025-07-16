@@ -6,12 +6,13 @@ import { Text } from "../../ui";
 import { Container, Button } from "./styles";
 
 interface TagProps {
-  title: string;
+  onPress: (item: "technology" | "adventure") => void;
+  title: "technology" | "adventure";
 }
 
-export default function Tag({ title }: TagProps) {
+export default function Tag({ onPress, title }: TagProps) {
   return (
-    <Container>
+    <Container onPress={() => onPress(title)}>
       <Text
         title={title}
         fontFamily="semi-bold"

@@ -20,9 +20,9 @@ export default function NewArticle() {
 
   const [thumbnail, setThumbnail] = useState("");
 
-  const bottomSheetRef = useRef(null);
+  const thumbnailRef = useRef("");
 
-  console.log(queryUnplash, "QUERY UNPLASH");
+  const bottomSheetRef = useRef(null);
 
   const searchPhotos = useCallback(async () => {
     try {
@@ -49,7 +49,7 @@ export default function NewArticle() {
     }
   }, [queryUnplash]);
 
-  const { data } = useQuery({
+  const { data, refetch } = useQuery({
     queryKey: ["photos"],
     queryFn: searchPhotos,
   });
@@ -61,11 +61,16 @@ export default function NewArticle() {
           onPress={() => {
             bottomSheetRef.current?.open();
 
-            setIsLoading(false);
+            setIsLoading(true);
+
+            refetch();
           }}
         />
 
-        <InputBody thumbnail={thumbnail} setThumbnail={setThumbnail} />
+        <InputBody
+          thumbnail={thumbnailRef.current}
+          setThumbnailRef={thumbnailRef}
+        />
       </ScrollView>
 
       <BottomSheet ref={bottomSheetRef}>
@@ -76,7 +81,11 @@ export default function NewArticle() {
           onClose={() => bottomSheetRef.current?.close()}
           queryUnplash={queryUnplash}
           setQueryUnplash={(item) => setQueryUnplash(item)}
-          onThumbnail={(item: string) => setThumbnail(item)}
+          onThumbnail={(item: string) => {
+            thumbnailRef.current = item;
+
+            console.log(thumbnailRef.current, "CURRENT");
+          }}
         />
       </BottomSheet>
       <Toast />

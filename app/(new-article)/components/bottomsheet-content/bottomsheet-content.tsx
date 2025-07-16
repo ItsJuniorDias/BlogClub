@@ -65,7 +65,7 @@ export default function BottomSheetContent({
         <Touchable
           activeOpacity={0.7}
           onPress={() => {
-            toggleLike(id);
+            // toggleLike(id);
 
             onThumbnail(image);
           }}
@@ -76,7 +76,7 @@ export default function BottomSheetContent({
             }}
           />
 
-          {liked && <Checked source={success_checked} />}
+          {/* {liked && <Checked source={success_checked} />} */}
         </Touchable>
       </>
     );
@@ -115,7 +115,7 @@ export default function BottomSheetContent({
       </ContentInput>
 
       {isLoading && (
-        <ScrollView>
+        <ScrollView showsVerticalScrollIndicator={false}>
           <RowItem>
             <TouchableSkeleton activeOpacity={0.7} />
             <TouchableSkeleton activeOpacity={0.7} />

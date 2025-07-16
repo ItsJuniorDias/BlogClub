@@ -20,10 +20,15 @@ import {
   Row,
 } from "./styles";
 import { getAuth } from "firebase/auth";
+import { useState } from "react";
 
 interface InputProps {
   thumbnail: string;
-  setThumbnail: (item: string) => void;
+  setThumbnailRef: React.RefObject<string>;
+}
+
+interface StateTypeProps {
+  type: "technology" | "adventure";
 }
 
 const formSchema = z.object({
@@ -34,7 +39,11 @@ const formSchema = z.object({
 
 type FormData = z.infer<typeof formSchema>;
 
-export default function InputBody({ thumbnail, setThumbnail }: InputProps) {
+export default function InputBody({ thumbnail, setThumbnailRef }: InputProps) {
+  const [valueType, setValueType] = useState<StateTypeProps>({
+    type: "technology",
+  });
+
   const queryClient = useQueryClient();
 
   const auth = getAuth();
@@ -64,6 +73,7 @@ export default function InputBody({ thumbnail, setThumbnail }: InputProps) {
         numberLike: 0,
         isLike: false,
         foreign_key: user?.uid,
+        type: valueType.type,
       });
 
       Toast.show({
@@ -80,7 +90,8 @@ export default function InputBody({ thumbnail, setThumbnail }: InputProps) {
       setValue("title", "");
       setValue("description", "");
       setValue("article", "");
-      setThumbnail("");
+
+      setThumbnailRef.current === "";
 
       console.log("Documento criado com ID: ", docRef.id);
     } catch (e) {
@@ -167,15 +178,27 @@ export default function InputBody({ thumbnail, setThumbnail }: InputProps) {
             />
           </TouchableOpacity>
 
-          <Tag title="Art" />
+          <Row>
+            <Tag
+              onPress={(item) =>
+                setValueType((prevState) => ({
+                  ...prevState,
+                  type: item,
+                }))
+              }
+              title="technology"
+            />
 
-          <Tag title="Design" />
-        </Row>
-
-        <Row>
-          <Tag title="Culture" />
-
-          <Tag title="Production" />
+            <Tag
+              onPress={(item) =>
+                setValueType((prevState) => ({
+                  ...prevState,
+                  type: item,
+                }))
+              }
+              title="adventure"
+            />
+          </Row>
         </Row>
       </ContentTag>
 
