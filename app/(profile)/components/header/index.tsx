@@ -3,7 +3,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import * as ImagePicker from "expo-image-picker";
 
-import { TouchableOpacity, StyleSheet } from "react-native";
+import { TouchableOpacity, StyleSheet, ActivityIndicator } from "react-native";
 import { Text } from "../../../../components/ui";
 import { Colors } from "@/constants/Colors";
 
@@ -29,6 +29,7 @@ import {
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "@/firebaseConfig";
+import { queryStoryUserByUID } from "@/utils/queryStoryUserByUID";
 
 interface HeaderProfileProps {
   title: string;
@@ -46,23 +47,12 @@ export default function HeaderProfile({
 }: HeaderProfileProps) {
   const queryClient = useQueryClient();
 
-  const { data } = useUserStore();
-
   const auth = getAuth();
 
-  const getData = async () => {
-    try {
-      const value = await AsyncStorage.getItem("thumbnail");
-
-      if (value !== null) {
-        return value;
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  const query = useQuery({ queryKey: ["thumbnail"], queryFn: getData });
+  const { data } = useQuery({
+    queryKey: ["userByUID"],
+    queryFn: () => queryStoryUserByUID(auth.currentUser?.uid),
+  });
 
   const handleSignOut = async () => {
     return signOut(auth)
@@ -70,14 +60,6 @@ export default function HeaderProfile({
       .catch((error) => {
         console.error("Sign out error:", error);
       });
-  };
-
-  const storeData = async (value) => {
-    try {
-      await AsyncStorage.setItem("thumbnail", value);
-    } catch (e) {
-      console.log(e);
-    }
   };
 
   const pickImage = async () => {
@@ -128,6 +110,8 @@ export default function HeaderProfile({
       thumbnail: result.url,
     });
 
+    queryClient.invalidateQueries({ queryKey: ["userByUID"] });
+
     return result.url;
   };
 
@@ -157,16 +141,24 @@ export default function HeaderProfile({
         <ContainerBody style={styles.shadowBox}>
           <Row>
             <BorderContainer onPress={() => mutation.mutate({})}>
-              {query.data ? (
-                <Thumbnail source={query.data} />
+              {mutation?.isPending ? (
+                <>
+                  <ActivityIndicator size="small" color={Colors.light.blue} />
+                </>
               ) : (
-                <FontAwesome5 name="user" size={40} color="#333" />
+                <>
+                  {!!data[0].thumbnail ? (
+                    <Thumbnail source={data[0].thumbnail} />
+                  ) : (
+                    <FontAwesome5 name="user" size={40} color="#333" />
+                  )}
+                </>
               )}
             </BorderContainer>
 
             <ContentText>
               <Text
-                title={data?._j?.email}
+                title={data[0].email}
                 numberOfLines={1}
                 fontFamily="regular"
                 fontSize={14}
@@ -174,7 +166,7 @@ export default function HeaderProfile({
               />
 
               <Text
-                title={data?._j?.name}
+                title={data[0].name}
                 numberOfLines={1}
                 fontFamily="semi-bold"
                 fontSize={18}

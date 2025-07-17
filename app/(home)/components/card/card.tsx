@@ -42,43 +42,27 @@ import {
 } from "firebase/firestore";
 import { db } from "@/firebaseConfig";
 import { useEffect, useState } from "react";
+import { useUserStore } from "@/store/useUserStore";
+import { queryStoryUserByUID } from "@/utils/queryStoryUserByUID";
 
 export default function Card() {
   const [data, setData] = useState<DocumentData>([]);
+
+  const { fetch } = useUserStore();
 
   const router = useRouter();
 
   const { currentUser } = getAuth();
 
-  const queryUserByUID = async (uid: string | undefined) => {
-    const usersRef = collection(db, "users");
+  const queryUser = useQuery({
+    queryKey: ["userByUID"],
+    queryFn: () => queryStoryUserByUID(currentUser?.uid),
+  });
 
-    const q = query(usersRef, where("id", "==", uid));
-
-    const querySnapshot = await getDocs(q);
-
-    if (!querySnapshot.empty) {
-      const doc = querySnapshot.docs[0];
-
-      return setData([
-        {
-          ...doc.data(),
-          image: doc.data().thumbnail,
-        },
-      ]);
-    } else {
-      return null;
-    }
-  };
-
-  useEffect(() => {
-    queryUserByUID(currentUser?.uid);
-  }, [currentUser?.uid]);
-
-  const Item = ({ title, image, category }) => (
+  const Item = ({ title, thumbnail }) => (
     <Content onPress={() => router.push("/(story)")}>
       <LinearGradientCustom>
-        <Thumbnail source={image} />
+        <Thumbnail source={thumbnail} />
       </LinearGradientCustom>
 
       <Text
@@ -94,11 +78,15 @@ export default function Card() {
   return (
     <Container>
       <FlatList
-        data={data}
+        data={queryUser.data}
         horizontal
         showsHorizontalScrollIndicator={false}
         renderItem={({ item }) => (
-          <Item title={item.name} image={item.image} category={item.category} />
+          <Item
+            title={item.name}
+            thumbnail={item.thumbnail}
+            category={item.category}
+          />
         )}
         keyExtractor={(item) => item.id}
       />
