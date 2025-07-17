@@ -45,8 +45,11 @@ import { useEffect, useState } from "react";
 import { useUserStore } from "@/store/useUserStore";
 import { queryStoryUserByUID } from "@/utils/queryStoryUserByUID";
 import { FontAwesome5 } from "@expo/vector-icons";
+import { useIUDStore } from "@/store/useIDStore";
 
 export default function Card() {
+  const { fetch } = useIUDStore();
+
   const router = useRouter();
 
   const { currentUser } = getAuth();
@@ -56,8 +59,16 @@ export default function Card() {
     queryFn: () => queryStoryUserByUID(currentUser?.uid),
   });
 
-  const Item = ({ title, thumbnail }) => (
-    <Content onPress={() => router.push("/(story)")}>
+  const Item = ({ id, title, thumbnail }) => (
+    <Content
+      onPress={() => {
+        fetch({
+          uid: id,
+        });
+
+        router.push("/(story)");
+      }}
+    >
       {thumbnail ? (
         <LinearGradientCustom>
           <Thumbnail source={thumbnail} />
@@ -85,11 +96,7 @@ export default function Card() {
         horizontal
         showsHorizontalScrollIndicator={false}
         renderItem={({ item }) => (
-          <Item
-            title={item.name}
-            thumbnail={item.thumbnail}
-            category={item.category}
-          />
+          <Item id={item.id} title={item.name} thumbnail={item.thumbnail} />
         )}
         keyExtractor={(item) => item.id}
       />

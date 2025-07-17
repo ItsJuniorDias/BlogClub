@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { Colors } from "@/constants/Colors";
 import { useRouter } from "expo-router";
 
+import { collection, getDocs } from "firebase/firestore";
+
 import { ProgressBar, Text } from "../../components/ui";
 
 import background_image from "../../assets/images/background_image.png";
@@ -23,9 +25,14 @@ import {
   ContentLike,
 } from "./styles";
 import { StatusBar } from "expo-status-bar";
+import { useIUDStore } from "@/store/useIDStore";
+import { useQuery } from "@tanstack/react-query";
+import { db } from "@/firebaseConfig";
 
 export default function StoryScreen() {
   const [progress, setProgress] = useState(0);
+
+  const { data } = useIUDStore();
 
   const router = useRouter();
 
@@ -36,6 +43,54 @@ export default function StoryScreen() {
 
     return () => clearInterval(interval);
   }, []);
+
+  const getLastPostByUser = async (uid: string) => {
+    const querySnapshot = await getDocs(collection(db, "posts"));
+
+    const dataList = (querySnapshot?.docs ?? []).map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+    if (!querySnapshot.empty) {
+      const filterForeignKeyData = dataList.filter(
+        (item) => item.foreign_key === uid
+      );
+
+      return filterForeignKeyData[filterForeignKeyData.length - 1];
+    } else {
+      console.log("No posts found for this user.");
+      return null;
+    }
+  };
+
+  const queryLastPost = useQuery({
+    queryKey: ["lastPostByUser"],
+    queryFn: () => getLastPostByUser(data.uid),
+  });
+
+  const getUser = async (uid: string) => {
+    const querySnapshot = await getDocs(collection(db, "users"));
+
+    const dataList = (querySnapshot?.docs ?? []).map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+    if (!querySnapshot.empty) {
+      const filterForeignKeyData = dataList.find((item) => item.id === uid);
+
+      return filterForeignKeyData;
+    } else {
+      console.log("No posts found for this user.");
+      return null;
+    }
+  };
+
+  const queryUser = useQuery({
+    queryKey: ["getUser"],
+    queryFn: () => getUser(data.uid),
+  });
 
   return (
     <Container
@@ -51,11 +106,11 @@ export default function StoryScreen() {
 
       <ContentHeader>
         <Row>
-          <Thumbnail source={thumbnail_3} />
+          <Thumbnail source={queryUser?.data?.thumbnail} />
 
           <ContentText>
             <Text
-              title={`Jasmine Levin`}
+              title={`${queryUser?.data?.name}`}
               fontFamily="semi-bold"
               fontSize={16}
               color="white"
@@ -75,20 +130,24 @@ export default function StoryScreen() {
         </TouchableOpacity>
       </ContentHeader>
 
-      <BackgroundImage source={background_image}></BackgroundImage>
+      <BackgroundImage
+        source={queryLastPost?.data?.thumbnail}
+      ></BackgroundImage>
 
       <ContentBlur intensity={30}>
         <Text
-          title={`Do You Want To Live A\nHappy Life? Smile.`}
+          title={`${queryLastPost?.data?.title}`}
           fontFamily="semi-bold"
           fontSize={18}
+          numberOfLines={2}
           color="white"
         />
 
         <Text
-          title={`Sometimes there’s no reason to smile, but I’ll smile anyway because of life. Yes, I’m one of those people who always smiles.`}
+          title={queryLastPost?.data?.article}
           fontFamily="regular"
           fontSize={14}
+          numberOfLines={4}
           color="white"
         />
       </ContentBlur>
@@ -105,7 +164,7 @@ export default function StoryScreen() {
           />
         </ContentButton>
 
-        <ContentLike>
+        <ContentLike onPress={() => {}}>
           <AntDesign name="heart" size={32} color={"#FF3743"} />
 
           <Text

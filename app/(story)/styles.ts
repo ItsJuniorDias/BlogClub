@@ -2,6 +2,7 @@ import styled from "styled-components/native";
 import { Dimensions } from "react-native";
 import { BlurView } from "expo-blur";
 import { Colors } from "@/constants/Colors";
+import { Image } from "expo-image";
 
 const windowWidth = Dimensions.get("window").width;
 
@@ -10,8 +11,9 @@ export const Container = styled.ScrollView`
   background-color: ${Colors.light.blue};
 `;
 
-export const BackgroundImage = styled.Image`
+export const BackgroundImage = styled(Image)`
   width: ${windowWidth};
+  height: 685px;
   border-bottom-left-radius: 32px;
   border-bottom-right-radius: 32px;
 `;
@@ -55,9 +57,10 @@ export const Row = styled.View`
   flex-direction: row;
 `;
 
-export const Thumbnail = styled.Image`
+export const Thumbnail = styled(Image)`
   width: 51px;
   height: 51px;
+  border-radius: 8px;
 `;
 
 export const ContentText = styled.View`
