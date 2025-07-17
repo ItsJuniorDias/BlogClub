@@ -27,6 +27,8 @@ import {
 } from "./styles";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { doc, updateDoc } from "firebase/firestore";
+import { db } from "@/firebaseConfig";
 
 interface HeaderProfileProps {
   title: string;
@@ -120,7 +122,13 @@ export default function HeaderProfile({
 
     const result = await res.json();
 
-    return result.secure_url;
+    const userRef = doc(db, "users", auth.currentUser?.uid);
+
+    await updateDoc(userRef, {
+      thumbnail: result.url,
+    });
+
+    return result.url;
   };
 
   const mutation = useMutation({
