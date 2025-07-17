@@ -109,6 +109,8 @@ export default function InputBody({ thumbnail, setThumbnailRef }: InputProps) {
     onSuccess: () => {
       // Invalidate and refetch
       queryClient.invalidateQueries({ queryKey: ["posts"] });
+
+      queryClient.invalidateQueries({ queryKey: ["repoData"] });
     },
   });
 
