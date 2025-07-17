@@ -63,8 +63,7 @@ export default function Card() {
       return setData([
         {
           ...doc.data(),
-          // image:
-          //   "file:///Users/alexandrejunior/Library/Developer/CoreSimulator/Devices/D82568E8-0E0B-4155-8919-9CDED6DB990D/data/Containers/Data/Application/03D9B363-8039-4F79-8D26-34171462B227/Library/Caches/ExponentExperienceData/@anonymous/BlogClub-09dcf710-762b-4b8e-afe3-13eb89f03652/ImagePicker/31703A06-7244-410D-A3BB-2CAC083ECCD7.jpg",
+          image: doc.data().thumbnail,
         },
       ]);
     } else {
@@ -74,7 +73,7 @@ export default function Card() {
 
   useEffect(() => {
     queryUserByUID(currentUser?.uid);
-  }, []);
+  }, [currentUser?.uid]);
 
   const Item = ({ title, image, category }) => (
     <Content onPress={() => router.push("/(story)")}>
