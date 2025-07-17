@@ -47,10 +47,6 @@ import { queryStoryUserByUID } from "@/utils/queryStoryUserByUID";
 import { FontAwesome5 } from "@expo/vector-icons";
 
 export default function Card() {
-  const [data, setData] = useState<DocumentData>([]);
-
-  const { fetch } = useUserStore();
-
   const router = useRouter();
 
   const { currentUser } = getAuth();

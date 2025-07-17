@@ -4,19 +4,19 @@ import { collection, getDocs, query, where } from "firebase/firestore";
 export const queryStoryUserByUID = async (uid: string | undefined) => {
   const usersRef = collection(db, "users");
 
-  const q = query(usersRef, where("id", "==", uid));
+  const querySnapshotUsers = await getDocs(collection(db, "users"));
 
-  const querySnapshot = await getDocs(q);
+  const usersData = querySnapshotUsers.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
+
+  const queryUser = query(usersRef, where("id", "==", uid));
+
+  const querySnapshot = await getDocs(queryUser);
 
   if (!querySnapshot.empty) {
-    const doc = querySnapshot.docs[0];
-
-    return [
-      {
-        ...doc.data(),
-        thumbnail: doc.data().thumbnail,
-      },
-    ];
+    return [...usersData];
   } else {
     return null;
   }
