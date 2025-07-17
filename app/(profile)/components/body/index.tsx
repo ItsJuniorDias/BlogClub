@@ -22,8 +22,6 @@ export default function Body({ onForeignKey }: BodyProps) {
 
   const dataUID = useUIDStore();
 
-  console.log(dataUID.data, "DATA PROFILE UID");
-
   const fetch = async () => {
     const querySnapshot = await getDocs(collection(db, "posts"));
 

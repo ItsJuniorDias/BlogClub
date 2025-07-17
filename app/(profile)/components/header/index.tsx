@@ -54,8 +54,6 @@ export default function HeaderProfile({
 
   const dataUID = useUIDStore();
 
-  console.log(dataUID.data, "DATA PROFILE UID");
-
   const queryPosts = !!dataUID.data.uid
     ? dataUID.data.uid
     : auth.currentUser?.uid;
@@ -192,22 +190,23 @@ export default function HeaderProfile({
                 color={Colors.light.blue}
               />
 
-              {dataUID.data.uid !== auth?.currentUser?.uid && (
-                <ButtonFollow
-                  activeOpacity={0.7}
-                  onPress={() => {
-                    setFollow((prevState) => !prevState);
-                  }}
-                >
-                  <Text
-                    title={isFollow ? "Following" : "Follow"}
-                    numberOfLines={1}
-                    fontFamily="semi-bold"
-                    fontSize={16}
-                    color={Colors.light.background}
-                  />
-                </ButtonFollow>
-              )}
+              {!!dataUID.data.uid &&
+                dataUID.data.uid !== auth.currentUser?.uid && (
+                  <ButtonFollow
+                    activeOpacity={0.7}
+                    onPress={() => {
+                      setFollow((prevState) => !prevState);
+                    }}
+                  >
+                    <Text
+                      title={isFollow ? "Following" : "Follow"}
+                      numberOfLines={1}
+                      fontFamily="semi-bold"
+                      fontSize={16}
+                      color={Colors.light.background}
+                    />
+                  </ButtonFollow>
+                )}
             </ContentText>
           </Row>
 
