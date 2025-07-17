@@ -3,7 +3,7 @@ import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Container, ContentButton } from "./styles";
+import { Container, ContentButton, InputArticle } from "./styles";
 import { Button, Input } from "@/components/ui";
 import { useRouter } from "expo-router";
 import { Alert } from "react-native";
@@ -21,6 +21,8 @@ const schema = z
       .string("* Required field")
       .min(6, { message: "Password must be at least 6 characters long" }),
     confirmPassword: z.string("* Required field"),
+    profession: z.string("* Required field"),
+    aboutMe: z.string("* Required field"),
   })
   .refine(
     (data) =>
@@ -62,6 +64,10 @@ export default function InputSignUp() {
         id: uid,
         email: user.email,
         name: control._formValues.name,
+        aboutMe: control._formValues.aboutMe,
+        profession: control._formValues.profession,
+        followers: [],
+        following: [],
         createdAt: serverTimestamp(),
       };
 
@@ -158,6 +164,50 @@ export default function InputSignUp() {
             placeholder="Enter with e-mail"
             keyboardType="email-address"
             errors={errors.email}
+          />
+        )}
+      />
+
+      <Controller
+        control={control}
+        name="profession"
+        render={({ field: { onChange, value } }) => (
+          <Input
+            value={value}
+            onChangeText={(text) => {
+              onChange(text);
+
+              if (errors.profession) {
+                clearErrors("profession");
+              }
+            }}
+            title="Profession"
+            placeholder="Enter with Profession"
+            keyboardType="default"
+            errors={errors.profession}
+          />
+        )}
+      />
+
+      <Controller
+        control={control}
+        name="aboutMe"
+        render={({ field: { onChange, value } }) => (
+          <Input
+            title="About me"
+            value={value}
+            onChangeText={(text) => {
+              onChange(text);
+
+              if (errors.aboutMe) {
+                clearErrors("aboutMe");
+              }
+            }}
+            multiline
+            numberOfLines={5}
+            placeholder="Enter with about me"
+            keyboardType="default"
+            errors={errors.aboutMe}
           />
         )}
       />

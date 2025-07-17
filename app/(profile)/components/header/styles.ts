@@ -51,6 +51,7 @@ export const ContentText = styled.View`
 
 export const ContainerAbout = styled.View`
   margin-top: 24px;
+
   gap: 8px;
 `;
 

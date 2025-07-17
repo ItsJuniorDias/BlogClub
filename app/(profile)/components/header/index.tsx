@@ -1,13 +1,10 @@
 import { getAuth, signOut } from "firebase/auth";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import * as ImagePicker from "expo-image-picker";
 
 import { TouchableOpacity, StyleSheet, ActivityIndicator } from "react-native";
 import { Text } from "../../../../components/ui";
 import { Colors } from "@/constants/Colors";
-
-import { useUserStore } from "@/store/useUserStore";
 
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
@@ -53,6 +50,8 @@ export default function HeaderProfile({
     queryKey: ["userByUID"],
     queryFn: () => queryStoryUserByUID(auth.currentUser?.uid),
   });
+
+  console.log(data, "DATA USER");
 
   const handleSignOut = async () => {
     return signOut(auth)
@@ -174,7 +173,7 @@ export default function HeaderProfile({
               />
 
               <Text
-                title="Mobile Developer"
+                title={data[0].profession}
                 numberOfLines={1}
                 fontFamily="regular"
                 fontSize={16}
@@ -192,10 +191,11 @@ export default function HeaderProfile({
             />
 
             <Text
-              title="Working since the end of 2019 with frameworks such as React and React native"
+              title={data[0].aboutMe}
               fontFamily="regular"
               fontSize={14}
               lineHeight={20}
+              numberOfLines={4}
               color={Colors.light.blueText}
             />
           </ContainerAbout>
