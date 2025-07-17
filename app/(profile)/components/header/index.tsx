@@ -9,6 +9,16 @@ import { Colors } from "@/constants/Colors";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { doc, updateDoc } from "firebase/firestore";
+import { db } from "@/firebaseConfig";
+
+import {
+  queryStoryUserByUID,
+  queryUserByUID,
+} from "@/utils/queryStoryUserByUID";
+import { useIUDStore } from "@/store/useIDStore";
+
 import {
   BorderContainer,
   ColumnInfo,
@@ -22,11 +32,6 @@ import {
   Row,
   Thumbnail,
 } from "./styles";
-
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { doc, updateDoc } from "firebase/firestore";
-import { db } from "@/firebaseConfig";
-import { queryStoryUserByUID } from "@/utils/queryStoryUserByUID";
 
 interface HeaderProfileProps {
   title: string;
@@ -46,12 +51,12 @@ export default function HeaderProfile({
 
   const auth = getAuth();
 
+  const dataUIDStore = useIUDStore();
+
   const { data } = useQuery({
     queryKey: ["userByUID"],
-    queryFn: () => queryStoryUserByUID(auth.currentUser?.uid),
+    queryFn: () => queryUserByUID(dataUIDStore.data.uid),
   });
-
-  console.log(data, "DATA USER");
 
   const handleSignOut = async () => {
     return signOut(auth)
@@ -146,8 +151,8 @@ export default function HeaderProfile({
                 </>
               ) : (
                 <>
-                  {!!data[0].thumbnail ? (
-                    <Thumbnail source={data[0].thumbnail} />
+                  {!!data?.thumbnail ? (
+                    <Thumbnail source={data?.thumbnail} />
                   ) : (
                     <FontAwesome5 name="user" size={40} color="#333" />
                   )}
@@ -157,7 +162,7 @@ export default function HeaderProfile({
 
             <ContentText>
               <Text
-                title={data[0].email}
+                title={data?.email}
                 numberOfLines={1}
                 fontFamily="regular"
                 fontSize={14}
@@ -165,7 +170,7 @@ export default function HeaderProfile({
               />
 
               <Text
-                title={data[0].name}
+                title={data?.name}
                 numberOfLines={1}
                 fontFamily="semi-bold"
                 fontSize={18}
@@ -173,7 +178,7 @@ export default function HeaderProfile({
               />
 
               <Text
-                title={data[0].profession}
+                title={data?.profession}
                 numberOfLines={1}
                 fontFamily="regular"
                 fontSize={16}
@@ -191,7 +196,7 @@ export default function HeaderProfile({
             />
 
             <Text
-              title={data[0].aboutMe}
+              title={data?.aboutMe}
               fontFamily="regular"
               fontSize={14}
               lineHeight={20}

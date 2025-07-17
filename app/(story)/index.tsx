@@ -34,15 +34,17 @@ export default function StoryScreen() {
 
   const { data } = useIUDStore();
 
+  console.log(data, "DATA UID");
+
   const router = useRouter();
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setProgress((prev) => (prev >= 1 ? 0 : prev + 0.01));
-    }, 100);
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     setProgress((prev) => (prev >= 1 ? 0 : prev + 0.01));
+  //   }, 100);
 
-    return () => clearInterval(interval);
-  }, []);
+  //   return () => clearInterval(interval);
+  // }, []);
 
   const getLastPostByUser = async (uid: string) => {
     const querySnapshot = await getDocs(collection(db, "posts"));
@@ -105,25 +107,31 @@ export default function StoryScreen() {
       </ContentProgress>
 
       <ContentHeader>
-        <Row>
-          <Thumbnail source={queryUser?.data?.thumbnail} />
+        <TouchableOpacity
+          onPress={() => {
+            router.push("/(tabs)/profile");
+          }}
+        >
+          <Row>
+            <Thumbnail source={queryUser?.data?.thumbnail} />
 
-          <ContentText>
-            <Text
-              title={`${queryUser?.data?.name}`}
-              fontFamily="semi-bold"
-              fontSize={16}
-              color="white"
-            />
+            <ContentText>
+              <Text
+                title={`${queryUser?.data?.name}`}
+                fontFamily="semi-bold"
+                fontSize={16}
+                color="white"
+              />
 
-            <Text
-              title={`4m ago`}
-              fontFamily="regular"
-              fontSize={14}
-              color="white"
-            />
-          </ContentText>
-        </Row>
+              <Text
+                title={`4m ago`}
+                fontFamily="regular"
+                fontSize={14}
+                color="white"
+              />
+            </ContentText>
+          </Row>
+        </TouchableOpacity>
 
         <TouchableOpacity onPress={() => router.back()}>
           <AntDesign name="close" size={32} color="white" />
