@@ -44,6 +44,7 @@ export const Row = styled.View`
 `;
 
 export const ContentText = styled.View`
+  width: 60%;
   margin-left: 24px;
   gap: 8px;
 `;

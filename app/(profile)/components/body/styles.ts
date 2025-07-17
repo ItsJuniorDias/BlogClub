@@ -8,3 +8,12 @@ export const Container = styled.View`
   border-top-right-radius: 32px;
   border-top-left-radius: 32px;
 `;
+
+export const ContentEmpty = styled.View`
+  width: 100%;
+  height: 240px;
+
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+`;

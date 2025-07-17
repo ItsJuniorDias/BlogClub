@@ -1,14 +1,15 @@
-import { LatestNews } from "@/components/ui";
+import { LatestNews, Text } from "@/components/ui";
 
 import big_data from "../../../../assets/images/big_data.png";
 import card_latest_news from "../../../../assets/images/card_latest_news.png";
 
-import { Container } from "./styles";
+import { Container, ContentEmpty } from "./styles";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "@/firebaseConfig";
 import { useQuery } from "@tanstack/react-query";
 import { getAuth } from "firebase/auth";
 import { FlatList } from "react-native";
+import { Colors } from "@/constants/Colors";
 
 interface BodyProps {
   onForeignKey: (item: []) => void;
@@ -56,6 +57,26 @@ export default function Body({ onForeignKey }: BodyProps) {
     />
   );
 
+  const emptyList = () => {
+    return (
+      <ContentEmpty>
+        <Text
+          title="Não há nada por aqui"
+          fontFamily="semi-bold"
+          fontSize={24}
+          color={Colors.light.darkBlue}
+        />
+
+        <Text
+          title="Nenhum post criado 😕"
+          fontFamily="semi-bold"
+          fontSize={18}
+          color={Colors.light.blue}
+        />
+      </ContentEmpty>
+    );
+  };
+
   return (
     <>
       <Container>
@@ -63,6 +84,7 @@ export default function Body({ onForeignKey }: BodyProps) {
           data={data}
           renderItem={renderItem}
           keyExtractor={(item) => item.id}
+          ListEmptyComponent={emptyList}
         />
       </Container>
     </>

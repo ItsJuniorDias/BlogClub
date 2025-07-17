@@ -44,6 +44,7 @@ import { db } from "@/firebaseConfig";
 import { useEffect, useState } from "react";
 import { useUserStore } from "@/store/useUserStore";
 import { queryStoryUserByUID } from "@/utils/queryStoryUserByUID";
+import { FontAwesome5 } from "@expo/vector-icons";
 
 export default function Card() {
   const [data, setData] = useState<DocumentData>([]);
@@ -61,9 +62,15 @@ export default function Card() {
 
   const Item = ({ title, thumbnail }) => (
     <Content onPress={() => router.push("/(story)")}>
-      <LinearGradientCustom>
-        <Thumbnail source={thumbnail} />
-      </LinearGradientCustom>
+      {thumbnail ? (
+        <LinearGradientCustom>
+          <Thumbnail source={thumbnail} />
+        </LinearGradientCustom>
+      ) : (
+        <LinearGradientCustom>
+          <FontAwesome5 name="user" size={24} color="#333" />
+        </LinearGradientCustom>
+      )}
 
       <Text
         title={title.split(" ")[0]}
