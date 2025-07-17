@@ -25,16 +25,14 @@ import {
   ContentLike,
 } from "./styles";
 import { StatusBar } from "expo-status-bar";
-import { useIUDStore } from "@/store/useIDStore";
+import { useUIDStore } from "@/store/useIDStore";
 import { useQuery } from "@tanstack/react-query";
 import { db } from "@/firebaseConfig";
 
 export default function StoryScreen() {
   const [progress, setProgress] = useState(0);
 
-  const { data } = useIUDStore();
-
-  console.log(data, "DATA UID");
+  const { data } = useUIDStore();
 
   const router = useRouter();
 

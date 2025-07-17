@@ -13,14 +13,12 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "@/firebaseConfig";
 
-import {
-  queryStoryUserByUID,
-  queryUserByUID,
-} from "@/utils/queryStoryUserByUID";
-import { useIUDStore } from "@/store/useIDStore";
+import { queryUserByUID } from "@/utils/queryStoryUserByUID";
+import { useUIDStore } from "@/store/useIDStore";
 
 import {
   BorderContainer,
+  ButtonFollow,
   ColumnInfo,
   Container,
   ContainerAbout,
@@ -32,6 +30,7 @@ import {
   Row,
   Thumbnail,
 } from "./styles";
+import { useState } from "react";
 
 interface HeaderProfileProps {
   title: string;
@@ -47,15 +46,23 @@ export default function HeaderProfile({
   icon,
   posts,
 }: HeaderProfileProps) {
+  const [isFollow, setFollow] = useState(false);
+
   const queryClient = useQueryClient();
 
   const auth = getAuth();
 
-  const dataUIDStore = useIUDStore();
+  const dataUID = useUIDStore();
+
+  console.log(dataUID.data, "DATA PROFILE UID");
+
+  const queryPosts = !!dataUID.data.uid
+    ? dataUID.data.uid
+    : auth.currentUser?.uid;
 
   const { data } = useQuery({
     queryKey: ["userByUID"],
-    queryFn: () => queryUserByUID(dataUIDStore.data.uid),
+    queryFn: () => queryUserByUID(queryPosts),
   });
 
   const handleSignOut = async () => {
@@ -184,6 +191,23 @@ export default function HeaderProfile({
                 fontSize={16}
                 color={Colors.light.blue}
               />
+
+              {dataUID.data.uid !== auth?.currentUser?.uid && (
+                <ButtonFollow
+                  activeOpacity={0.7}
+                  onPress={() => {
+                    setFollow((prevState) => !prevState);
+                  }}
+                >
+                  <Text
+                    title={isFollow ? "Following" : "Follow"}
+                    numberOfLines={1}
+                    fontFamily="semi-bold"
+                    fontSize={16}
+                    color={Colors.light.background}
+                  />
+                </ButtonFollow>
+              )}
             </ContentText>
           </Row>
 

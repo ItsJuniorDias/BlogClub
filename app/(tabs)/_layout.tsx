@@ -1,15 +1,18 @@
 // app/_layout.tsx
 import { Tabs, useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
-import { StyleSheet } from "react-native";
+import { StyleSheet, TouchableOpacity } from "react-native";
 import { BlurView } from "expo-blur";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Colors } from "@/constants/Colors";
 import TabBar from "../(new-article)/components/tab-bar/tab-bar";
+import { useUIDStore } from "@/store/useIDStore";
 
 export default function Layout() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
+
+  const dataUID = useUIDStore();
 
   return (
     <Tabs

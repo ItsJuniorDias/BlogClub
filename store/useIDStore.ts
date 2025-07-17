@@ -9,7 +9,7 @@ type DataStore = {
   fetch: (item: UIDProps) => void;
 };
 
-export const useIUDStore = create<DataStore>((set) => ({
+export const useUIDStore = create<DataStore>((set) => ({
   data: {
     uid: "",
   },

@@ -1,62 +1,24 @@
-import { FlatList, View } from "react-native";
+import { FlatList } from "react-native";
 import { Colors } from "@/constants/Colors";
-
-import { getAuth } from "firebase/auth";
-
-import thumbnail_1 from "../../../../assets/images/thumbail_1.png";
-import category_1 from "../../../../assets/images/category_1.png";
-
-import thumbnail_2 from "../../../../assets/images/thumbnail_2.png";
-import category_2 from "../../../../assets/images/category_2.png";
-
-import thumbnail_3 from "../../../../assets/images/thumbnail_3.png";
-import category_3 from "../../../../assets/images/category_3.png";
-
-import thumbnail_4 from "../../../../assets/images/thumbnail_4.png";
-import category_4 from "../../../../assets/images/category_4.png";
-
-import thumbnail_5 from "../../../../assets/images/thumbnail_5.png";
 
 import { Text } from "../../../../components/ui";
 
-import {
-  CategoryIcon,
-  Container,
-  Content,
-  LinearGradientCustom,
-  Thumbnail,
-} from "./styles";
+import { Container, Content, LinearGradientCustom, Thumbnail } from "./styles";
 import { useRouter } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import {
-  collection,
-  doc,
-  DocumentData,
-  getDoc,
-  getDocs,
-  getFirestore,
-  query,
-  where,
-} from "firebase/firestore";
-import { db } from "@/firebaseConfig";
-import { useEffect, useState } from "react";
-import { useUserStore } from "@/store/useUserStore";
-import { queryStoryUserByUID } from "@/utils/queryStoryUserByUID";
+import { queryAllUsers } from "@/utils/queryStoryUserByUID";
 import { FontAwesome5 } from "@expo/vector-icons";
-import { useIUDStore } from "@/store/useIDStore";
+import { useUIDStore } from "@/store/useIDStore";
 
 export default function Card() {
-  const { fetch } = useIUDStore();
+  const { fetch } = useUIDStore();
 
   const router = useRouter();
 
-  const { currentUser } = getAuth();
-
-  const queryUser = useQuery({
-    queryKey: ["userByUID"],
-    queryFn: () => queryStoryUserByUID(currentUser?.uid),
+  const queryStoryUsers = useQuery({
+    queryKey: ["userStoryByUID"],
+    queryFn: queryAllUsers,
   });
 
   const Item = ({ id, title, thumbnail }) => (
@@ -92,7 +54,7 @@ export default function Card() {
   return (
     <Container>
       <FlatList
-        data={queryUser.data}
+        data={queryStoryUsers.data}
         horizontal
         showsHorizontalScrollIndicator={false}
         renderItem={({ item }) => (

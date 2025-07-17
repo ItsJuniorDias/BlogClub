@@ -18,7 +18,7 @@ export const Content = styled.View`
 
 export const ContainerBody = styled.View`
   width: 100%;
-  height: 318px;
+
   background-color: ${Colors.light.background};
   padding: 32px;
 `;
@@ -51,8 +51,8 @@ export const ContentText = styled.View`
 
 export const ContainerAbout = styled.View`
   margin-top: 24px;
-
   gap: 8px;
+  padding-bottom: 32px;
 `;
 
 export const ContainerInfo = styled.View`
@@ -73,6 +73,15 @@ export const ContentInfo = styled.View`
 export const ColumnInfo = styled.TouchableOpacity`
   width: 77px;
   height: 58px;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const ButtonFollow = styled.TouchableOpacity`
+  width: 100%;
+  height: 40px;
+  border-radius: 8px;
+  background-color: ${Colors.light.blue};
   align-items: center;
   justify-content: center;
 `;

@@ -10,6 +10,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getAuth } from "firebase/auth";
 import { FlatList } from "react-native";
 import { Colors } from "@/constants/Colors";
+import { useUIDStore } from "@/store/useIDStore";
 
 interface BodyProps {
   onForeignKey: (item: []) => void;
@@ -19,6 +20,10 @@ export default function Body({ onForeignKey }: BodyProps) {
   const auth = getAuth();
   const user = auth.currentUser;
 
+  const dataUID = useUIDStore();
+
+  console.log(dataUID.data, "DATA PROFILE UID");
+
   const fetch = async () => {
     const querySnapshot = await getDocs(collection(db, "posts"));
 
@@ -27,8 +32,10 @@ export default function Body({ onForeignKey }: BodyProps) {
       ...doc.data(),
     }));
 
+    const queryPosts = !!dataUID.data.uid ? dataUID.data.uid : user?.uid;
+
     const filterForeignKeyData = dataList.filter(
-      (item) => item.foreign_key === user?.uid
+      (item) => item.foreign_key === queryPosts
     );
 
     onForeignKey(filterForeignKeyData);
