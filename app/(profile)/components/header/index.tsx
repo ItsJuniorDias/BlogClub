@@ -34,6 +34,9 @@ interface HeaderProfileProps {
   posts: number;
 }
 
+const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/dqazdrinu/upload";
+const UPLOAD_PRESET = "expo-upload";
+
 export default function HeaderProfile({
   title,
   icon,
@@ -58,8 +61,6 @@ export default function HeaderProfile({
   };
 
   const query = useQuery({ queryKey: ["thumbnail"], queryFn: getData });
-
-  console.log(query, "QUERY");
 
   const handleSignOut = async () => {
     return signOut(auth)
@@ -86,8 +87,40 @@ export default function HeaderProfile({
     });
 
     if (!result.canceled) {
-      storeData(result.assets[0].uri);
+      const image = result.assets[0];
+
+      const fileUri = image.uri;
+
+      const fileName = fileUri.split("/").pop();
+      const fileType = image.type || "image/jpeg";
+
+      uploadImageToCloudinary({
+        fileUri,
+        fileName,
+        fileType,
+      });
     }
+  };
+
+  const uploadImageToCloudinary = async ({ fileUri, fileName, fileType }) => {
+    const data = new FormData();
+
+    data.append("file", {
+      uri: fileUri,
+      type: fileType,
+      name: fileName,
+    });
+
+    data.append("upload_preset", UPLOAD_PRESET);
+
+    const res = await fetch(CLOUDINARY_URL, {
+      method: "POST",
+      body: data,
+    });
+
+    const result = await res.json();
+
+    return result.secure_url;
   };
 
   const mutation = useMutation({

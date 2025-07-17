@@ -46,8 +46,6 @@ import { useEffect, useState } from "react";
 export default function Card() {
   const [data, setData] = useState<DocumentData>([]);
 
-  console.log(data, "DATA");
-
   const router = useRouter();
 
   const { currentUser } = getAuth();
@@ -65,7 +63,8 @@ export default function Card() {
       return setData([
         {
           ...doc.data(),
-          image: queryThumbnail.data,
+          // image:
+          //   "file:///Users/alexandrejunior/Library/Developer/CoreSimulator/Devices/D82568E8-0E0B-4155-8919-9CDED6DB990D/data/Containers/Data/Application/03D9B363-8039-4F79-8D26-34171462B227/Library/Caches/ExponentExperienceData/@anonymous/BlogClub-09dcf710-762b-4b8e-afe3-13eb89f03652/ImagePicker/31703A06-7244-410D-A3BB-2CAC083ECCD7.jpg",
         },
       ]);
     } else {
@@ -76,23 +75,6 @@ export default function Card() {
   useEffect(() => {
     queryUserByUID(currentUser?.uid);
   }, []);
-
-  const getData = async () => {
-    try {
-      const value = await AsyncStorage.getItem("thumbnail");
-
-      if (value !== null) {
-        return value;
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  const queryThumbnail = useQuery({
-    queryKey: ["thumbnail"],
-    queryFn: getData,
-  });
 
   const Item = ({ title, image, category }) => (
     <Content onPress={() => router.push("/(story)")}>
