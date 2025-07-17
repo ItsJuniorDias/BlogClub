@@ -13,7 +13,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "@/firebaseConfig";
 
-import { queryUserByUID } from "@/utils/queryStoryUserByUID";
+import { queryUserByUID } from "@/utils/queryUserByUID";
 import { useUIDStore } from "@/store/useIDStore";
 
 import {

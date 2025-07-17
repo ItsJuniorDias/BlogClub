@@ -7,7 +7,7 @@ import { Container, Content, LinearGradientCustom, Thumbnail } from "./styles";
 import { useRouter } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
 
-import { queryAllUsers } from "@/utils/queryStoryUserByUID";
+import { queryAllUsers } from "@/utils/queryAllUsers";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { useUIDStore } from "@/store/useIDStore";
 

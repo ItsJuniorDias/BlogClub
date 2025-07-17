@@ -7,8 +7,6 @@ import { collection, getDocs } from "firebase/firestore";
 
 import { ProgressBar, Text } from "../../components/ui";
 
-import background_image from "../../assets/images/background_image.png";
-import thumbnail_3 from "../../assets/images/thumbnail_3.png";
 import AntDesign from "@expo/vector-icons/AntDesign";
 
 import {
@@ -28,21 +26,24 @@ import { StatusBar } from "expo-status-bar";
 import { useUIDStore } from "@/store/useIDStore";
 import { useQuery } from "@tanstack/react-query";
 import { db } from "@/firebaseConfig";
+import { useDataStore } from "@/store/useDataStore";
 
 export default function StoryScreen() {
   const [progress, setProgress] = useState(0);
 
   const { data } = useUIDStore();
 
+  const fetch = useDataStore((state) => state.fetch);
+
   const router = useRouter();
 
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     setProgress((prev) => (prev >= 1 ? 0 : prev + 0.01));
-  //   }, 100);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setProgress((prev) => (prev >= 1 ? 0 : prev + 0.01));
+    }, 100);
 
-  //   return () => clearInterval(interval);
-  // }, []);
+    return () => clearInterval(interval);
+  }, []);
 
   const getLastPostByUser = async (uid: string) => {
     const querySnapshot = await getDocs(collection(db, "posts"));
@@ -161,7 +162,22 @@ export default function StoryScreen() {
       <Footer>
         <View />
 
-        <ContentButton>
+        <ContentButton
+          onPress={() => {
+            fetch({
+              id: queryLastPost.data?.id,
+              isLike: false,
+              thumbnail: queryLastPost.data.thumbnail,
+              title: queryLastPost?.data?.title,
+              description: queryLastPost?.data?.description,
+              article: queryLastPost?.data?.article,
+              numberLike: 0,
+              hours: 0,
+            });
+
+            router.push("/(article)");
+          }}
+        >
           <Text
             title="Read More"
             fontFamily="semi-bold"
