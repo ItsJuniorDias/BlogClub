@@ -16,6 +16,12 @@ export const Header = styled.View`
   padding-right: 40px;
 `;
 
+export const ButtonBack = styled.TouchableOpacity`
+  width: 40px;
+  height: 40px;
+  justify-content: center;
+`;
+
 export const ContentTitle = styled.View`
   padding-left: 40px;
   padding-right: 40px;

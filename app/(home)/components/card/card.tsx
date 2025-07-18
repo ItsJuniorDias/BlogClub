@@ -7,18 +7,21 @@ import { Container, Content, LinearGradientCustom, Thumbnail } from "./styles";
 import { useRouter } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
 
-import { queryAllUsers } from "@/utils/queryAllUsers";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { useUIDStore } from "@/store/useIDStore";
+import { getUsersWithPriority } from "@/utils/getUsersWithPriority";
+import { getAuth } from "firebase/auth";
 
 export default function Card() {
   const { fetch } = useUIDStore();
+
+  const auth = getAuth();
 
   const router = useRouter();
 
   const queryStoryUsers = useQuery({
     queryKey: ["userStoryByUID"],
-    queryFn: queryAllUsers,
+    queryFn: () => getUsersWithPriority(auth.currentUser?.uid),
   });
 
   const Item = ({ id, title, thumbnail }) => (

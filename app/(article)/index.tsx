@@ -19,6 +19,7 @@ import { useDataStore } from "@/store/useDataStore";
 import {
   Body,
   BodyText,
+  ButtonBack,
   ButtonFloat,
   Container,
   ContentFloat,
@@ -35,6 +36,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { doc, getDoc, increment, setDoc, updateDoc } from "firebase/firestore";
 import { db } from "@/firebaseConfig";
 import { getAuth } from "firebase/auth";
+import { StatusBar } from "expo-status-bar";
 
 export default function ArticleScreen() {
   const queryClient = useQueryClient();
@@ -105,15 +107,17 @@ export default function ArticleScreen() {
 
   return (
     <>
+      <StatusBar style="dark" />
+
       <Container>
         <Header>
-          <TouchableOpacity onPress={() => router.back()}>
+          <ButtonBack onPress={() => router.back()}>
             <SimpleLineIcons
               name="arrow-left"
               size={24}
               color={Colors.light.darkBlue}
             />
-          </TouchableOpacity>
+          </ButtonBack>
 
           <TouchableOpacity onPress={() => {}}>
             <Feather
