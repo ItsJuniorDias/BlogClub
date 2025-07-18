@@ -9,6 +9,8 @@ type DataProps = {
   hours: number;
   numberLike: number;
   thumbnail: string;
+  foreign_key: string;
+  type: "technology" | "adventure";
 };
 
 type DataStore = {
@@ -26,6 +28,8 @@ export const useDataStore = create<DataStore>((set) => ({
     hours: 0,
     numberLike: 0,
     thumbnail: "",
+    foreign_key: "",
+    type: "technology",
   },
   fetch: (item: DataProps) => set(() => ({ data: item })),
 }));

@@ -59,6 +59,8 @@ export default function HomeScreen() {
         numberLike={item.numberLike}
         hours={item.hours}
         isLike={item.isLike}
+        foreign_key={item.foreign_key}
+        type={item.type}
       />
     ),
     [isLoading]

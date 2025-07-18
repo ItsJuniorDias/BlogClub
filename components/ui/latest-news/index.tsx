@@ -30,6 +30,8 @@ interface LatestNewsProps {
   article: string;
   numberLike: number;
   hours: number;
+  foreign_key: string;
+  type: "technology" | "adventure";
 }
 
 export default function LatestNews({
@@ -44,6 +46,8 @@ export default function LatestNews({
   article,
   numberLike,
   hours,
+  foreign_key,
+  type,
 }: LatestNewsProps) {
   const fetch = useDataStore((state) => state.fetch);
 
@@ -87,6 +91,8 @@ export default function LatestNews({
                 article,
                 numberLike,
                 hours,
+                foreign_key,
+                type,
               });
 
               router.push("/(article)");

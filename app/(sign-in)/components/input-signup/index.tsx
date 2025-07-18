@@ -68,7 +68,7 @@ export default function InputSignUp() {
         profession: control._formValues.profession,
         followers: [],
         following: [],
-        createdAt: serverTimestamp(),
+        createdAt: new Date(),
       };
 
       await setDoc(userRef, userData, { merge: true });

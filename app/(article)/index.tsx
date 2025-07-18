@@ -37,6 +37,7 @@ import { doc, getDoc, increment, setDoc, updateDoc } from "firebase/firestore";
 import { db } from "@/firebaseConfig";
 import { getAuth } from "firebase/auth";
 import { StatusBar } from "expo-status-bar";
+import { queryUserByUID } from "@/utils/queryUserByUID";
 
 export default function ArticleScreen() {
   const queryClient = useQueryClient();
@@ -49,19 +50,10 @@ export default function ArticleScreen() {
 
   const router = useRouter();
 
-  const getData = async () => {
-    try {
-      const value = await AsyncStorage.getItem("thumbnail");
-
-      if (value !== null) {
-        return value;
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  const query = useQuery({ queryKey: ["thumbnail"], queryFn: getData });
+  const query = useQuery({
+    queryKey: ["userByUID"],
+    queryFn: () => queryUserByUID(data.foreign_key),
+  });
 
   const handleLiked = async () => {
     setIsLike((prevState) => !prevState);
@@ -140,11 +132,11 @@ export default function ArticleScreen() {
 
         <ContentInfo>
           <Row>
-            <Thumbnail source={query.data} />
+            <Thumbnail source={query?.data?.thumbnail} />
 
             <ContentText>
               <Text
-                title="Alexandre Junior"
+                title={query?.data?.name}
                 fontFamily="regular"
                 fontSize={14}
                 color={Colors.light.darkBlue}
