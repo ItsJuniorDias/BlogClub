@@ -66,14 +66,15 @@ export default function Body({ onForeignKey }: BodyProps) {
     return (
       <ContentEmpty>
         <Text
-          title="Não há nada por aqui"
+          style={{ textAlign: "center" }}
+          title="There's nothing around here"
           fontFamily="semi-bold"
           fontSize={24}
           color={Colors.light.darkBlue}
         />
 
         <Text
-          title="Nenhum post criado 😕"
+          title="No posts created 😕"
           fontFamily="semi-bold"
           fontSize={18}
           color={Colors.light.blue}

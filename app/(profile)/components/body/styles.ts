@@ -12,7 +12,8 @@ export const Container = styled.View`
 export const ContentEmpty = styled.View`
   width: 100%;
   height: 240px;
-
+  padding-left: 32px;
+  padding-right: 32px;
   align-items: center;
   justify-content: center;
   gap: 8px;
