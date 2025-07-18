@@ -12,6 +12,7 @@ import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   collection,
+  deleteDoc,
   doc,
   getDocs,
   serverTimestamp,
@@ -61,13 +62,13 @@ export default function HeaderProfile({
 
   const dataUID = useUIDStore();
 
-  const queryPosts = !!dataUID.data.uid
+  const queryUserUID = !!dataUID.data.uid
     ? dataUID.data.uid
     : auth.currentUser?.uid;
 
   const { data } = useQuery({
     queryKey: ["userByUID"],
-    queryFn: () => queryUserByUID(queryPosts),
+    queryFn: () => queryUserByUID(queryUserUID),
   });
 
   const handleSignOut = async () => {
@@ -148,7 +149,7 @@ export default function HeaderProfile({
 
   const queryGetFollowers = useQuery({
     queryKey: ["getFollowers"],
-    queryFn: () => getFollowers(auth.currentUser?.uid),
+    queryFn: () => getFollowers(queryUserUID),
   });
 
   const getFollowing = async (userId: string) => {
@@ -156,15 +157,13 @@ export default function HeaderProfile({
 
     const snapshot = await getDocs(followingRef);
 
-    return snapshot.docs.map((doc) => doc.id); // IDs dos seguidos
+    return snapshot.docs.map((doc) => doc.id);
   };
 
   const queryGetFollowing = useQuery({
     queryKey: ["getFollowing"],
-    queryFn: () => getFollowing(auth.currentUser?.uid),
+    queryFn: () => getFollowing(queryUserUID),
   });
-
-  console.log(queryGetFollowing.data, "QUERY GET Following");
 
   const followUser = async (currentUserId: string, targetUserId: string) => {
     try {
@@ -176,11 +175,30 @@ export default function HeaderProfile({
         followedAt: serverTimestamp(),
       });
 
-      queryClient.invalidateQueries({ queryKey: ["userByUID"] });
+      queryClient.invalidateQueries({ queryKey: ["getFollowing"] });
+      queryClient.invalidateQueries({ queryKey: ["getFollowers"] });
 
       console.log("User followed successfully");
     } catch (error) {
       console.error("Error following user:", error);
+    }
+  };
+
+  const unfollowUser = async (currentUserId: string, targetUserId: string) => {
+    try {
+      await deleteDoc(
+        doc(db, "users", currentUserId, "following", targetUserId)
+      );
+      await deleteDoc(
+        doc(db, "users", targetUserId, "followers", currentUserId)
+      );
+
+      queryClient.invalidateQueries({ queryKey: ["getFollowing"] });
+      queryClient.invalidateQueries({ queryKey: ["getFollowers"] });
+
+      console.log("User unfollowed successfully");
+    } catch (error) {
+      console.error("Error unfollowing user:", error);
     }
   };
 
@@ -254,13 +272,21 @@ export default function HeaderProfile({
                   <ButtonFollow
                     activeOpacity={0.7}
                     onPress={() => {
-                      followUser(auth.currentUser?.uid, dataUID?.data?.uid);
+                      if (queryGetFollowers.data?.length > 0) {
+                        unfollowUser(auth.currentUser?.uid, dataUID?.data?.uid);
+                      } else {
+                        followUser(auth.currentUser?.uid, dataUID?.data?.uid);
+                      }
 
                       setFollow((prevState) => !prevState);
                     }}
                   >
                     <Text
-                      title={isFollow ? "Following" : "Follow"}
+                      title={
+                        queryGetFollowers.data?.length > 0
+                          ? "Following"
+                          : "Follow"
+                      }
                       numberOfLines={1}
                       fontFamily="semi-bold"
                       fontSize={16}
