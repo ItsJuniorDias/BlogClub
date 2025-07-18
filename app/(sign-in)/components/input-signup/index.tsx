@@ -66,8 +66,6 @@ export default function InputSignUp() {
         name: control._formValues.name,
         aboutMe: control._formValues.aboutMe,
         profession: control._formValues.profession,
-        followers: [],
-        following: [],
         createdAt: new Date(),
       };
 

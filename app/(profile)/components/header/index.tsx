@@ -10,7 +10,14 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { doc, updateDoc } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDocs,
+  serverTimestamp,
+  setDoc,
+  updateDoc,
+} from "firebase/firestore";
 import { db } from "@/firebaseConfig";
 
 import { queryUserByUID } from "@/utils/queryUserByUID";
@@ -131,6 +138,52 @@ export default function HeaderProfile({
     },
   });
 
+  const getFollowers = async (userId: string) => {
+    const followersRef = collection(db, "users", userId, "followers");
+
+    const snapshot = await getDocs(followersRef);
+
+    return snapshot.docs.map((doc) => doc.id);
+  };
+
+  const queryGetFollowers = useQuery({
+    queryKey: ["getFollowers"],
+    queryFn: () => getFollowers(auth.currentUser?.uid),
+  });
+
+  const getFollowing = async (userId: string) => {
+    const followingRef = collection(db, "users", userId, "following");
+
+    const snapshot = await getDocs(followingRef);
+
+    return snapshot.docs.map((doc) => doc.id); // IDs dos seguidos
+  };
+
+  const queryGetFollowing = useQuery({
+    queryKey: ["getFollowing"],
+    queryFn: () => getFollowing(auth.currentUser?.uid),
+  });
+
+  console.log(queryGetFollowing.data, "QUERY GET Following");
+
+  const followUser = async (currentUserId: string, targetUserId: string) => {
+    try {
+      await setDoc(doc(db, "users", currentUserId, "following", targetUserId), {
+        followedAt: serverTimestamp(),
+      });
+
+      await setDoc(doc(db, "users", targetUserId, "followers", currentUserId), {
+        followedAt: serverTimestamp(),
+      });
+
+      queryClient.invalidateQueries({ queryKey: ["userByUID"] });
+
+      console.log("User followed successfully");
+    } catch (error) {
+      console.error("Error following user:", error);
+    }
+  };
+
   return (
     <>
       <Container>
@@ -149,7 +202,13 @@ export default function HeaderProfile({
       <Content>
         <ContainerBody style={styles.shadowBox}>
           <Row>
-            <BorderContainer onPress={() => mutation.mutate({})}>
+            <BorderContainer
+              onPress={() => {
+                if (dataUID.data.uid === auth?.currentUser?.uid) {
+                  mutation.mutate({});
+                }
+              }}
+            >
               {mutation?.isPending ? (
                 <>
                   <ActivityIndicator size="small" color={Colors.light.blue} />
@@ -195,6 +254,8 @@ export default function HeaderProfile({
                   <ButtonFollow
                     activeOpacity={0.7}
                     onPress={() => {
+                      followUser(auth.currentUser?.uid, dataUID?.data?.uid);
+
                       setFollow((prevState) => !prevState);
                     }}
                   >
@@ -250,7 +311,7 @@ export default function HeaderProfile({
 
           <ColumnInfo>
             <Text
-              title="0"
+              title={queryGetFollowing.data?.length}
               fontFamily="bold"
               fontSize={20}
               color={Colors.light.background}
@@ -266,7 +327,7 @@ export default function HeaderProfile({
 
           <ColumnInfo>
             <Text
-              title="0"
+              title={queryGetFollowers?.data?.length ?? ""}
               fontFamily="bold"
               fontSize={20}
               color={Colors.light.background}
