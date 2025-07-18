@@ -38,25 +38,21 @@ export default function Card() {
     queryFn: () => getUserPosts(data.uid),
   });
 
-  const mutation = useMutation({
-    mutationFn: getUserPosts,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["userPosts"] });
-    },
-  });
+  // const mutation = useMutation({
+  //   mutationFn: getUserPosts,
+  //   onSuccess: () => {
+  //     queryClient.invalidateQueries({ queryKey: ["userPosts"] });
+  //   },
+  // });
 
   const handleRedirect = (id: string) => {
-    mutation.mutate(data.uid);
+    // mutation.mutate(id);
 
     fetch({
       uid: id,
     });
 
-    if (!!queryUserPosts.data?.length) {
-      router.push("/(tabs)/profile");
-    } else {
-      router.push("/(story)");
-    }
+    router.push("/(story)");
   };
 
   const Item = ({ id, title, thumbnail }: ItemProps) => (

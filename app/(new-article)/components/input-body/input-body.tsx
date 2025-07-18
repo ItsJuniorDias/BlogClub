@@ -79,6 +79,7 @@ export default function InputBody({ thumbnail, setThumbnailRef }: InputProps) {
         isLike: false,
         foreign_key: user?.uid,
         type: valueType.type,
+        createdAt: new Date(),
       });
 
       Toast.show({

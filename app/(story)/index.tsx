@@ -27,6 +27,8 @@ import { useUIDStore } from "@/store/useIDStore";
 import { useQuery } from "@tanstack/react-query";
 import { db } from "@/firebaseConfig";
 import { useDataStore } from "@/store/useDataStore";
+import { getLastPostByUser } from "@/utils/getLastPostByUser";
+import { queryUserByUID } from "@/utils/queryUserByUID";
 
 export default function StoryScreen() {
   const [progress, setProgress] = useState(0);
@@ -37,60 +39,24 @@ export default function StoryScreen() {
 
   const router = useRouter();
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setProgress((prev) => (prev >= 1 ? 0 : prev + 0.01));
-    }, 100);
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     setProgress((prev) => (prev >= 1 ? 0 : prev + 0.01));
+  //   }, 100);
 
-    return () => clearInterval(interval);
-  }, []);
-
-  const getLastPostByUser = async (uid: string) => {
-    const querySnapshot = await getDocs(collection(db, "posts"));
-
-    const dataList = (querySnapshot?.docs ?? []).map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
-
-    if (!querySnapshot.empty) {
-      const filterForeignKeyData = dataList.filter(
-        (item) => item.foreign_key === uid
-      );
-
-      return filterForeignKeyData[filterForeignKeyData.length - 1];
-    } else {
-      console.log("No posts found for this user.");
-      return null;
-    }
-  };
+  //   return () => clearInterval(interval);
+  // }, []);
 
   const queryLastPost = useQuery({
     queryKey: ["lastPostByUser"],
     queryFn: () => getLastPostByUser(data.uid),
   });
 
-  const getUser = async (uid: string) => {
-    const querySnapshot = await getDocs(collection(db, "users"));
-
-    const dataList = (querySnapshot?.docs ?? []).map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
-
-    if (!querySnapshot.empty) {
-      const filterForeignKeyData = dataList.find((item) => item.id === uid);
-
-      return filterForeignKeyData;
-    } else {
-      console.log("No posts found for this user.");
-      return null;
-    }
-  };
+  console.log(queryLastPost.data, "DATA LAST POST");
 
   const queryUser = useQuery({
     queryKey: ["getUser"],
-    queryFn: () => getUser(data.uid),
+    queryFn: () => queryUserByUID(data.uid),
   });
 
   return (
