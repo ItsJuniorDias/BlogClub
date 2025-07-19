@@ -244,6 +244,11 @@ export default function HeaderProfile({
     } catch (error) {}
   };
 
+  const mutationDelete = useMutation({
+    mutationFn: handleDelete,
+    onSuccess: () => {},
+  });
+
   return (
     <>
       <Container>
@@ -337,8 +342,7 @@ export default function HeaderProfile({
                 </ButtonFollow>
               ) : (
                 <ButtonDelete
-                  activeOpacity={0.7}
-                  onPress={() => handleDelete(auth.currentUser)}
+                  onPress={() => mutationDelete.mutate(auth.currentUser)}
                 >
                   <Text
                     title={"Delete account"}
