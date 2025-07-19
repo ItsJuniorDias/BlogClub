@@ -23,6 +23,7 @@
     "expo": "~53.0.13",
     "expo-blur": "~14.1.5",
     "expo-constants": "~17.1.6",
+    "expo-dev-client": "~5.2.4",
     "expo-font": "~13.3.1",
     "expo-haptics": "~14.1.4",
     "expo-image": "~2.3.0",
@@ -51,8 +52,7 @@
     "react-native-webview": "13.13.5",
     "styled-components": "^6.1.19",
     "zod": "^4.0.2",
-    "zustand": "^5.0.6",
-    "expo-dev-client": "~5.2.4"
+    "zustand": "^5.0.6"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
