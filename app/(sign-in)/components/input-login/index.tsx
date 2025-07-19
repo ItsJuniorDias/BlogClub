@@ -1,4 +1,4 @@
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, deleteUser } from "firebase/auth";
 
 import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";

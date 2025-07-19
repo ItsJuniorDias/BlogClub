@@ -1,15 +1,4 @@
-import { getAuth, signOut } from "firebase/auth";
-
-import * as ImagePicker from "expo-image-picker";
-
-import { TouchableOpacity, StyleSheet, ActivityIndicator } from "react-native";
-import { Text } from "../../../../components/ui";
-import { Colors } from "@/constants/Colors";
-
-import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
-
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { deleteUser, getAuth, signOut } from "firebase/auth";
 import {
   collection,
   deleteDoc,
@@ -18,14 +7,34 @@ import {
   serverTimestamp,
   setDoc,
   updateDoc,
+  getFirestore,
 } from "firebase/firestore";
-import { db } from "@/firebaseConfig";
+
+import * as ImagePicker from "expo-image-picker";
+
+import {
+  TouchableOpacity,
+  StyleSheet,
+  ActivityIndicator,
+  Alert,
+} from "react-native";
+import { Text } from "../../../../components/ui";
+
+import { Colors } from "@/constants/Colors";
+
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
+
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
+import { db, auth } from "@/firebaseConfig";
 
 import { queryUserByUID } from "@/utils/queryUserByUID";
 import { useUIDStore } from "@/store/useIDStore";
 
 import {
   BorderContainer,
+  ButtonDelete,
   ButtonFollow,
   ColumnInfo,
   Container,
@@ -39,6 +48,7 @@ import {
   Thumbnail,
 } from "./styles";
 import { useState } from "react";
+import { useRouter } from "expo-router";
 
 interface HeaderProfileProps {
   title: string;
@@ -57,6 +67,8 @@ export default function HeaderProfile({
   const [isFollow, setFollow] = useState(false);
 
   const queryClient = useQueryClient();
+
+  const router = useRouter();
 
   const auth = getAuth();
 
@@ -202,6 +214,38 @@ export default function HeaderProfile({
     }
   };
 
+  const handleDelete = async (currentUser) => {
+    try {
+      await deleteUser(currentUser);
+
+      const userDocRef = doc(db, "users", currentUser.uid);
+
+      deleteDoc(userDocRef)
+        .then(() => {
+          console.log("Document user deleted with success.");
+        })
+        .catch((error) => {
+          console.error("Error deleted by document:", error);
+        });
+
+      Alert.alert("User delete with success", "Your account was deleted", [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel",
+        },
+        {
+          text: "OK",
+          onPress: () => {
+            handleSignOut();
+
+            router.push("/(onboarding)");
+          },
+        },
+      ]);
+    } catch (error) {}
+  };
+
   return (
     <>
       <Container>
@@ -268,32 +312,45 @@ export default function HeaderProfile({
               />
 
               {!!dataUID.data.uid &&
-                dataUID.data.uid !== auth.currentUser?.uid && (
-                  <ButtonFollow
-                    activeOpacity={0.7}
-                    onPress={() => {
-                      if (queryGetFollowers.data?.length > 0) {
-                        unfollowUser(auth.currentUser?.uid, dataUID?.data?.uid);
-                      } else {
-                        followUser(auth.currentUser?.uid, dataUID?.data?.uid);
-                      }
+              dataUID.data.uid !== auth.currentUser?.uid ? (
+                <ButtonFollow
+                  activeOpacity={0.7}
+                  onPress={() => {
+                    if (queryGetFollowers.data?.length > 0) {
+                      unfollowUser(auth.currentUser?.uid, dataUID?.data?.uid);
+                    } else {
+                      followUser(auth.currentUser?.uid, dataUID?.data?.uid);
+                    }
 
-                      setFollow((prevState) => !prevState);
-                    }}
-                  >
-                    <Text
-                      title={
-                        queryGetFollowers.data?.length > 0
-                          ? "Following"
-                          : "Follow"
-                      }
-                      numberOfLines={1}
-                      fontFamily="semi-bold"
-                      fontSize={16}
-                      color={Colors.light.background}
-                    />
-                  </ButtonFollow>
-                )}
+                    setFollow((prevState) => !prevState);
+                  }}
+                >
+                  <Text
+                    title={
+                      queryGetFollowers.data?.length > 0
+                        ? "Following"
+                        : "Follow"
+                    }
+                    numberOfLines={1}
+                    fontFamily="semi-bold"
+                    fontSize={16}
+                    color={Colors.light.background}
+                  />
+                </ButtonFollow>
+              ) : (
+                <ButtonDelete
+                  activeOpacity={0.7}
+                  onPress={() => handleDelete(auth.currentUser)}
+                >
+                  <Text
+                    title={"Delete account"}
+                    numberOfLines={1}
+                    fontFamily="semi-bold"
+                    fontSize={16}
+                    color={Colors.light.red}
+                  />
+                </ButtonDelete>
+              )}
             </ContentText>
           </Row>
 

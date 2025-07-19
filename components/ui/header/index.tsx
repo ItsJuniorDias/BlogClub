@@ -30,9 +30,9 @@ export default function Header({ title, description }: HeaderProps) {
         />
       </Content>
 
-      <TouchableOpacity onPress={() => {}}>
+      {/* <TouchableOpacity onPress={() => {}}>
         <Notification source={nofitication} />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </Container>
   );
 }
