@@ -1,21 +1,27 @@
 {
   "expo": {
     "name": "BlogClub",
-    "slug": "BlogClub",
+    "slug": "blog-club",
     "version": "1.0.0",
     "orientation": "portrait",
     "scheme": "blogclub",
+    "icon": "./assets/images/icon.png",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.itsjuniordias1997.blogclub"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ],
+      "package": "com.itsjuniordias1997.blogclub"
     },
     "web": {
       "bundler": "metro",
@@ -42,6 +48,12 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "eed8d769-92a1-4104-933e-1e53b8f38490"
+      }
     }
   }
 }
