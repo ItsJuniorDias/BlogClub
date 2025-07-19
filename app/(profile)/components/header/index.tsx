@@ -238,8 +238,6 @@ export default function HeaderProfile({
           text: "OK",
           onPress: () => {
             handleSignOut();
-
-            router.push("/(onboarding)");
           },
         },
       ]);
