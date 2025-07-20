@@ -18,11 +18,9 @@ export default function HomeScreen() {
   const user = getAuth();
 
   const queryUser = useQuery({
-    queryKey: ["posts"],
+    queryKey: ["user"],
     queryFn: () => queryUserByUID(user?.currentUser?.uid),
   });
-
-  console.log(queryUser.data.name, "USER");
 
   const fetch = useCallback(async () => {
     const querySnapshot = await getDocs(collection(db, "posts"));
