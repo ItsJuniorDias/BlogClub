@@ -52,8 +52,6 @@ export default function StoryScreen() {
     queryFn: () => getLastPostByUser(data.uid),
   });
 
-  console.log(queryLastPost.data, "DATA LAST POST");
-
   const queryUser = useQuery({
     queryKey: ["getUser"],
     queryFn: () => queryUserByUID(data.uid),

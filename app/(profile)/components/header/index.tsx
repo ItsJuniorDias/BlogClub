@@ -107,7 +107,7 @@ export default function HeaderProfile({
       const fileName = fileUri.split("/").pop();
       const fileType = image.type || "image/jpeg";
 
-      uploadImageToCloudinary({
+      return uploadImageToCloudinary({
         fileUri,
         fileName,
         fileType,
@@ -133,6 +133,7 @@ export default function HeaderProfile({
 
     const result = await res.json();
 
+    console.log(result, "result");
     const userRef = doc(db, "users", auth.currentUser?.uid);
 
     await updateDoc(userRef, {
@@ -147,7 +148,7 @@ export default function HeaderProfile({
   const mutation = useMutation({
     mutationFn: pickImage,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["thumbnail"] });
+      queryClient.invalidateQueries({ queryKey: ["data"] });
     },
   });
 

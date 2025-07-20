@@ -6,6 +6,7 @@ import { BlurView } from "expo-blur";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Colors } from "@/constants/Colors";
 import TabBar from "../(new-article)/components/tab-bar/tab-bar";
+import ButtonFloat from "../(profile)/components/buttonFloat";
 
 export default function Layout() {
   const insets = useSafeAreaInsets();
@@ -65,7 +66,7 @@ export default function Layout() {
         options={{
           tabBarLabel: "Profile",
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="person-outline" size={size} color={color} />
+            <ButtonFloat color={color} size={size} />
           ),
         }}
       />
