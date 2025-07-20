@@ -29,14 +29,24 @@ export default function HomeScreen() {
       (item) => item.type === "adventure"
     );
 
+    const filterDataPhilosophy = dataList.filter(
+      (item) => item.type === "philosophy"
+    );
+
     setTimeout(() => {
       setIsLoading(false);
     }, 2000);
 
     if (snapToItem === 0) {
       return filterDataTechnology;
-    } else {
+    }
+
+    if (snapToItem === 1) {
       return filterDataAdventure;
+    }
+
+    if (snapToItem === 2) {
+      return filterDataPhilosophy;
     }
   }, [snapToItem]);
 

@@ -31,6 +31,12 @@ export default function CarouselComponent({
       title: "Adventure",
       image: carousel_2,
     },
+    {
+      id: "2",
+      title: "Philosophy",
+      image:
+        "https://images.unsplash.com/photo-1581855339095-0c282d58527b?q=80&w=1746&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    },
   ];
 
   const width = Dimensions.get("window").width;
