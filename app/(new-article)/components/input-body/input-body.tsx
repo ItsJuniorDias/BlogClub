@@ -28,7 +28,7 @@ interface InputProps {
 }
 
 interface StateTypeProps {
-  type: "technology" | "adventure";
+  type: "technology" | "adventure" | "philosophy";
 }
 
 const formSchema = z.object({
@@ -45,8 +45,9 @@ export default function InputBody({ thumbnail, setThumbnailRef }: InputProps) {
   });
 
   const [checked, setChecked] = useState({
-    technology: false,
+    technology: true,
     adventure: false,
+    philosophy: false,
   });
 
   const queryClient = useQueryClient();
@@ -199,6 +200,7 @@ export default function InputBody({ thumbnail, setThumbnailRef }: InputProps) {
                   ...prevState,
                   technology: true,
                   adventure: false,
+                  philosophy: false,
                 }));
               }}
               title="technology"
@@ -214,11 +216,30 @@ export default function InputBody({ thumbnail, setThumbnailRef }: InputProps) {
 
                 setChecked((prevState) => ({
                   ...prevState,
-                  technology: false,
                   adventure: true,
+                  technology: false,
+                  philosophy: false,
                 }));
               }}
               title="adventure"
+            />
+
+            <Tag
+              isChecked={checked.philosophy}
+              onPress={(item) => {
+                setValueType((prevState) => ({
+                  ...prevState,
+                  type: item,
+                }));
+
+                setChecked((prevState) => ({
+                  ...prevState,
+                  philosophy: true,
+                  technology: false,
+                  adventure: false,
+                }));
+              }}
+              title="philosophy"
             />
           </Row>
         </Row>

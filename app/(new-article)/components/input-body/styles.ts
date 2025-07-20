@@ -37,6 +37,8 @@ export const ContentTag = styled.View`
 `;
 
 export const Row = styled.View`
+  width: 100%;
+  flex-wrap: wrap;
   flex-direction: row;
   align-items: center;
   gap: 16px;

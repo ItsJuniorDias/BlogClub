@@ -9,7 +9,7 @@ import { useState } from "react";
 interface TagProps {
   isChecked: boolean;
   onPress: (item: "technology" | "adventure") => void;
-  title: "technology" | "adventure";
+  title: "technology" | "adventure" | "philosophy";
 }
 
 export default function Tag({ isChecked, onPress, title }: TagProps) {
@@ -26,7 +26,7 @@ export default function Tag({ isChecked, onPress, title }: TagProps) {
         color={Colors.light.blue}
       />
 
-      <Button onPress={() => {}}>
+      <Button disabled onPress={() => {}}>
         {isChecked && (
           <AntDesign name="check" size={18} color={Colors.light.background} />
         )}

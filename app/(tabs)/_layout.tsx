@@ -45,7 +45,7 @@ export default function Layout() {
       <Tabs.Screen
         name="index"
         options={{
-          tabBarLabel: "Início",
+          tabBarLabel: "Home",
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="home-outline" size={size} color={color} />
           ),
@@ -63,7 +63,7 @@ export default function Layout() {
       <Tabs.Screen
         name="profile"
         options={{
-          tabBarLabel: "Perfil",
+          tabBarLabel: "Profile",
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="person-outline" size={size} color={color} />
           ),

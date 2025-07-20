@@ -7,11 +7,22 @@ import { useQuery } from "@tanstack/react-query";
 import { Card, CarouselComponent } from "../(home)/components";
 import { Header, LatestNews } from "@/components/ui";
 import { useCallback, useState } from "react";
+import { getAuth } from "firebase/auth";
+import { queryUserByUID } from "@/utils/queryUserByUID";
 
 export default function HomeScreen() {
   const [snapToItem, setSnapToItem] = useState(0);
 
   const [isLoading, setIsLoading] = useState(true);
+
+  const user = getAuth();
+
+  const queryUser = useQuery({
+    queryKey: ["posts"],
+    queryFn: () => queryUserByUID(user?.currentUser?.uid),
+  });
+
+  console.log(queryUser.data.name, "USER");
 
   const fetch = useCallback(async () => {
     const querySnapshot = await getDocs(collection(db, "posts"));
@@ -82,7 +93,10 @@ export default function HomeScreen() {
         contentContainerStyle={styles.padding}
         style={styles.container}
       >
-        <Header title="Hi, Alexandre!" description="Explore today’s" />
+        <Header
+          title={`Hi, ${queryUser?.data?.name}!`}
+          description="Explore today’s"
+        />
 
         <Card />
 
