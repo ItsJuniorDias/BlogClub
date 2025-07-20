@@ -99,7 +99,7 @@ export default function SignInScreen() {
       </Body>
 
       <Footer>
-        {/* <Row>
+        <Row>
           <Text
             title="Forgot your password?"
             fontFamily="regular"
@@ -115,9 +115,9 @@ export default function SignInScreen() {
               color={Colors.light.blue}
             />
           </TouchableOpacity>
-        </Row> */}
+        </Row>
 
-        {/* <ContentFooter>
+        <ContentFooter>
           <Text
             title="OR SIGN IN WITH"
             fontFamily="regular"
@@ -134,7 +134,7 @@ export default function SignInScreen() {
               <IconLogo source={logo_facebook} />
             </TouchableOpacity>
           </RowAuth>
-        </ContentFooter> */}
+        </ContentFooter>
       </Footer>
     </Container>
   );
