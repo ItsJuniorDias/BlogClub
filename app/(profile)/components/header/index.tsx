@@ -133,7 +133,6 @@ export default function HeaderProfile({
 
     const result = await res.json();
 
-    console.log(result, "result");
     const userRef = doc(db, "users", auth.currentUser?.uid);
 
     await updateDoc(userRef, {
@@ -148,7 +147,6 @@ export default function HeaderProfile({
   const mutation = useMutation({
     mutationFn: pickImage,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["data"] });
       queryClient.invalidateQueries({ queryKey: ["userStoryByUID"] });
     },
   });

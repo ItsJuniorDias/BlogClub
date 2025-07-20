@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { TouchableOpacity, StyleSheet } from "react-native";
+import { TouchableOpacity, StyleSheet, Alert } from "react-native";
 
 import SimpleLineIcons from "@expo/vector-icons/SimpleLineIcons";
 import Feather from "@expo/vector-icons/Feather";
@@ -33,7 +33,14 @@ import {
 } from "./styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { doc, getDoc, increment, setDoc, updateDoc } from "firebase/firestore";
+import {
+  deleteDoc,
+  doc,
+  getDoc,
+  increment,
+  setDoc,
+  updateDoc,
+} from "firebase/firestore";
 import { db } from "@/firebaseConfig";
 import { getAuth } from "firebase/auth";
 import { StatusBar } from "expo-status-bar";
@@ -97,6 +104,32 @@ export default function ArticleScreen() {
     }
   };
 
+  const handleDelete = async (uid) => {
+    Alert.alert(
+      "do you really want to delete the file?",
+      "the article will be permanently deleted",
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel",
+        },
+        {
+          text: "OK",
+          onPress: async () => {
+            await deleteDoc(doc(db, "posts", uid));
+
+            queryClient.invalidateQueries({ queryKey: ["posts"] });
+
+            queryClient.invalidateQueries({ queryKey: ["repoData"] });
+
+            router.back();
+          },
+        },
+      ]
+    );
+  };
+
   return (
     <>
       <StatusBar style="dark" />
@@ -111,7 +144,7 @@ export default function ArticleScreen() {
             />
           </ButtonBack>
 
-          <TouchableOpacity onPress={() => {}}>
+          <TouchableOpacity onPress={() => handleDelete(data.id)}>
             <Feather
               name="more-horizontal"
               size={32}

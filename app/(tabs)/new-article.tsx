@@ -83,8 +83,6 @@ export default function NewArticle() {
           setQueryUnplash={(item) => setQueryUnplash(item)}
           onThumbnail={(item: string) => {
             thumbnailRef.current = item;
-
-            console.log(thumbnailRef.current, "CURRENT");
           }}
         />
       </BottomSheet>
