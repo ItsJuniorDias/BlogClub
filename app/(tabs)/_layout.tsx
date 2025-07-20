@@ -66,7 +66,11 @@ export default function Layout() {
         options={{
           tabBarLabel: "Profile",
           tabBarIcon: ({ color, size }) => (
-            <ButtonFloat color={color} size={size} />
+            <ButtonFloat
+              onPress={() => router.push("/(tabs)/profile")}
+              color={color}
+              size={size}
+            />
           ),
         }}
       />

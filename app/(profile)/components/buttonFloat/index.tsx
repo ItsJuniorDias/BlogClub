@@ -3,13 +3,19 @@ import { Container } from "./styles";
 import { useUIDStore } from "@/store/useIDStore";
 import { getAuth } from "firebase/auth";
 import { useRouter } from "expo-router";
+import { useQuery } from "@tanstack/react-query";
 
 interface ButtonFloatProps {
+  onPress: () => void;
   color: string;
   size: number;
 }
 
-export default function ButtonFloat({ color, size }: ButtonFloatProps) {
+export default function ButtonFloat({
+  onPress,
+  color,
+  size,
+}: ButtonFloatProps) {
   const dataUID = useUIDStore();
 
   const auth = getAuth();
@@ -24,8 +30,10 @@ export default function ButtonFloat({ color, size }: ButtonFloatProps) {
     router.push("/(tabs)/profile");
   };
 
+  const query = useQuery({ queryKey: ["setUID"], queryFn: handleSetUID });
+
   return (
-    <Container onPress={() => handleSetUID()}>
+    <Container onPress={onPress}>
       <Ionicons name="person-outline" size={size} color={color} />
     </Container>
   );
