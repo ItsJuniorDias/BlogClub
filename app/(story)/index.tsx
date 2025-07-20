@@ -39,13 +39,13 @@ export default function StoryScreen() {
 
   const router = useRouter();
 
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     setProgress((prev) => (prev >= 1 ? 0 : prev + 0.01));
-  //   }, 100);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setProgress((prev) => (prev >= 1 ? 0 : prev + 0.01));
+    }, 100);
 
-  //   return () => clearInterval(interval);
-  // }, []);
+    return () => clearInterval(interval);
+  }, []);
 
   const queryLastPost = useQuery({
     queryKey: ["lastPostByUser"],
