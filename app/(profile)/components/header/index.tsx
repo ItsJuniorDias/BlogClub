@@ -149,6 +149,7 @@ export default function HeaderProfile({
     mutationFn: pickImage,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["data"] });
+      queryClient.invalidateQueries({ queryKey: ["userStoryByUID"] });
     },
   });
 
