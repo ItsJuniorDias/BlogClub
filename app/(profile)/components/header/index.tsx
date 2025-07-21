@@ -314,7 +314,7 @@ export default function HeaderProfile({
                 color={Colors.light.blue}
               />
 
-              {queryUserUID ? (
+              {queryUserUID !== auth.currentUser?.uid ? (
                 <ButtonFollow
                   activeOpacity={0.7}
                   onPress={() => {
