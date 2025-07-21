@@ -10,13 +10,15 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.itsjuniordias1997.blogclub"
+      "bundleIdentifier": "com.itsjuniordias1997.blogclub",
+      "googleServicesFile": "./GoogleService-Info.plist"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/icon.png",
         "backgroundColor": "#ffffff"
       },
+      "googleServicesFile": "./google-services.json",
       "edgeToEdgeEnabled": true,
       "permissions": ["android.permission.RECORD_AUDIO"],
       "package": "com.itsjuniordias1997.blogclub"
@@ -42,8 +44,10 @@
         {
           "photosPermission": "The app accesses your photos to let you share them with your friends."
         }
-      ]
+      ],
+      ["@react-native-google-signin/google-signin"]
     ],
+
     "experiments": {
       "typedRoutes": true
     },
