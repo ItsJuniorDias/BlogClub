@@ -22,18 +22,18 @@ export default function ButtonFloat({
 
   const router = useRouter();
 
-  const handleSetUID = () => {
-    dataUID.fetch({
-      uid: auth?.currentUser?.uid,
-    });
+  // const handleSetUID = () => {
+  //   dataUID.fetch({
+  //     uid: auth?.currentUser?.uid,
+  //   });
 
-    router.push("/(tabs)/profile");
-  };
+  //   router.push("/(tabs)/profile");
+  // };
 
-  const query = useQuery({ queryKey: ["setUID"], queryFn: handleSetUID });
+  // const query = useQuery({ queryKey: ["setUID"], queryFn: handleSetUID });
 
   return (
-    <Container onPress={onPress}>
+    <Container onPress={() => onPress()}>
       <Ionicons name="person-outline" size={size} color={color} />
     </Container>
   );
