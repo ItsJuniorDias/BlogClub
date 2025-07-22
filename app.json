@@ -18,10 +18,10 @@
         "foregroundImage": "./assets/images/icon.png",
         "backgroundColor": "#ffffff"
       },
+      "googleServicesFile": "./google-services.json",
       "edgeToEdgeEnabled": true,
       "permissions": ["android.permission.RECORD_AUDIO"],
       "package": "com.itsjuniordias1997.blogclub",
-      "googleServicesFile": "./android/google-services.json"
     },
     "web": {
       "bundler": "metro",
@@ -44,8 +44,10 @@
         {
           "photosPermission": "The app accesses your photos to let you share them with your friends."
         }
-      ]
+      ],
+      ["@react-native-google-signin/google-signin"]
     ],
+
     "experiments": {
       "typedRoutes": true
     },
