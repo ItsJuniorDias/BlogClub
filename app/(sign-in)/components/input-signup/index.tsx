@@ -3,13 +3,14 @@ import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Container, ContentButton, InputArticle } from "./styles";
-import { Button, Input } from "@/components/ui";
+import { Container, ContentButton, ContenteText } from "./styles";
+import { Button, Input, Text } from "@/components/ui";
 import { useRouter } from "expo-router";
 import { Alert } from "react-native";
 import { useMutation } from "@tanstack/react-query";
 import { doc, serverTimestamp, setDoc } from "firebase/firestore";
 import { db } from "@/firebaseConfig";
+import { Colors } from "@/constants/Colors";
 
 const schema = z
   .object({

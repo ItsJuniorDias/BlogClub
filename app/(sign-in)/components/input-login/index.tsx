@@ -4,11 +4,22 @@ import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { Container, ContentButton } from "./styles";
-import { Button, Input } from "@/components/ui";
+import google from "../../../../assets/images/logo_google.png";
+import facebook_logo from "../../../../assets/images/facebook_logo.png";
+
+import {
+  Container,
+  ContentButton,
+  ContentText,
+  FooterSocial,
+  Social,
+  RowSocial,
+} from "./styles";
+import { Button, Input, Text } from "@/components/ui";
 import { useRouter } from "expo-router";
 import { useMutation } from "@tanstack/react-query";
-import { Alert } from "react-native";
+import { Alert, TouchableOpacity } from "react-native";
+import { Colors } from "@/constants/Colors";
 
 const schema = z.object({
   email: z

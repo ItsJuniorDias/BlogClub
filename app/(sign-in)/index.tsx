@@ -1,14 +1,26 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { TouchableOpacity } from "react-native";
+
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
 
 import { Colors } from "@/constants/Colors";
 
 import logo from "../../assets/images/logo_signin.png";
-
 import logo_google from "../../assets/images/logo_google.png";
 import logo_facebook from "../../assets/images/logo_facebook.png";
 
 import { Text } from "../../components/ui";
+import InputLogin from "./components/input-login";
+import InputSignUp from "./components/input-signup";
+
+import {
+  getAuth,
+  GoogleAuthProvider,
+  signInWithPopup,
+  signInWithCredential,
+} from "firebase/auth";
+
+import { auth } from "@/firebaseConfig";
 
 import {
   Body,
@@ -23,14 +35,31 @@ import {
   Tabs,
   Touchable,
 } from "./styles";
-import InputLogin from "./components/input-login";
-import InputSignUp from "./components/input-signup";
+
+GoogleSignin.configure({
+  scopes: ["https://www.googleapis.com/auth/drive.readonly"],
+  webClientId:
+    "482652111919-76uujj9k419b62iru3l5hfrv92nb8tfv.apps.googleusercontent.com",
+  iosClientId:
+    "482652111919-rf1smagh2da9adn247c21d7q226qp712.apps.googleusercontent.com",
+});
 
 export default function SignInScreen() {
   const [activeTab, setActiveTab] = useState({
     isActiveLogin: true,
     isActiveSignUp: false,
   });
+
+  const handleGoogleSignin = async () => {
+    try {
+      await GoogleSignin.hasPlayServices({
+        showPlayServicesUpdateDialog: true,
+      });
+      // google services are available
+    } catch (err) {
+      console.error("play services are not available");
+    }
+  };
 
   return (
     <Container>
@@ -99,7 +128,7 @@ export default function SignInScreen() {
       </Body>
 
       <Footer>
-        {/* <Row>
+        <Row>
           <Text
             title="Forgot your password?"
             fontFamily="regular"
@@ -115,9 +144,9 @@ export default function SignInScreen() {
               color={Colors.light.blue}
             />
           </TouchableOpacity>
-        </Row> */}
+        </Row>
 
-        {/* <ContentFooter>
+        <ContentFooter>
           <Text
             title="OR SIGN IN WITH"
             fontFamily="regular"
@@ -126,7 +155,7 @@ export default function SignInScreen() {
           />
 
           <RowAuth>
-            <TouchableOpacity onPress={() => {}}>
+            <TouchableOpacity onPress={handleGoogleSignin}>
               <IconLogo source={logo_google} />
             </TouchableOpacity>
 
@@ -134,7 +163,7 @@ export default function SignInScreen() {
               <IconLogo source={logo_facebook} />
             </TouchableOpacity>
           </RowAuth>
-        </ContentFooter> */}
+        </ContentFooter>
       </Footer>
     </Container>
   );
