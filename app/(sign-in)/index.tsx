@@ -1,24 +1,25 @@
 import { useEffect, useState } from "react";
-import { TouchableOpacity } from "react-native";
+import { Platform, TouchableOpacity } from "react-native";
+
+import {
+  signInWithPopup,
+  FacebookAuthProvider,
+  GoogleAuthProvider,
+  getAuth,
+} from "firebase/auth";
+
+import firebase from "firebase/app";
 
 import { Colors } from "@/constants/Colors";
 
 import logo from "../../assets/images/logo_signin.png";
 import logo_google from "../../assets/images/logo_google.png";
 import logo_facebook from "../../assets/images/logo_facebook.png";
+import AntDesign from "@expo/vector-icons/AntDesign";
 
 import { Text } from "../../components/ui";
 import InputLogin from "./components/input-login";
 import InputSignUp from "./components/input-signup";
-
-import {
-  getAuth,
-  GoogleAuthProvider,
-  signInWithPopup,
-  signInWithCredential,
-} from "firebase/auth";
-
-import { auth } from "@/firebaseConfig";
 
 import {
   Body,
@@ -33,14 +34,23 @@ import {
   Tabs,
   Touchable,
 } from "./styles";
+import { auth } from "@/firebaseConfig";
+import AppleLogin from "./components/apple-login";
+import GoogleLogin from "./components/google-login/index";
+
+const provider = new GoogleAuthProvider();
+
+provider.addScope("https://www.googleapis.com/auth/contacts.readonly");
+
+provider.setCustomParameters({
+  login_hint: "itsjuniordias1997@gmail.com",
+});
 
 export default function SignInScreen() {
   const [activeTab, setActiveTab] = useState({
     isActiveLogin: true,
     isActiveSignUp: false,
   });
-
-  const handleGoogleSignin = async () => {};
 
   return (
     <Container>
@@ -136,13 +146,15 @@ export default function SignInScreen() {
           />
 
           <RowAuth>
-            <TouchableOpacity onPress={handleGoogleSignin}>
-              <IconLogo source={logo_google} />
-            </TouchableOpacity>
+            {/* <TouchableOpacity onPress={() =}>
+              <AntDesign name="apple1" size={40} color="black" />
+            </TouchableOpacity> */}
 
-            <TouchableOpacity onPress={() => {}}>
+            {Platform.OS === "ios" ? <AppleLogin /> : <GoogleLogin />}
+
+            {/* <TouchableOpacity onPress={() => {}}>
               <IconLogo source={logo_facebook} />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </RowAuth>
         </ContentFooter>
       </Footer>

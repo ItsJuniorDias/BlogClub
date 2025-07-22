@@ -20,7 +20,9 @@
       },
       "googleServicesFile": "./google-services.json",
       "edgeToEdgeEnabled": true,
-      "permissions": ["android.permission.RECORD_AUDIO"],
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ],
       "package": "com.itsjuniordias1997.blogclub"
     },
     "web": {
@@ -45,9 +47,14 @@
           "photosPermission": "The app accesses your photos to let you share them with your friends."
         }
       ],
-      ["@react-native-google-signin/google-signin"]
+      [
+        "@react-native-google-signin/google-signin",
+        {
+          "iosUrlScheme": "com.googleusercontent.apps._some_id_here_"
+        }
+      ],
+      "expo-web-browser"
     ],
-
     "experiments": {
       "typedRoutes": true
     },
