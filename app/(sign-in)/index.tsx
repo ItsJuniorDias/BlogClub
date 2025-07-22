@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { TouchableOpacity } from "react-native";
 
-import { GoogleSignin } from "@react-native-google-signin/google-signin";
-
 import { Colors } from "@/constants/Colors";
 
 import logo from "../../assets/images/logo_signin.png";
@@ -36,30 +34,13 @@ import {
   Touchable,
 } from "./styles";
 
-GoogleSignin.configure({
-  scopes: ["https://www.googleapis.com/auth/drive.readonly"],
-  webClientId:
-    "482652111919-76uujj9k419b62iru3l5hfrv92nb8tfv.apps.googleusercontent.com",
-  iosClientId:
-    "482652111919-rf1smagh2da9adn247c21d7q226qp712.apps.googleusercontent.com",
-});
-
 export default function SignInScreen() {
   const [activeTab, setActiveTab] = useState({
     isActiveLogin: true,
     isActiveSignUp: false,
   });
 
-  const handleGoogleSignin = async () => {
-    try {
-      await GoogleSignin.hasPlayServices({
-        showPlayServicesUpdateDialog: true,
-      });
-      // google services are available
-    } catch (err) {
-      console.error("play services are not available");
-    }
-  };
+  const handleGoogleSignin = async () => {};
 
   return (
     <Container>
