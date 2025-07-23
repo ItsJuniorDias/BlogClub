@@ -5,6 +5,7 @@ import styled from "styled-components/native";
 export const Container = styled.ScrollView`
   flex: 1;
   padding-top: 96px;
+
   background-color: ${Colors.light.background};
 `;
 
@@ -72,7 +73,7 @@ export const ContentFooter = styled.View`
   margin-top: 32px;
   align-items: center;
   gap: 16px;
-  margin-bottom: 64px;
+  margin-bottom: 120px;
 `;
 
 export const IconLogo = styled(Image)`

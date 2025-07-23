@@ -29,7 +29,7 @@ export const Footer = styled.View`
   background-color: ${Colors.light.background};
   flex-direction: row;
   justify-content: space-between;
-  margin-bottom: 64px;
+  margin-bottom: 120px;
   margin-top: 32px;
 `;
 
