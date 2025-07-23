@@ -1,12 +1,16 @@
-// GoogleLogin.tsx
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import * as WebBrowser from "expo-web-browser";
 import * as AuthSession from "expo-auth-session";
+
+import logo_google from "../../../../assets/images/logo_google.png";
+
 import { Button, Alert } from "react-native";
+import { Container, Logo } from "./styles";
 
 WebBrowser.maybeCompleteAuthSession();
 
-const CLIENT_ID = "Ov23lil5PnQFgrU6c7Qc";
+const CLIENT_ID =
+  "482652111919-aj1h9ujp1pg79quan5rqcam0cp9boec6.apps.googleusercontent.com";
 
 const discovery = {
   authorizationEndpoint: "https://accounts.google.com/o/oauth2/v2/auth",
@@ -15,41 +19,38 @@ const discovery = {
 };
 
 export default function GoogleLogin() {
-  const [request, response, promptAsync] = AuthSession.useAuthRequest(
+  const [response, request, promptAsync] = AuthSession.useAuthRequest(
     {
       clientId: CLIENT_ID,
-      clientSecret: "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",
-      redirectUri: AuthSession.makeRedirectUri({
-        useProxy: true,
-      }),
+      redirectUri: "https://auth.expo.io/@itsjuniordias1997/blog-club",
       scopes: ["openid", "profile", "email"],
-      responseType: "token",
+      responseType: "code",
     },
     discovery
   );
 
-  useEffect(() => {
-    if (response?.type === "success") {
-      const { access_token } = response.params;
+  console.log(response, "RESPONSE");
 
-      fetch("https://www.googleapis.com/userinfo/v2/me", {
-        headers: { Authorization: `Bearer ${access_token}` },
-      })
-        .then((res) => res.json())
-        .then((user) => {
-          Alert.alert("Welcome", `Hello ${user.name}`);
-          console.log("User Info:", user);
-        });
-    }
-  }, [response]);
+  // useEffect(() => {
+  //   if (response?.type === "success") {
+  //     const { access_token } = response.params;
+
+  //     fetch("https://www.googleapis.com/userinfo/v2/me", {
+  //       headers: { Authorization: `Bearer ${access_token}` },
+  //     })
+  //       .then((res) => res.json())
+  //       .then((user) => {
+  //         console.log(user, "USER");
+
+  //         Alert.alert("Welcome", `Hello ${user.name}`);
+  //         console.log("User Info:", user);
+  //       });
+  //   }
+  // }, [response]);
 
   return (
-    <Button
-      disabled={!request}
-      title="Sign in with Google"
-      onPress={() => {
-        promptAsync();
-      }}
-    />
+    <Container disabled={!response} onPress={() => promptAsync()}>
+      <Logo source={logo_google} />
+    </Container>
   );
 }

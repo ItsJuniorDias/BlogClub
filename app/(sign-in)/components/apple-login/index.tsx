@@ -1,4 +1,3 @@
-// AppleLogin.tsx
 import * as AppleAuthentication from "expo-apple-authentication";
 import { useRouter } from "expo-router";
 import * as SecureStore from "expo-secure-store";
