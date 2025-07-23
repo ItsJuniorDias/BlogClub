@@ -146,15 +146,7 @@ export default function SignInScreen() {
           />
 
           <RowAuth>
-            {/* <TouchableOpacity onPress={() =}>
-              <AntDesign name="apple1" size={40} color="black" />
-            </TouchableOpacity> */}
-
-            {Platform.OS === "ios" ? <AppleLogin /> : <GoogleLogin />}
-
-            {/* <TouchableOpacity onPress={() => {}}>
-              <IconLogo source={logo_facebook} />
-            </TouchableOpacity> */}
+            {Platform.OS !== "ios" ? <AppleLogin /> : <GoogleLogin />}
           </RowAuth>
         </ContentFooter>
       </Footer>

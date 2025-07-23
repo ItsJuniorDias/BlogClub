@@ -18,6 +18,7 @@ export default function GoogleLogin() {
   const [request, response, promptAsync] = AuthSession.useAuthRequest(
     {
       clientId: CLIENT_ID,
+      clientSecret: "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",
       redirectUri: AuthSession.makeRedirectUri({
         useProxy: true,
       }),
