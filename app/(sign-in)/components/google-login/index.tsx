@@ -29,7 +29,7 @@ export default function GoogleLogin() {
     discovery
   );
 
-  console.log(response, "RESPONSE");
+  console.log(response, request, "RESPONSE");
 
   // useEffect(() => {
   //   if (response?.type === "success") {
