@@ -216,31 +216,35 @@ export default function HeaderProfile({
 
   const handleDelete = async (currentUser) => {
     try {
-      await deleteUser(currentUser);
-
-      const userDocRef = doc(db, "users", currentUser.uid);
-
-      deleteDoc(userDocRef)
-        .then(() => {
-          console.log("Document user deleted with success.");
-        })
-        .catch((error) => {
-          console.error("Error deleted by document:", error);
-        });
-
-      Alert.alert("User delete with success", "Your account was deleted", [
-        {
-          text: "Cancel",
-          onPress: () => console.log("Cancel Pressed"),
-          style: "cancel",
-        },
-        {
-          text: "OK",
-          onPress: () => {
-            handleSignOut();
+      Alert.alert(
+        "Are you sure you want to delete your user?",
+        "your account will be permanently deleted",
+        [
+          {
+            text: "Cancel",
+            onPress: () => console.log("Cancel Pressed"),
+            style: "cancel",
           },
-        },
-      ]);
+          {
+            text: "OK",
+            onPress: async () => {
+              await deleteUser(currentUser);
+
+              const userDocRef = doc(db, "users", currentUser.uid);
+
+              deleteDoc(userDocRef)
+                .then(() => {
+                  console.log("Document user deleted with success.");
+                })
+                .catch((error) => {
+                  console.error("Error deleted by document:", error);
+                });
+
+              handleSignOut();
+            },
+          },
+        ]
+      );
     } catch (error) {}
   };
 
