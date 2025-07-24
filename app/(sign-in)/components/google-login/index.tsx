@@ -9,8 +9,10 @@ import { Container, Logo } from "./styles";
 
 WebBrowser.maybeCompleteAuthSession();
 
-const CLIENT_ID =
-  "482652111919-aj1h9ujp1pg79quan5rqcam0cp9boec6.apps.googleusercontent.com";
+// const CLIENT_ID =
+//   "482652111919-av18k85f32hgmt5bsa7euj2jdm45ukmt.apps.googleusercontent.com";
+
+const CLIENT_ID = "";
 
 const discovery = {
   authorizationEndpoint: "https://accounts.google.com/o/oauth2/v2/auth",
