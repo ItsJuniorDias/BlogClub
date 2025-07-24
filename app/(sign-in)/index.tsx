@@ -37,6 +37,7 @@ import {
 import { auth } from "@/firebaseConfig";
 import AppleLogin from "./components/apple-login";
 import GoogleLogin from "./components/google-login/index";
+import { useRouter } from "expo-router";
 
 const provider = new GoogleAuthProvider();
 
@@ -51,6 +52,8 @@ export default function SignInScreen() {
     isActiveLogin: true,
     isActiveSignUp: false,
   });
+
+  const router = useRouter();
 
   return (
     <Container>
@@ -127,7 +130,7 @@ export default function SignInScreen() {
             color={Colors.light.darkBlue}
           />
 
-          <TouchableOpacity onPress={() => {}}>
+          <TouchableOpacity onPress={() => router.push("/(forgot-password)")}>
             <Text
               title="Reset here"
               fontFamily="regular"
