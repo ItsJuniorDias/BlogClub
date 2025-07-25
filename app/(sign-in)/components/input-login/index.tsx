@@ -115,7 +115,7 @@ export default function InputLogin() {
             title="Password"
             placeholder="Enter with password"
             keyboardType="visible-password"
-            secureTextEntry
+            secureTextEntry={true}
             errors={errors.password}
           />
         )}

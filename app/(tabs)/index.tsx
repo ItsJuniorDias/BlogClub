@@ -92,7 +92,7 @@ export default function HomeScreen() {
         style={styles.container}
       >
         <Header
-          title={`Hi, ${queryUser?.data?.name}!`}
+          title={`Hi, ${queryUser?.data?.name ?? "Everyone"}!`}
           description="Explore today’s"
         />
 

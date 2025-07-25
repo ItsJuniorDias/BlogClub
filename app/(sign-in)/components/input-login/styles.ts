@@ -1,7 +1,9 @@
 import { Image } from "expo-image";
 import styled from "styled-components/native";
 
-export const Container = styled.View``;
+export const Container = styled.KeyboardAvoidingView`
+  flex: 1;
+`;
 
 export const ContentButton = styled.View`
   margin-top: 32px;

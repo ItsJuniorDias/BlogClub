@@ -84,11 +84,15 @@ export default function HeaderProfile({
   });
 
   const handleSignOut = async () => {
-    return signOut(auth)
-      .then(() => {})
-      .catch((error) => {
-        console.error("Sign out error:", error);
-      });
+    if (queryUserUID) {
+      signOut(auth)
+        .then(() => {})
+        .catch((error) => {
+          console.error("Sign out error:", error);
+        });
+    } else {
+      router.push("/(sign-in)");
+    }
   };
 
   const pickImage = async () => {
@@ -295,7 +299,7 @@ export default function HeaderProfile({
 
             <ContentText>
               <Text
-                title={data?.email}
+                title={data?.email ?? "Email"}
                 numberOfLines={1}
                 fontFamily="regular"
                 fontSize={14}
@@ -303,7 +307,7 @@ export default function HeaderProfile({
               />
 
               <Text
-                title={data?.name}
+                title={data?.name ?? "Name"}
                 numberOfLines={1}
                 fontFamily="semi-bold"
                 fontSize={18}
@@ -311,7 +315,7 @@ export default function HeaderProfile({
               />
 
               <Text
-                title={data?.profession}
+                title={data?.profession ?? "Profession"}
                 numberOfLines={1}
                 fontFamily="regular"
                 fontSize={16}
@@ -368,7 +372,7 @@ export default function HeaderProfile({
             />
 
             <Text
-              title={data?.aboutMe}
+              title={data?.aboutMe ?? "Write something about yourself"}
               fontFamily="regular"
               fontSize={14}
               lineHeight={20}
@@ -399,7 +403,7 @@ export default function HeaderProfile({
 
           <ColumnInfo>
             <Text
-              title={queryGetFollowing.data?.length}
+              title={queryGetFollowing.data?.length ?? "0"}
               fontFamily="bold"
               fontSize={20}
               color={Colors.light.background}
@@ -415,7 +419,7 @@ export default function HeaderProfile({
 
           <ColumnInfo>
             <Text
-              title={queryGetFollowers?.data?.length ?? ""}
+              title={queryGetFollowers?.data?.length ?? "0"}
               fontFamily="bold"
               fontSize={20}
               color={Colors.light.background}

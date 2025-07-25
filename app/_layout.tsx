@@ -5,6 +5,7 @@ import {
 } from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
+
 import { StatusBar } from "expo-status-bar";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
@@ -48,6 +49,10 @@ export default function RootLayout() {
           />
           <Stack.Screen
             name="(forgot-password)/index"
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="(google-expo)/index"
             options={{ headerShown: false }}
           />
 

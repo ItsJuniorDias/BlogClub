@@ -38,6 +38,7 @@ import { auth } from "@/firebaseConfig";
 import AppleLogin from "./components/apple-login";
 import GoogleLogin from "./components/google-login/index";
 import { useRouter } from "expo-router";
+import WebView from "react-native-webview";
 
 const provider = new GoogleAuthProvider();
 
@@ -52,6 +53,8 @@ export default function SignInScreen() {
     isActiveLogin: true,
     isActiveSignUp: false,
   });
+
+  const [html, setHTML] = useState("");
 
   const router = useRouter();
 
