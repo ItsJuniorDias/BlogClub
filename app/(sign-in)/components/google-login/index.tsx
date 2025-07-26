@@ -10,7 +10,7 @@ import { useRouter } from "expo-router";
 import axios from "axios";
 import { useUserStore } from "@/store/useUserStore";
 import { WebBrowserResultType } from "expo-web-browser";
-
+import { useOpenBrowserAsync } from "@/hooks/useOpenBrowserAsync";
 WebBrowser.maybeCompleteAuthSession();
 
 const CLIENT_ID =
@@ -27,6 +27,8 @@ export default function GoogleLogin() {
 
   const router = useRouter();
 
+  const { openAuthSessionAsync } = useOpenBrowserAsync();
+
   const [response, request, promptAsync] = AuthSession.useAuthRequest(
     {
       clientId: CLIENT_ID,
@@ -39,9 +41,11 @@ export default function GoogleLogin() {
 
   const handleAccessAuthV2 = useCallback(async () => {
     try {
-      const response = await WebBrowser.openBrowserAsync(
+      const response = await openAuthSessionAsync(
         "https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=482652111919-df5osluu1irbg8g1vueqaehefchevct5.apps.googleusercontent.com&redirect_uri=https://auth.expo.io/@itsjuniordias1997/blog-club&scope=openid%20email%20profile&access_type=offline&prompt=consent"
       );
+
+      console.log(response, "RESPONSE");
 
       WebBrowser.dismissBrowser();
 
