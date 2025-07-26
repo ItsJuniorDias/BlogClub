@@ -63,8 +63,9 @@ export const Row = styled.View`
 `;
 
 export const RowAuth = styled.View`
-  flex-direction: row;
+  flex-direction: column;
   gap: 32px;
+  align-items: center;
 `;
 
 export const ContentFooter = styled.View`

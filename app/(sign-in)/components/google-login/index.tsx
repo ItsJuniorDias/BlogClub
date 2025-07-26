@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import * as WebBrowser from "expo-web-browser";
 import * as AuthSession from "expo-auth-session";
 
@@ -9,6 +9,7 @@ import { Container, Logo } from "./styles";
 import { useRouter } from "expo-router";
 import axios from "axios";
 import { useUserStore } from "@/store/useUserStore";
+import { WebBrowserResultType } from "expo-web-browser";
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -36,24 +37,23 @@ export default function GoogleLogin() {
     discovery
   );
 
-  const handleAccessAuthV2 = async () => {
-    WebBrowser.openBrowserAsync(
-      `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=482652111919-df5osluu1irbg8g1vueqaehefchevct5.apps.googleusercontent.com&redirect_uri=https://auth.expo.io/@itsjuniordias1997/blog-club&scope=openid%20email%20profile&access_type=offline&prompt=consent`
-    )
-      .then((response) => {
-        console.log(response, "RESPONSE");
-      })
-      .catch((e) => {
-        console.log(e);
-      })
-      .finally(() => {
-        WebBrowser.dismissBrowser();
+  const handleAccessAuthV2 = useCallback(async () => {
+    try {
+      const response = await WebBrowser.openBrowserAsync(
+        "https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=482652111919-df5osluu1irbg8g1vueqaehefchevct5.apps.googleusercontent.com&redirect_uri=https://auth.expo.io/@itsjuniordias1997/blog-club&scope=openid%20email%20profile&access_type=offline&prompt=consent"
+      );
 
-        handleAccessToken();
+      WebBrowser.dismissBrowser();
 
+      handleAccessToken();
+
+      if (response.type !== WebBrowserResultType.CANCEL) {
         router.push("/(tabs)/home");
-      });
-  };
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  }, [response]);
 
   const handleAccessToken = async () => {
     try {

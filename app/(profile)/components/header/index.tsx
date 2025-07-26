@@ -74,8 +74,6 @@ export default function HeaderProfile({
 
   const dataUserStore = useUserStore();
 
-  console.log(dataUserStore.data, "DATA USER STORE");
-
   const queryUserUID = !!dataUID.data.uid
     ? dataUID.data.uid
     : auth.currentUser?.uid;

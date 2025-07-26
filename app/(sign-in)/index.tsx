@@ -152,7 +152,9 @@ export default function SignInScreen() {
           />
 
           <RowAuth>
-            {Platform.OS === "ios" ? <AppleLogin /> : <GoogleLogin />}
+            {Platform.OS !== "android" && <AppleLogin />}
+
+            <GoogleLogin />
           </RowAuth>
         </ContentFooter>
       </Footer>
