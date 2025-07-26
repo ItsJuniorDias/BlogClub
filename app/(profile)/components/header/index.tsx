@@ -49,6 +49,7 @@ import {
 } from "./styles";
 import { useState } from "react";
 import { useRouter } from "expo-router";
+import { useUserStore } from "@/store/useUserStore";
 
 interface HeaderProfileProps {
   title: string;
@@ -71,6 +72,10 @@ export default function HeaderProfile({
 
   const dataUID = useUIDStore();
 
+  const dataUserStore = useUserStore();
+
+  console.log(dataUserStore.data, "DATA USER STORE");
+
   const queryUserUID = !!dataUID.data.uid
     ? dataUID.data.uid
     : auth.currentUser?.uid;
@@ -81,15 +86,27 @@ export default function HeaderProfile({
   });
 
   const handleSignOut = async () => {
-    if (queryUserUID) {
-      signOut(auth)
-        .then(() => {})
-        .catch((error) => {
-          console.error("Sign out error:", error);
-        });
-    } else {
-      router.push("/(sign-in)");
-    }
+    Alert.alert("really want to leave", "you will be logged out of the app", [
+      {
+        text: "Cancel",
+        onPress: () => console.log("Cancel Pressed"),
+        style: "cancel",
+      },
+      {
+        text: "OK",
+        onPress: () => {
+          if (queryUserUID) {
+            signOut(auth)
+              .then(() => {})
+              .catch((error) => {
+                console.error("Sign out error:", error);
+              });
+          } else {
+            router.replace("/(sign-in)");
+          }
+        },
+      },
+    ]);
   };
 
   const pickImage = async () => {
@@ -295,8 +312,10 @@ export default function HeaderProfile({
                 </>
               ) : (
                 <>
-                  {!!data?.thumbnail ? (
-                    <Thumbnail source={data?.thumbnail} />
+                  {!!data?.thumbnail || !!dataUserStore?.data?.thumbnail ? (
+                    <Thumbnail
+                      source={data?.thumbnail ?? dataUserStore?.data?.thumbnail}
+                    />
                   ) : (
                     <FontAwesome5 name="user" size={40} color="#333" />
                   )}
@@ -306,7 +325,7 @@ export default function HeaderProfile({
 
             <ContentText>
               <Text
-                title={data?.email ?? "Email"}
+                title={data?.email ?? dataUserStore?.data?.email}
                 numberOfLines={1}
                 fontFamily="regular"
                 fontSize={14}
@@ -314,7 +333,7 @@ export default function HeaderProfile({
               />
 
               <Text
-                title={data?.name ?? "Name"}
+                title={data?.name ?? dataUserStore?.data?.name}
                 numberOfLines={1}
                 fontFamily="semi-bold"
                 fontSize={18}

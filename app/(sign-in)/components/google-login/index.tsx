@@ -7,6 +7,8 @@ import logo_google from "../../../../assets/images/logo_google.png";
 import { Container, Logo } from "./styles";
 
 import { useRouter } from "expo-router";
+import axios from "axios";
+import { useUserStore } from "@/store/useUserStore";
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -20,16 +22,14 @@ const discovery = {
 };
 
 export default function GoogleLogin() {
-  const REDIRECT_URI = AuthSession.makeRedirectUri({
-    native: "blogclub://",
-  });
+  const { fetch } = useUserStore();
 
   const router = useRouter();
 
   const [response, request, promptAsync] = AuthSession.useAuthRequest(
     {
       clientId: CLIENT_ID,
-      redirectUri: REDIRECT_URI,
+      redirectUri: "https://auth.expo.io/@itsjuniordias1997/blog-club",
       scopes: ["openid", "profile", "email"],
       responseType: "code",
     },
@@ -49,8 +49,51 @@ export default function GoogleLogin() {
       .finally(() => {
         WebBrowser.dismissBrowser();
 
+        handleAccessToken();
+
         router.push("/(tabs)");
       });
+  };
+
+  const handleAccessToken = async () => {
+    try {
+      const responseToken = await axios.post(
+        "https://oauth2.googleapis.com/token",
+        {
+          client_id: response?.clientId,
+          client_secret: "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",
+          code: "4/0AVMBsJhwKiCBiMEcbNHu9Z-I8E-IzqtRY1UkFIbJpelRLdqOOQuDh1_T551rCNIonBELeA",
+          codeChallenge: response?.codeChallenge,
+          redirect_uri: response?.redirectUri,
+          grant_type: "authorization_code",
+          refresh_token: "",
+        }
+      );
+
+      console.log(responseToken.data, "TOKEN DATA");
+
+      const responseUser = await axios.get(
+        "https://www.googleapis.com/userinfo/v2/me",
+        {
+          headers: {
+            Authorization: `Bearer ${responseToken.data.access_token}`,
+          },
+        }
+      );
+
+      const { id, name, email, picture } = responseUser.data;
+
+      console.log(responseUser.data, "RESPONSE USER");
+
+      fetch({
+        id,
+        name,
+        email,
+        thumbnail: picture,
+      });
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (
