@@ -96,7 +96,7 @@ export default function InputSignUp() {
               text: "OK",
               onPress: () => {
                 if (user) {
-                  router.push("/(tabs)");
+                  router.push("/(tabs)/home");
                 }
               },
             },

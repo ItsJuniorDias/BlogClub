@@ -53,7 +53,7 @@ export default function InputLogin() {
         const user = userCredential.user;
 
         if (user) {
-          router.push("/(tabs)");
+          router.push("/(tabs)/home");
         }
       })
       .catch((error) => {

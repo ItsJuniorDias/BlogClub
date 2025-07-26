@@ -18,7 +18,7 @@ export default function AppleLogin() {
 
       await SecureStore.setItemAsync("user", JSON.stringify(credential));
 
-      router.push("/(tabs)");
+      router.push("/(tabs)/home");
     } catch (e: any) {
       if (e.code === "ERR_CANCELED") {
         Alert.alert("Canceled", "User canceled Apple Sign-In.");

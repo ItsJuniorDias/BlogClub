@@ -15,8 +15,8 @@ type DataStore = {
 export const useUserStore = create<DataStore>((set) => ({
   data: {
     id: "",
-    name: "",
-    email: "",
+    name: "Name",
+    email: "Email",
     thumbnail: "",
   },
   fetch: (item: UserProps) => set(() => ({ data: item })),
