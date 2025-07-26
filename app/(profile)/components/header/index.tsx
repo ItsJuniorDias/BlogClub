@@ -56,9 +56,6 @@ interface HeaderProfileProps {
   posts: number;
 }
 
-const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/dqazdrinu/upload";
-const UPLOAD_PRESET = "expo-upload";
-
 export default function HeaderProfile({
   title,
   icon,
@@ -124,23 +121,33 @@ export default function HeaderProfile({
 
     data.append("file", {
       uri: fileUri,
-      type: fileType,
+      type: "image/jpeg",
       name: fileName,
     });
 
-    data.append("upload_preset", UPLOAD_PRESET);
+    data.append("upload_preset", "expo-upload");
+    data.append("cloud_name", "dqvujibkn");
 
-    const res = await fetch(CLOUDINARY_URL, {
-      method: "POST",
-      body: data,
-    });
+    let res;
 
-    const result = await res.json();
+    try {
+      res = await fetch(
+        "https://api.cloudinary.com/v1_1/dqvujibkn/image/upload",
+        {
+          method: "POST",
+          body: data,
+        }
+      );
+    } catch (e) {
+      console.log(e);
+    }
+
+    const result = await res?.json();
 
     const userRef = doc(db, "users", auth.currentUser?.uid);
 
     await updateDoc(userRef, {
-      thumbnail: result.url,
+      thumbnail: result.secure_url,
     });
 
     queryClient.invalidateQueries({ queryKey: ["userByUID"] });
@@ -277,7 +284,7 @@ export default function HeaderProfile({
           <Row>
             <BorderContainer
               onPress={() => {
-                if (dataUID.data.uid === auth?.currentUser?.uid) {
+                if (queryUserUID === auth?.currentUser?.uid) {
                   mutation.mutate({});
                 }
               }}

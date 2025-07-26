@@ -65,14 +65,14 @@ export default function ForgotPassword() {
 
       <Container>
         <Text
-          title="Esqueceu sua senha?"
+          title="Forgot your password?"
           fontFamily="semi-bold"
           color={Colors.light.darkBlue}
           fontSize={24}
         />
 
         <Text
-          title=" Digite seu e-mail abaixo para receber um link de redefinição de senha."
+          title="Enter your email below to receive a password reset link."
           fontFamily="regular"
           color={Colors.light.darkGray}
           fontSize={14}
@@ -82,7 +82,7 @@ export default function ForgotPassword() {
 
       <TextInput
         style={styles.input}
-        placeholder="Digite seu e-mail"
+        placeholder="Enter your email"
         keyboardType="email-address"
         autoCapitalize="none"
         value={email}
@@ -91,7 +91,7 @@ export default function ForgotPassword() {
 
       <TouchableOpacity style={styles.button} onPress={handlePasswordReset}>
         <Text
-          title="Enviar"
+          title="Send"
           fontFamily="semi-bold"
           fontSize={16}
           color={Colors.light.background}
@@ -100,7 +100,7 @@ export default function ForgotPassword() {
 
       <TouchableOpacity style={styles.buttonBack} onPress={() => router.back()}>
         <Text
-          title="Voltar"
+          title="To go back"
           fontFamily="semi-bold"
           fontSize={16}
           color={Colors.light.darkBlue}
