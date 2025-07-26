@@ -9,11 +9,16 @@ import { Header, LatestNews } from "@/components/ui";
 import { useCallback, useState } from "react";
 import { getAuth } from "firebase/auth";
 import { queryUserByUID } from "@/utils/queryUserByUID";
+import { useLinkingURL, useURL } from "expo-linking";
 
 export default function HomeScreen() {
   const [snapToItem, setSnapToItem] = useState(0);
 
   const [isLoading, setIsLoading] = useState(true);
+
+  const url = useLinkingURL();
+
+  console.log(url, "URL");
 
   const user = getAuth();
 

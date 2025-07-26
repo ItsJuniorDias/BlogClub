@@ -25,7 +25,7 @@ export default function SplashScreen() {
       fetch(queryUserByUID(uid));
 
       if (user) {
-        return router.push("/(tabs)");
+        return router.push("/(tabs)/home");
       } else {
         setTimeout(() => {
           return router.push("/(onboarding)");

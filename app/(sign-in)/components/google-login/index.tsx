@@ -51,7 +51,7 @@ export default function GoogleLogin() {
 
         handleAccessToken();
 
-        router.push("/(tabs)");
+        router.push("/(tabs)/home");
       });
   };
 
