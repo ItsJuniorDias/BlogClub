@@ -18,6 +18,8 @@ export default function SplashScreen() {
 
   const auth = getAuth();
 
+  console.log("TESTE SIGN");
+
   const handleAuthState = async () => {
     onAuthStateChanged(auth, async (user) => {
       const uid = user?.uid;
