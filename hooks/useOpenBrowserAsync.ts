@@ -20,8 +20,11 @@ import {
 import * as Linking from "expo-linking";
 
 import { RedirectEvent } from "expo-web-browser/build/WebBrowser.types";
+import { useRouter } from "expo-router";
 
 export const useOpenBrowserAsync = () => {
+  const router = useRouter();
+
   function processOptions(options: WebBrowserOpenOptions) {
     return {
       ...options,
@@ -83,19 +86,8 @@ export const useOpenBrowserAsync = () => {
       }
     }
 
-    function waitForRedirectAsync(
-      returnUrl?: string | null
-    ): Promise<WebBrowserRedirectResult> {
-      // Note that this Promise never resolves when `returnUrl` is nullish
-      return new Promise((resolve) => {
-        const redirectHandler = (event: RedirectEvent) => {
-          if (returnUrl && event.url.startsWith(returnUrl)) {
-            resolve({ url: event.url, type: "success" });
-          }
-        };
-
-        redirectSubscription = Linking.addEventListener("url", redirectHandler);
-      });
+    function waitForRedirectAsync(returnUrl?: string | null): void {
+      router.push("/(tabs)/home");
     }
 
     function stopWaitingForRedirect() {

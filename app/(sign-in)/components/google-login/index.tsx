@@ -48,52 +48,50 @@ export default function GoogleLogin() {
 
       WebBrowser.dismissBrowser();
 
-      handleAccessToken();
-
-      router.push("/(tabs)/home");
+      // handleAccessToken();
     } catch (e) {
       console.log(e);
     }
   }, [response]);
 
-  const handleAccessToken = async () => {
-    try {
-      const responseToken = await axios.post(
-        "https://oauth2.googleapis.com/token",
-        {
-          client_id: response?.clientId,
-          client_secret: "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",
-          code: "4/0AVMBsJhwKiCBiMEcbNHu9Z-I8E-IzqtRY1UkFIbJpelRLdqOOQuDh1_T551rCNIonBELeA",
-          codeChallenge: response?.codeChallenge,
-          redirect_uri: response?.redirectUri,
-          grant_type: "authorization_code",
-          refresh_token: "",
-        }
-      );
+  // const handleAccessToken = async () => {
+  //   try {
+  //     const responseToken = await axios.post(
+  //       "https://oauth2.googleapis.com/token",
+  //       {
+  //         client_id: response?.clientId,
+  //         client_secret: "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",
+  //         code: "4/0AVMBsJhwKiCBiMEcbNHu9Z-I8E-IzqtRY1UkFIbJpelRLdqOOQuDh1_T551rCNIonBELeA",
+  //         codeChallenge: response?.codeChallenge,
+  //         redirect_uri: response?.redirectUri,
+  //         grant_type: "authorization_code",
+  //         refresh_token: "",
+  //       }
+  //     );
 
-      console.log(responseToken.data, "TOKEN DATA");
+  //     console.log(responseToken.data, "TOKEN DATA");
 
-      const responseUser = await axios.get(
-        "https://www.googleapis.com/userinfo/v2/me",
-        {
-          headers: {
-            Authorization: `Bearer ${responseToken.data.access_token}`,
-          },
-        }
-      );
+  //     const responseUser = await axios.get(
+  //       "https://www.googleapis.com/userinfo/v2/me",
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${responseToken.data.access_token}`,
+  //         },
+  //       }
+  //     );
 
-      const { id, name, email, picture } = responseUser.data;
+  //     const { id, name, email, picture } = responseUser.data;
 
-      fetch({
-        id,
-        name,
-        email,
-        thumbnail: picture,
-      });
-    } catch (e) {
-      console.log(e);
-    }
-  };
+  //     fetch({
+  //       id,
+  //       name,
+  //       email,
+  //       thumbnail: picture,
+  //     });
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // };
 
   return (
     <>
