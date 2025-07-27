@@ -41,19 +41,16 @@ export default function GoogleLogin() {
 
   const handleAccessAuthV2 = useCallback(async () => {
     try {
-      const response = await openAuthSessionAsync(
-        "https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=482652111919-df5osluu1irbg8g1vueqaehefchevct5.apps.googleusercontent.com&redirect_uri=https://auth.expo.io/@itsjuniordias1997/blog-club&scope=openid%20email%20profile&access_type=offline&prompt=consent"
+      await openAuthSessionAsync(
+        "https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=482652111919-df5osluu1irbg8g1vueqaehefchevct5.apps.googleusercontent.com&redirect_uri=https://auth.expo.io/@itsjuniordias1997/blog-club&scope=openid%20email%20profile&access_type=offline&prompt=consent",
+        "blogclub://home"
       );
-
-      console.log(response, "RESPONSE");
 
       WebBrowser.dismissBrowser();
 
       handleAccessToken();
 
-      if (response.type !== WebBrowserResultType.CANCEL) {
-        router.push("/(tabs)/home");
-      }
+      router.push("/(tabs)/home");
     } catch (e) {
       console.log(e);
     }
@@ -86,8 +83,6 @@ export default function GoogleLogin() {
       );
 
       const { id, name, email, picture } = responseUser.data;
-
-      console.log(responseUser.data, "RESPONSE USER");
 
       fetch({
         id,

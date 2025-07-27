@@ -14,11 +14,11 @@ import {
   AppState,
   EmitterSubscription,
   Platform,
-  ProcessedColorValue,
-  ColorValue,
   AppStateStatus,
-  Linking,
 } from "react-native";
+
+import * as Linking from "expo-linking";
+
 import { RedirectEvent } from "expo-web-browser/build/WebBrowser.types";
 
 export const useOpenBrowserAsync = () => {
@@ -116,6 +116,7 @@ export const useOpenBrowserAsync = () => {
       const appStateChangedToActive = new Promise<void>((resolve) => {
         onWebBrowserCloseAndroid = resolve;
       });
+
       const stateChangeSubscription = AppState.addEventListener(
         "change",
         onAppStateChangeAndroid
@@ -144,13 +145,20 @@ export const useOpenBrowserAsync = () => {
 
     try {
       if (Platform.OS === "android") {
-        return await Promise.race([
-          openBrowserAndWaitAndroidAsync(startUrl, browserParams),
-          waitForRedirectAsync(returnUrl),
-        ]);
+        const responseBrowserAsync = await openBrowserAndWaitAndroidAsync(
+          startUrl,
+          browserParams
+        );
+
+        await waitForRedirectAsync(returnUrl);
+
+        return {
+          ...responseBrowserAsync,
+        };
       } else {
         return await Promise.race([
           openBrowserAsync(startUrl, browserParams),
+
           waitForRedirectAsync(returnUrl),
         ]);
       }
