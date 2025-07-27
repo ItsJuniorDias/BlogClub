@@ -7,7 +7,7 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
 <img width="1941" height="1614" alt="Frame 1 (3)" src="https://github.com/user-attachments/assets/6dc2bd58-02f7-4ee1-a235-3135ba76d41c" />
 
 
-### Figma 
+#### Figma 
 
 https://www.figma.com/design/KgWJivYpORQVK5jKdxJNaa/Blog-Club?node-id=0-1&p=f&t=1arXeNnlYiR4gleh-0
 
