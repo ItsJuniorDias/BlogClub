@@ -2,9 +2,13 @@ import { Text } from "../../ui";
 import { Colors } from "@/constants/Colors";
 
 import nofitication from "../../../assets/images/notification.png";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 import { Container, Content, Notification } from "./styles";
 import { TouchableOpacity } from "react-native";
+import { useRouter } from "expo-router";
+import { getAuth } from "firebase/auth";
+import { auth } from "@/firebaseConfig";
 
 interface HeaderProps {
   title: string;
@@ -12,6 +16,10 @@ interface HeaderProps {
 }
 
 export default function Header({ title, description }: HeaderProps) {
+  const router = useRouter();
+
+  const auth = getAuth();
+
   return (
     <Container>
       <Content>
@@ -30,9 +38,13 @@ export default function Header({ title, description }: HeaderProps) {
         />
       </Content>
 
-      {/* <TouchableOpacity onPress={() => {}}>
-        <Notification source={nofitication} />
-      </TouchableOpacity> */}
+      <TouchableOpacity
+        onPress={() =>
+          router.push({ pathname: "/(chat)", params: auth.currentUser?.uid })
+        }
+      >
+        <Ionicons name="chatbox-outline" size={32} color="black" />
+      </TouchableOpacity>
     </Container>
   );
 }

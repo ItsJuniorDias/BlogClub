@@ -55,6 +55,7 @@ export default function RootLayout() {
             name="(google-expo)/index"
             options={{ headerShown: false }}
           />
+          <Stack.Screen name="(chat)/index" options={{ headerShown: false }} />
 
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         </Stack>

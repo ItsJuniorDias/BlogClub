@@ -62,7 +62,8 @@
     "react-native-webview": "13.13.5",
     "styled-components": "^6.1.19",
     "zod": "^4.0.2",
-    "zustand": "^5.0.6"
+    "zustand": "^5.0.6",
+    "react-native-gifted-chat": "2.6.3"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
