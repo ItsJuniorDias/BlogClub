@@ -86,10 +86,20 @@ export const ButtonFollow = styled.TouchableOpacity`
   justify-content: center;
 `;
 
+export const ButtonMessage = styled.TouchableOpacity`
+  width: 100%;
+  height: 40px;
+  border-radius: 8px;
+  border-width: 2px;
+  border-color: ${Colors.light.blue};
+  align-items: center;
+  justify-content: center;
+`;
+
 export const ButtonDelete = styled.TouchableOpacity`
   width: 100%;
   height: 40px;
-  border-radius: 16px;
+  border-radius: 8px;
   background-color: ${Colors.light.background};
   border-color: ${Colors.light.red};
   border-width: 2px;

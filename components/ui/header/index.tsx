@@ -18,7 +18,7 @@ interface HeaderProps {
 export default function Header({ title, description }: HeaderProps) {
   const router = useRouter();
 
-  const auth = getAuth();
+  const { currentUser } = getAuth();
 
   return (
     <Container>
@@ -40,7 +40,12 @@ export default function Header({ title, description }: HeaderProps) {
 
       <TouchableOpacity
         onPress={() =>
-          router.push({ pathname: "/(chat)", params: auth.currentUser?.uid })
+          router.push({
+            pathname: "/(started-conversations)",
+            params: {
+              id: currentUser?.uid,
+            },
+          })
         }
       >
         <Ionicons name="chatbox-outline" size={32} color="black" />

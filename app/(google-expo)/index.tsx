@@ -5,9 +5,7 @@ import { View } from "react-native";
 export default function MyWebView() {
   const webViewRef = useRef(null);
 
-  const handleNavigationChange = (navState) => {
-    console.log("URL atual:", navState.url);
-  };
+  const handleNavigationChange = (navState) => {};
 
   return (
     <View style={{ flex: 1 }}>

@@ -57,6 +57,11 @@ export default function RootLayout() {
           />
           <Stack.Screen name="(chat)/index" options={{ headerShown: false }} />
 
+          <Stack.Screen
+            name="(started-conversations)/index"
+            options={{ headerShown: false }}
+          />
+
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         </Stack>
       </ThemeProvider>

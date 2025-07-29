@@ -18,8 +18,6 @@ export default function HomeScreen() {
 
   const url = useLinkingURL();
 
-  console.log(url, "URL");
-
   const user = getAuth();
 
   const queryUser = useQuery({

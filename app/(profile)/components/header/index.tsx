@@ -36,6 +36,7 @@ import {
   BorderContainer,
   ButtonDelete,
   ButtonFollow,
+  ButtonMessage,
   ColumnInfo,
   Container,
   ContainerAbout,
@@ -279,6 +280,16 @@ export default function HeaderProfile({
     onSuccess: () => {},
   });
 
+  const handleFollowUnfollow = () => {
+    if (queryGetFollowers.data?.length > 0) {
+      unfollowUser(auth.currentUser?.uid, dataUID?.data?.uid);
+    } else {
+      followUser(auth.currentUser?.uid, dataUID?.data?.uid);
+    }
+
+    setFollow((prevState) => !prevState);
+  };
+
   return (
     <>
       <Container>
@@ -347,30 +358,42 @@ export default function HeaderProfile({
               />
 
               {queryUserUID !== auth.currentUser?.uid ? (
-                <ButtonFollow
-                  activeOpacity={0.7}
-                  onPress={() => {
-                    if (queryGetFollowers.data?.length > 0) {
-                      unfollowUser(auth.currentUser?.uid, dataUID?.data?.uid);
-                    } else {
-                      followUser(auth.currentUser?.uid, dataUID?.data?.uid);
-                    }
+                <>
+                  <ButtonFollow
+                    activeOpacity={0.7}
+                    onPress={() => handleFollowUnfollow()}
+                  >
+                    <Text
+                      title={
+                        queryGetFollowers.data?.length > 0
+                          ? "Following"
+                          : "Follow"
+                      }
+                      numberOfLines={1}
+                      fontFamily="semi-bold"
+                      fontSize={16}
+                      color={Colors.light.background}
+                    />
+                  </ButtonFollow>
 
-                    setFollow((prevState) => !prevState);
-                  }}
-                >
-                  <Text
-                    title={
-                      queryGetFollowers.data?.length > 0
-                        ? "Following"
-                        : "Follow"
+                  <ButtonMessage
+                    onPress={() =>
+                      router.push({
+                        pathname: "/(chat)",
+                        params: {
+                          uid: dataUID?.data?.uid,
+                        },
+                      })
                     }
-                    numberOfLines={1}
-                    fontFamily="semi-bold"
-                    fontSize={16}
-                    color={Colors.light.background}
-                  />
-                </ButtonFollow>
+                  >
+                    <Text
+                      title={"Message"}
+                      fontFamily="semi-bold"
+                      fontSize={16}
+                      color={Colors.light.blue}
+                    />
+                  </ButtonMessage>
+                </>
               ) : (
                 <ButtonDelete
                   onPress={() => mutationDelete.mutate(auth.currentUser)}

@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useCallback } from "react";
 
-import { StyleSheet, View, TextInput, TouchableOpacity } from "react-native";
+import { StyleSheet, View, TouchableOpacity } from "react-native";
 
+import AntDesign from "@expo/vector-icons/AntDesign";
 import { Text } from "../../components/ui";
 
 import {
@@ -21,17 +22,47 @@ import {
 
 import { db } from "../../firebaseConfig";
 import { Colors } from "@/constants/Colors";
+import { useLocalSearchParams, useRouter } from "expo-router";
+import { getAuth } from "firebase/auth";
+import { ButtonBack, ButtonContent } from "./styles";
+import { useQuery } from "@tanstack/react-query";
+import { queryUserByUID } from "@/utils/queryUserByUID";
 
 export default function ChatScreen() {
   const [messages, setMessages] = useState([]);
 
+  const params = useLocalSearchParams();
+
+  const auth = getAuth();
+
+  const router = useRouter();
+
+  const getChatId = (user1: string, user2: string) => {
+    return [user1, user2].sort().join("_");
+  };
+
+  const queryUser = useQuery({
+    queryKey: ["getUser"],
+    queryFn: () => queryUserByUID(auth.currentUser?.uid),
+  });
+
   useEffect(() => {
-    const q = query(collection(db, "messages"), orderBy("createdAt", "desc"));
+    const q = query(
+      collection(
+        db,
+        "chats",
+        getChatId(auth.currentUser?.uid, params.uid),
+        "messages"
+      ),
+      orderBy("createdAt", "desc")
+    );
+
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       const messagesFirestore = querySnapshot.docs.map((doc) => {
         const firebaseData = doc.data();
 
         return {
+          participants: [auth.currentUser?.uid, params.uid],
           _id: doc.id,
           text: firebaseData.text,
           createdAt: firebaseData.createdAt.toDate(),
@@ -47,12 +78,21 @@ export default function ChatScreen() {
 
   const onSend = useCallback(async (messages = []) => {
     const { _id, createdAt, text, user } = messages[0];
-    await addDoc(collection(db, "messages"), {
-      _id,
-      createdAt,
-      text,
-      user,
-    });
+
+    await addDoc(
+      collection(
+        db,
+        "chats",
+        getChatId(auth.currentUser?.uid, params.uid),
+        "messages"
+      ),
+      {
+        _id,
+        createdAt,
+        text,
+        user,
+      }
+    );
   }, []);
 
   // Customização dos balões de mensagem
@@ -127,12 +167,16 @@ export default function ChatScreen() {
         marginRight: 16,
       }}
     >
+      <ButtonContent onPress={() => router.back()}>
+        <AntDesign name="arrowleft" size={32} color={Colors.light.darkBlue} />
+      </ButtonContent>
+
       <GiftedChat
         messages={messages}
         onSend={(messages) => onSend(messages)}
         user={{
-          _id: 1,
-          name: "Você",
+          _id: auth.currentUser?.uid,
+          name: queryUser?.data?.name ?? "",
         }}
         renderBubble={renderBubble}
         renderInputToolbar={renderInputToolbar}
