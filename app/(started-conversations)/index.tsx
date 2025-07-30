@@ -13,32 +13,67 @@ import {
   onSnapshot,
   orderBy,
   getDocs,
+  getDoc,
+  doc,
 } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { db } from "../../firebaseConfig"; // seu arquivo de config Firebase
+import { queryAllUsers } from "@/utils/queryAllUsers";
+import { useQuery } from "@tanstack/react-query";
+import { ButtonContent } from "./styles";
+import { AntDesign } from "@expo/vector-icons";
+import { Colors } from "@/constants/Colors";
+import { useRouter } from "expo-router";
 
 export default function UserChatsScreen({ navigation }) {
   const [chats, setChats] = useState([]);
   const currentUser = getAuth().currentUser;
 
-  // const handleDataUserChat = async () => {
-  //   try {
-  //     const chatRef = await collection(db, "chat");
+  const router = useRouter();
 
-  //     const querySnapshot = await getDocs(chatRef);
+  // console.log(currentUser?.uid, "UID AUTHS");
 
-  //     console.log(querySnapshot.docs, "QUERY SNAP");
-  //   } catch (error) {
-  //     console.error("Error al obtener documentos: ", error);
-  //   }
-  // };
+  const query = useQuery({ queryKey: ["todos"], queryFn: queryAllUsers });
 
   useEffect(() => {
     if (!currentUser) return;
 
     const fetch = async () => {
-      // const response = await handleDataUserChat();
-      // setChats(response);
+      const docRef = collection(db, "chats");
+
+      const querySnapshot = await getDocs(docRef);
+
+      const formatData = querySnapshot.docs.map((item) => {
+        return {
+          ...item.data(),
+          id: item.id,
+        };
+      });
+
+      const userTarget = formatData[0].id.split("_");
+
+      const formatKEY = `${userTarget[0]}_${currentUser.uid}`;
+
+      const docMessagesRef = collection(
+        db,
+        "chats",
+        `${formatKEY}`,
+        "messages"
+      );
+
+      const queryMessageSnapshot = await getDocs(docMessagesRef);
+
+      const formatMessageData = queryMessageSnapshot.docs.map((item) => {
+        return {
+          ...item.data(),
+          user: {
+            name: item.data().user.name,
+            _id: item.data().user._id,
+          },
+        };
+      });
+
+      setChats([formatMessageData[1]]);
     };
 
     fetch();
@@ -48,17 +83,19 @@ export default function UserChatsScreen({ navigation }) {
     <TouchableOpacity
       style={styles.chatItem}
       onPress={() =>
-        navigation.navigate("Chat", {
-          chatId: item.id,
-          otherUser: item.otherUser,
+        router.push({
+          pathname: "/(chat)",
+          params: {
+            uid: chats[0].user?._id,
+          },
         })
       }
     >
-      <Text style={styles.name}>{item.otherUser.name}</Text>
+      <Text style={styles.name}>{item.user.name}</Text>
       <Text style={styles.message}>{item.lastMessage || "Sem mensagem"}</Text>
       <Text style={styles.time}>
-        {item.lastMessageAt
-          ? item.lastMessageAt.toLocaleTimeString("pt-BR", {
+        {item.createdAt
+          ? item.createdAt.toDate().toLocaleTimeString("pt-BR", {
               hour: "2-digit",
               minute: "2-digit",
             })
@@ -67,8 +104,14 @@ export default function UserChatsScreen({ navigation }) {
     </TouchableOpacity>
   );
 
+  console.log(chats, "CHATS");
+
   return (
     <View style={styles.container}>
+      <ButtonContent onPress={() => router.back()}>
+        <AntDesign name="arrowleft" size={32} color={Colors.light.darkBlue} />
+      </ButtonContent>
+
       <FlatList
         data={chats}
         keyExtractor={(item) => item.id}

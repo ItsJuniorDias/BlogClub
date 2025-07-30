@@ -46,6 +46,8 @@ export default function ChatScreen() {
     queryFn: () => queryUserByUID(auth.currentUser?.uid),
   });
 
+  console.log(params.uid, "PARAMS UID");
+
   useEffect(() => {
     const q = query(
       collection(
