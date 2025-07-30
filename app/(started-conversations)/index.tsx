@@ -30,9 +30,18 @@ export default function UserChatsScreen() {
     queryFn: fetchAllMessages,
   });
 
-  // const query = useQuery({ queryKey: ["chats"], queryFn: fetchLastMessage });
+  const formatMyMessages = () => {
+    const filterMyMessage = queryAllMessages.data?.filter(
+      (item) => item.messages.participants[1] === auth.currentUser?.uid
+    );
 
-  // console.log(query.data, "last data");
+    return filterMyMessage;
+  };
+
+  const queryMyMessages = useQuery({
+    queryKey: ["chatsMyMessages"],
+    queryFn: formatMyMessages,
+  });
 
   const renderItem = ({ item }) => (
     <TouchableOpacity
@@ -41,7 +50,7 @@ export default function UserChatsScreen() {
         router.push({
           pathname: "/(chat)",
           params: {
-            uid: item.messages.participants[1],
+            uid: item.messages.participants[0],
           },
         });
       }}
@@ -80,7 +89,7 @@ export default function UserChatsScreen() {
 
       {!query.isLoading && (
         <FlatList
-          data={queryAllMessages.data}
+          data={queryMyMessages.data}
           keyExtractor={(item) => item.id}
           renderItem={renderItem}
           ListHeaderComponent={renderHeader}
