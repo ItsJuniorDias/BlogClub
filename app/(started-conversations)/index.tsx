@@ -31,8 +31,8 @@ export default function UserChatsScreen() {
   });
 
   const formatMyMessages = () => {
-    const filterMyMessage = queryAllMessages.data?.filter(
-      (item) => item.messages.participants[1] === auth.currentUser?.uid
+    const filterMyMessage = queryAllMessages?.data?.filter(
+      (item) => item?.messages?.participants[0] === auth?.currentUser?.uid
     );
 
     return filterMyMessage;
