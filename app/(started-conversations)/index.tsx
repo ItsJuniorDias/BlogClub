@@ -38,7 +38,7 @@ export default function UserChatsScreen({ navigation }) {
   useEffect(() => {
     if (!currentUser) return;
 
-    const fetch = async () => {
+    const fetchLastMessage = async () => {
       const docRef = collection(db, "chats");
 
       const querySnapshot = await getDocs(docRef);
@@ -73,10 +73,10 @@ export default function UserChatsScreen({ navigation }) {
         };
       });
 
-      setChats([formatMessageData[1]]);
+      setChats([formatMessageData[formatMessageData.length - 1]]);
     };
 
-    fetch();
+    fetchLastMessage();
   }, [currentUser]);
 
   const renderItem = ({ item }) => (
@@ -92,7 +92,7 @@ export default function UserChatsScreen({ navigation }) {
       }
     >
       <Text style={styles.name}>{item.user.name}</Text>
-      <Text style={styles.message}>{item.lastMessage || "Sem mensagem"}</Text>
+      <Text style={styles.message}>{item.text || "Sem mensagem"}</Text>
       <Text style={styles.time}>
         {item.createdAt
           ? item.createdAt.toDate().toLocaleTimeString("pt-BR", {
@@ -108,14 +108,19 @@ export default function UserChatsScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <ButtonContent onPress={() => router.back()}>
-        <AntDesign name="arrowleft" size={32} color={Colors.light.darkBlue} />
-      </ButtonContent>
-
       <FlatList
         data={chats}
         keyExtractor={(item) => item.id}
         renderItem={renderItem}
+        ListHeaderComponent={
+          <ButtonContent onPress={() => router.back()}>
+            <AntDesign
+              name="arrowleft"
+              size={32}
+              color={Colors.light.darkBlue}
+            />
+          </ButtonContent>
+        }
         ListEmptyComponent={
           <Text style={styles.empty}>Você não possui conversas.</Text>
         }
@@ -127,13 +132,30 @@ export default function UserChatsScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 12, backgroundColor: "#fff" },
   chatItem: {
-    backgroundColor: "#f1f1f1",
+    backgroundColor: "#ddd",
     padding: 12,
     borderRadius: 8,
     marginVertical: 6,
+    marginTop: 24,
   },
-  name: { fontWeight: "bold", fontSize: 17, marginBottom: 4 },
-  message: { fontSize: 14, color: "#444" },
-  time: { fontSize: 12, color: "#888", marginTop: 6, textAlign: "right" },
-  empty: { textAlign: "center", marginTop: 40, color: "#999" },
+  name: {
+    fontWeight: "bold",
+    fontSize: 17,
+    marginBottom: 4,
+  },
+  message: {
+    fontSize: 14,
+    color: "#444",
+  },
+  time: {
+    fontSize: 12,
+    color: "#888",
+    marginTop: 6,
+    textAlign: "right",
+  },
+  empty: {
+    textAlign: "center",
+    marginTop: 40,
+    color: "#999",
+  },
 });

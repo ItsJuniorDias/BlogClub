@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Platform, TouchableOpacity } from "react-native";
+import { Keyboard, Platform, TouchableOpacity } from "react-native";
 
 import {
   signInWithPopup,
@@ -25,6 +25,7 @@ import {
   Body,
   Container,
   ContentFooter,
+  FakeKeyboard,
   Footer,
   Header,
   IconLogo,
@@ -49,6 +50,8 @@ provider.setCustomParameters({
 });
 
 export default function SignInScreen() {
+  const [keyboardStatus, setKeyboardStatus] = useState("Keyboard Hidden");
+
   const [activeTab, setActiveTab] = useState({
     isActiveLogin: true,
     isActiveSignUp: false,
@@ -57,6 +60,20 @@ export default function SignInScreen() {
   const [html, setHTML] = useState("");
 
   const router = useRouter();
+
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
+      setKeyboardStatus("keyboard-shown");
+    });
+    const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
+      setKeyboardStatus("keyboard-hidden");
+    });
+
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
+  }, []);
 
   return (
     <Container>
@@ -158,6 +175,8 @@ export default function SignInScreen() {
           </RowAuth>
         </ContentFooter>
       </Footer>
+
+      {keyboardStatus === "keyboard-shown" && <FakeKeyboard />}
     </Container>
   );
 }
