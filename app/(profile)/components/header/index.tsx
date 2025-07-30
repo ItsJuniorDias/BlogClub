@@ -94,14 +94,14 @@ export default function HeaderProfile({
       {
         text: "OK",
         onPress: () => {
-          if (queryUserUID) {
+          if (!!queryUserUID) {
             signOut(auth)
-              .then(() => {})
+              .then(() => {
+                router.replace("/(sign-in)");
+              })
               .catch((error) => {
                 console.error("Sign out error:", error);
               });
-          } else {
-            router.replace("/(sign-in)");
           }
         },
       },

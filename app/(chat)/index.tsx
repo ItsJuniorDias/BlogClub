@@ -18,6 +18,8 @@ import {
   query,
   orderBy,
   onSnapshot,
+  doc,
+  setDoc,
 } from "firebase/firestore";
 
 import { db } from "../../firebaseConfig";
@@ -81,7 +83,7 @@ export default function ChatScreen() {
   const onSend = useCallback(async (messages = []) => {
     const { _id, createdAt, text, user } = messages[0];
 
-    await addDoc(
+    const result = await addDoc(
       collection(
         db,
         "chats",
@@ -93,6 +95,18 @@ export default function ChatScreen() {
         createdAt,
         text,
         user,
+      }
+    );
+
+    await setDoc(
+      doc(db, "chats", getChatId(auth.currentUser?.uid, params.uid)),
+      {
+        messages: {
+          participants: [params.uid, auth.currentUser?.uid],
+          name: user.name,
+          text: text,
+          createdAt,
+        },
       }
     );
   }, []);

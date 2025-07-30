@@ -1,21 +1,6 @@
-import React, { useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  FlatList,
-  TouchableOpacity,
-  StyleSheet,
-} from "react-native";
-import {
-  collection,
-  query,
-  where,
-  onSnapshot,
-  orderBy,
-  getDocs,
-  getDoc,
-  doc,
-} from "firebase/firestore";
+import React from "react";
+import { Text, FlatList, TouchableOpacity, StyleSheet } from "react-native";
+import { collection, query, getDocs } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { db } from "../../firebaseConfig";
 
@@ -30,58 +15,42 @@ export default function UserChatsScreen() {
 
   const router = useRouter();
 
-  const fetchLastMessage = async () => {
+  const fetchAllMessages = async () => {
     const docRef = collection(db, "chats");
 
-    const querySnapshot = await getDocs(docRef);
+    const docSnap = await getDocs(docRef);
 
-    const formatData = querySnapshot.docs.map((item) => {
-      return {
-        ...item.data(),
-        id: item.id,
-      };
-    });
-
-    const userTarget = formatData[0].id.split("_");
-
-    const formatKEY = `${userTarget[0]}_${auth?.currentUser?.uid}`;
-
-    const docMessagesRef = collection(db, "chats", `${formatKEY}`, "messages");
-
-    const queryMessageSnapshot = await getDocs(docMessagesRef);
-
-    const formatMessageData = queryMessageSnapshot.docs.map((item) => {
-      return {
-        ...item.data(),
-        user: {
-          name: item.data().user.name,
-          _id: item.data().user._id,
-        },
-      };
-    });
-
-    return [formatMessageData[formatMessageData.length - 1]];
+    return docSnap.docs.map((item) => ({
+      ...item.data(),
+    }));
   };
 
-  const query = useQuery({ queryKey: ["chats"], queryFn: fetchLastMessage });
+  const queryAllMessages = useQuery({
+    queryKey: ["chatsAll"],
+    queryFn: fetchAllMessages,
+  });
+
+  // const query = useQuery({ queryKey: ["chats"], queryFn: fetchLastMessage });
+
+  // console.log(query.data, "last data");
 
   const renderItem = ({ item }) => (
     <TouchableOpacity
       style={styles.chatItem}
-      onPress={() =>
+      onPress={() => {
         router.push({
           pathname: "/(chat)",
           params: {
-            uid: chats[0].user?._id,
+            uid: item.messages.participants[1],
           },
-        })
-      }
+        });
+      }}
     >
-      <Text style={styles.name}>{item.user.name}</Text>
-      <Text style={styles.message}>{item.text || "Sem mensagem"}</Text>
+      <Text style={styles.name}>{item.messages.name}</Text>
+      <Text style={styles.message}>{item.messages.text || "Sem mensagem"}</Text>
       <Text style={styles.time}>
-        {item.createdAt
-          ? item.createdAt.toDate().toLocaleTimeString("pt-BR", {
+        {item.messages.createdAt
+          ? item.messages.createdAt.toDate().toLocaleTimeString("pt-BR", {
               hour: "2-digit",
               minute: "2-digit",
             })
@@ -111,7 +80,7 @@ export default function UserChatsScreen() {
 
       {!query.isLoading && (
         <FlatList
-          data={query.data}
+          data={queryAllMessages.data}
           keyExtractor={(item) => item.id}
           renderItem={renderItem}
           ListHeaderComponent={renderHeader}
