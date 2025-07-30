@@ -17,67 +17,53 @@ import {
   doc,
 } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
-import { db } from "../../firebaseConfig"; // seu arquivo de config Firebase
-import { queryAllUsers } from "@/utils/queryAllUsers";
+import { db } from "../../firebaseConfig";
+
 import { useQuery } from "@tanstack/react-query";
-import { ButtonContent } from "./styles";
+import { ButtonContent, Container, Skeleton } from "./styles";
 import { AntDesign } from "@expo/vector-icons";
 import { Colors } from "@/constants/Colors";
 import { useRouter } from "expo-router";
 
-export default function UserChatsScreen({ navigation }) {
-  const [chats, setChats] = useState([]);
-  const currentUser = getAuth().currentUser;
+export default function UserChatsScreen() {
+  const auth = getAuth();
 
   const router = useRouter();
 
-  // console.log(currentUser?.uid, "UID AUTHS");
+  const fetchLastMessage = async () => {
+    const docRef = collection(db, "chats");
 
-  const query = useQuery({ queryKey: ["todos"], queryFn: queryAllUsers });
+    const querySnapshot = await getDocs(docRef);
 
-  useEffect(() => {
-    if (!currentUser) return;
+    const formatData = querySnapshot.docs.map((item) => {
+      return {
+        ...item.data(),
+        id: item.id,
+      };
+    });
 
-    const fetchLastMessage = async () => {
-      const docRef = collection(db, "chats");
+    const userTarget = formatData[0].id.split("_");
 
-      const querySnapshot = await getDocs(docRef);
+    const formatKEY = `${userTarget[0]}_${auth?.currentUser?.uid}`;
 
-      const formatData = querySnapshot.docs.map((item) => {
-        return {
-          ...item.data(),
-          id: item.id,
-        };
-      });
+    const docMessagesRef = collection(db, "chats", `${formatKEY}`, "messages");
 
-      const userTarget = formatData[0].id.split("_");
+    const queryMessageSnapshot = await getDocs(docMessagesRef);
 
-      const formatKEY = `${userTarget[0]}_${currentUser.uid}`;
+    const formatMessageData = queryMessageSnapshot.docs.map((item) => {
+      return {
+        ...item.data(),
+        user: {
+          name: item.data().user.name,
+          _id: item.data().user._id,
+        },
+      };
+    });
 
-      const docMessagesRef = collection(
-        db,
-        "chats",
-        `${formatKEY}`,
-        "messages"
-      );
+    return [formatMessageData[formatMessageData.length - 1]];
+  };
 
-      const queryMessageSnapshot = await getDocs(docMessagesRef);
-
-      const formatMessageData = queryMessageSnapshot.docs.map((item) => {
-        return {
-          ...item.data(),
-          user: {
-            name: item.data().user.name,
-            _id: item.data().user._id,
-          },
-        };
-      });
-
-      setChats([formatMessageData[formatMessageData.length - 1]]);
-    };
-
-    fetchLastMessage();
-  }, [currentUser]);
+  const query = useQuery({ queryKey: ["chats"], queryFn: fetchLastMessage });
 
   const renderItem = ({ item }) => (
     <TouchableOpacity
@@ -104,34 +90,49 @@ export default function UserChatsScreen({ navigation }) {
     </TouchableOpacity>
   );
 
-  console.log(chats, "CHATS");
+  const renderHeader = () => {
+    return (
+      <>
+        <ButtonContent onPress={() => router.back()}>
+          <AntDesign name="arrowleft" size={32} color={Colors.light.darkBlue} />
+        </ButtonContent>
+      </>
+    );
+  };
 
   return (
-    <View style={styles.container}>
-      <FlatList
-        data={chats}
-        keyExtractor={(item) => item.id}
-        renderItem={renderItem}
-        ListHeaderComponent={
-          <ButtonContent onPress={() => router.back()}>
-            <AntDesign
-              name="arrowleft"
-              size={32}
-              color={Colors.light.darkBlue}
-            />
-          </ButtonContent>
-        }
-        ListEmptyComponent={
-          <Text style={styles.empty}>Você não possui conversas.</Text>
-        }
-      />
-    </View>
+    <Container>
+      {query.isLoading && (
+        <>
+          {renderHeader()}
+          <Skeleton />
+        </>
+      )}
+
+      {!query.isLoading && (
+        <FlatList
+          data={query.data}
+          keyExtractor={(item) => item.id}
+          renderItem={renderItem}
+          ListHeaderComponent={renderHeader}
+          ListEmptyComponent={
+            <Text style={styles.empty}>Você não possui conversas.</Text>
+          }
+        />
+      )}
+    </Container>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 12, backgroundColor: "#fff" },
+  container: {
+    flex: 1,
+    padding: 12,
+    backgroundColor: "#fff",
+  },
   chatItem: {
+    width: "100%",
+    height: 96,
     backgroundColor: "#ddd",
     padding: 12,
     borderRadius: 8,
