@@ -1,17 +1,28 @@
 import React, { useCallback, useEffect } from "react";
 import {
-  Text,
   FlatList,
   TouchableOpacity,
   StyleSheet,
   Platform,
+  View,
 } from "react-native";
 import { collection, query, getDocs } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { db } from "../../firebaseConfig";
 
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { ButtonContent, Container, Skeleton } from "./styles";
+
+import { Text } from "../../components/ui";
+
+import {
+  ButtonContent,
+  Container,
+  ContentText,
+  FooterText,
+  Row,
+  Skeleton,
+  Thumbnail,
+} from "./styles";
 import { AntDesign } from "@expo/vector-icons";
 import { Colors } from "@/constants/Colors";
 import { useRouter } from "expo-router";
@@ -59,22 +70,17 @@ export default function UserChatsScreen() {
     queryFn: formatMyMessages,
   });
 
-  const findTarget = () => {
-    const result = queryMyMessages?.data?.find(
-      (item, index) =>
-        item?.messages?.participants[index] !== auth?.currentUser?.uid
-    );
-
-    return !!result;
-  };
-
   useEffect(() => {
-    if (!queryMyMessages.data) {
-      queryClient.invalidateQueries({ queryKey: ["chatsAll"] });
+    queryClient.invalidateQueries({ queryKey: ["chatsAll"] });
 
-      queryClient.invalidateQueries({ queryKey: ["chatsMyMessages"] });
-    }
-  }, [queryMyMessages, queryAllMessages, queryClient]);
+    queryClient.invalidateQueries({ queryKey: ["chatsMyMessages"] });
+  }, [queryMyMessages.data, queryClient]);
+
+  const conditionTarget = () => {
+    return Platform.OS === "android"
+      ? queryMyMessages?.data[0].messages?.participants[0]
+      : queryMyMessages?.data[0].messages?.participants[1];
+  };
 
   const renderItem = ({ item }) => (
     <TouchableOpacity
@@ -83,24 +89,46 @@ export default function UserChatsScreen() {
         router.push({
           pathname: "/(chat)",
           params: {
-            uid:
-              Platform.OS === "android"
-                ? queryMyMessages?.data[0].messages.participants[0]
-                : queryMyMessages?.data[0].messages.participants[1],
+            uid: conditionTarget(),
           },
         });
       }}
     >
-      <Text style={styles.name}>{item.messages.name}</Text>
-      <Text style={styles.message}>{item.messages.text || "Sem mensagem"}</Text>
-      <Text style={styles.time}>
-        {item.messages.createdAt
-          ? item.messages.createdAt.toDate().toLocaleTimeString("pt-BR", {
-              hour: "2-digit",
-              minute: "2-digit",
-            })
-          : ""}
-      </Text>
+      <Row>
+        <Thumbnail source={{ uri: `${item.messages.thumbnail}` }} />
+
+        <ContentText>
+          <Text
+            title={item.messages.name}
+            fontFamily="bold"
+            fontSize={16}
+            color={Colors.light.darkBlue}
+          />
+
+          <Text
+            title={item.messages.text || "Sem mensagem"}
+            fontFamily="regular"
+            fontSize={14}
+            color={Colors.light.darkBlue}
+          />
+        </ContentText>
+      </Row>
+
+      <FooterText>
+        <Text
+          title={
+            item.messages.createdAt
+              ? item.messages.createdAt.toDate().toLocaleTimeString("pt-BR", {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })
+              : ""
+          }
+          fontFamily="regular"
+          fontSize={12}
+          color={Colors.light.darkBlue}
+        />
+      </FooterText>
     </TouchableOpacity>
   );
 
@@ -114,12 +142,16 @@ export default function UserChatsScreen() {
     );
   };
 
+  console.log(queryMyMessages.data, "DATA");
+
   return (
     <Container>
       {queryMyMessages.isLoading && (
         <>
           {renderHeader()}
-          <Skeleton />
+          {queryMyMessages?.data?.map(() => (
+            <Skeleton />
+          ))}
         </>
       )}
 
@@ -130,7 +162,13 @@ export default function UserChatsScreen() {
           renderItem={renderItem}
           ListHeaderComponent={renderHeader}
           ListEmptyComponent={
-            <Text style={styles.empty}>Você não possui conversas.</Text>
+            <Text
+              title="You have no conversations."
+              fontFamily="semi-bold"
+              fontSize={18}
+              color={Colors.light.darkBlue}
+              style={{ textAlign: "center" }}
+            />
           }
         />
       )}
@@ -150,7 +188,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#ddd",
     padding: 12,
     borderRadius: 8,
-    marginVertical: 6,
     marginTop: 24,
   },
   name: {

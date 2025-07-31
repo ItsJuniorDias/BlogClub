@@ -48,7 +48,10 @@ export default function ChatScreen() {
     queryFn: () => queryUserByUID(auth.currentUser?.uid),
   });
 
-  console.log(params.uid, "PARAMS UID");
+  const queryParamsUser = useQuery({
+    queryKey: ["getParamsUser"],
+    queryFn: () => queryUserByUID(params?.uid),
+  });
 
   useEffect(() => {
     const q = query(
@@ -83,7 +86,7 @@ export default function ChatScreen() {
   const onSend = useCallback(async (messages = []) => {
     const { _id, createdAt, text, user } = messages[0];
 
-    const result = await addDoc(
+    await addDoc(
       collection(
         db,
         "chats",
@@ -106,7 +109,11 @@ export default function ChatScreen() {
           name: user.name,
           text: text,
           createdAt,
+          thumbnail: queryParamsUser?.data?.thumbnail,
         },
+      },
+      {
+        merge: true,
       }
     );
   }, []);
