@@ -87,9 +87,9 @@ export default function UserChatsScreen() {
   };
 
   const getThumbnail = () => {
-    return queryMyMessages?.data[0]?.messages?.participants.includes(
+    return queryMyMessages?.data[0]?.messages?.participants.indexOf(
       auth.currentUser?.uid
-    )
+    ) === 1
       ? queryMyMessages?.data[0]?.messages?.thumbnailTarget
       : queryMyMessages?.data[0]?.messages?.thumbnailUser;
   };
