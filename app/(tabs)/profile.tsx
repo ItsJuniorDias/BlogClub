@@ -4,11 +4,14 @@ import HeaderProfile from "../(profile)/components/header";
 import BodyProfile from "../(profile)/components/body";
 import { useState } from "react";
 import { StatusBar } from "expo-status-bar";
+import { useLocalSearchParams } from "expo-router";
 
 export default function Profile() {
   const [value, setValue] = useState({
     post: 0,
   });
+
+  const { uid } = useLocalSearchParams();
 
   return (
     <ScrollView
@@ -19,7 +22,12 @@ export default function Profile() {
     >
       <StatusBar style="dark" />
 
-      <HeaderProfile posts={value.post} title="Profile" icon="exit-to-app" />
+      <HeaderProfile
+        uid={uid}
+        posts={value.post}
+        title="Profile"
+        icon="exit-to-app"
+      />
 
       <BodyProfile
         onForeignKey={(item) =>

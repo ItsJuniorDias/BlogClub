@@ -137,8 +137,8 @@ export default function UserChatsScreen() {
       <FooterText>
         <Text
           title={
-            item.messages.createdAt
-              ? item.messages.createdAt.toDate().toLocaleTimeString("pt-BR", {
+            !!item?.messages?.createdAt
+              ? item?.messages?.createdAt.toDate().toLocaleTimeString("pt-BR", {
                   hour: "2-digit",
                   minute: "2-digit",
                 })

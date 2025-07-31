@@ -72,7 +72,12 @@ export default function StoryScreen() {
       <ContentHeader>
         <TouchableOpacity
           onPress={() => {
-            router.push("/(tabs)/profile");
+            router.push({
+              pathname: "/(tabs)/profile",
+              params: {
+                uid: data.uid,
+              },
+            });
           }}
         >
           <Row>

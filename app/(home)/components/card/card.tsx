@@ -22,7 +22,7 @@ interface ItemProps {
 export default function Card() {
   const queryClient = useQueryClient();
 
-  const { fetch, data } = useUIDStore();
+  const { data, fetch } = useUIDStore();
 
   const auth = getAuth();
 
@@ -53,7 +53,16 @@ export default function Card() {
     });
 
     if (queryUserPosts.data?.length === 0) {
-      router.push("/(tabs)/profile");
+      router.push({
+        pathname: "/(tabs)/profile",
+        params: {
+          uid: id,
+        },
+      });
+
+      setTimeout(() => {
+        queryClient.invalidateQueries({ queryKey: ["userByUID"] });
+      }, 1000);
     } else {
       router.push("/(story)");
     }

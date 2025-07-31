@@ -48,17 +48,19 @@ import {
   Row,
   Thumbnail,
 } from "./styles";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "expo-router";
 import { useUserStore } from "@/store/useUserStore";
 
 interface HeaderProfileProps {
+  uid: string | string[];
   title: string;
   icon: string;
   posts: number;
 }
 
 export default function HeaderProfile({
+  uid,
   title,
   icon,
   posts,
@@ -75,13 +77,11 @@ export default function HeaderProfile({
 
   const dataUserStore = useUserStore();
 
-  const queryUserUID = !!dataUID.data.uid
-    ? dataUID.data.uid
-    : auth.currentUser?.uid;
+  const queryUserUID = !!uid ? uid : auth.currentUser?.uid;
 
   const { data } = useQuery({
     queryKey: ["userByUID"],
-    queryFn: () => queryUserByUID(queryUserUID),
+    queryFn: () => queryUserByUID(uid ?? auth.currentUser?.uid),
   });
 
   const handleSignOut = async () => {
