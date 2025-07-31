@@ -80,10 +80,12 @@ export default function UserChatsScreen() {
     queryFn: formatMyMessages,
   });
 
-  const conditionTarget = () => {
-    return Platform.OS === "android"
-      ? queryMyMessages?.data[0].messages?.participants[1]
-      : queryMyMessages?.data[0].messages?.participants[0];
+  const conditionTarget = (item, index) => {
+    const result = item.messages.participants[0] === auth.currentUser?.uid;
+
+    return result
+      ? item.messages.participants[1]
+      : item.messages.participants[0];
   };
 
   const getThumbnail = (item) => {
@@ -96,14 +98,14 @@ export default function UserChatsScreen() {
       : item.messages.thumbnailTarget;
   };
 
-  const renderItem = ({ item }) => (
+  const renderItem = ({ item, index }) => (
     <TouchableOpacity
       style={styles.chatItem}
       onPress={() => {
         router.push({
           pathname: "/(chat)",
           params: {
-            uid: conditionTarget(),
+            uid: conditionTarget(item, index),
           },
         });
       }}
