@@ -80,10 +80,6 @@ export default function UserChatsScreen() {
     queryFn: formatMyMessages,
   });
 
-  useEffect(() => {
-    queryClient.invalidateQueries({ queryKey: ["chatsMyMessages"] });
-  }, [queryMyMessages.data, queryClient]);
-
   const conditionTarget = () => {
     return Platform.OS === "android"
       ? queryMyMessages?.data[0].messages?.participants[1]

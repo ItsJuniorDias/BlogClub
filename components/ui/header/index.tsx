@@ -9,6 +9,7 @@ import { TouchableOpacity } from "react-native";
 import { useRouter } from "expo-router";
 import { getAuth } from "firebase/auth";
 import { auth } from "@/firebaseConfig";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface HeaderProps {
   title: string;
@@ -16,6 +17,8 @@ interface HeaderProps {
 }
 
 export default function Header({ title, description }: HeaderProps) {
+  const queryClient = useQueryClient();
+
   const router = useRouter();
 
   const { currentUser } = getAuth();
@@ -39,14 +42,18 @@ export default function Header({ title, description }: HeaderProps) {
       </Content>
 
       <TouchableOpacity
-        onPress={() =>
+        onPress={() => {
           router.push({
             pathname: "/(started-conversations)",
             params: {
               id: currentUser?.uid,
             },
-          })
-        }
+          });
+
+          setTimeout(() => {
+            queryClient.invalidateQueries({ queryKey: ["chatsMyMessages"] });
+          }, 1000);
+        }}
       >
         <Ionicons name="chatbox-outline" size={32} color="black" />
       </TouchableOpacity>
