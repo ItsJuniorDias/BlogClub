@@ -83,38 +83,49 @@ export default function ChatScreen() {
     return () => unsubscribe();
   }, []);
 
-  const onSend = useCallback(async (messages = []) => {
-    const { _id, createdAt, text, user } = messages[0];
+  const onSend = useCallback(
+    async (messages = []) => {
+      const { _id, createdAt, text, user } = messages[0];
 
-    await addDoc(
-      collection(
-        db,
-        "chats",
-        getChatId(auth.currentUser?.uid, params.uid),
-        "messages"
-      ),
-      {
-        _id,
-        createdAt,
-        text,
-        user,
-      }
-    );
-
-    await setDoc(
-      doc(db, "chats", getChatId(auth.currentUser?.uid, params.uid)),
-      {
-        messages: {
-          participants: [params.uid, auth.currentUser?.uid],
-          name: user.name,
-          text: text,
+      await addDoc(
+        collection(
+          db,
+          "chats",
+          getChatId(auth.currentUser?.uid, params.uid),
+          "messages"
+        ),
+        {
+          _id,
           createdAt,
-          thumbnailTarget: queryParamsUser?.data?.thumbnail,
-          thumbnailUser: queryUser?.data?.thumbnail,
-        },
-      }
-    );
-  }, []);
+          text,
+          user,
+        }
+      );
+
+      setTimeout(async () => {
+        await setDoc(
+          doc(db, "chats", getChatId(auth.currentUser?.uid, params.uid)),
+          {
+            messages: {
+              participants: [params.uid, auth.currentUser?.uid],
+              name: queryParamsUser?.data?.name,
+              text: text,
+              createdAt,
+              thumbnailTarget: queryParamsUser?.data?.thumbnail,
+              thumbnailUser: queryUser?.data?.thumbnail,
+            },
+          }
+        );
+      }, 2000);
+    },
+    [
+      auth.currentUser?.uid,
+      params.uid,
+      queryParamsUser?.data?.name,
+      queryParamsUser?.data?.thumbnail,
+      queryUser?.data?.thumbnail,
+    ]
+  );
 
   // Customização dos balões de mensagem
   const renderBubble = (props) => {
