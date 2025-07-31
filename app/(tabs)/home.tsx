@@ -2,16 +2,18 @@ import { StyleSheet, ScrollView, FlatList } from "react-native";
 
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "@/firebaseConfig";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { Card, CarouselComponent } from "../(home)/components";
 import { Header, LatestNews } from "@/components/ui";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { getAuth } from "firebase/auth";
 import { queryUserByUID } from "@/utils/queryUserByUID";
 import { useLinkingURL, useURL } from "expo-linking";
 
 export default function HomeScreen() {
+  const queryClient = useQueryClient();
+
   const [snapToItem, setSnapToItem] = useState(0);
 
   const [isLoading, setIsLoading] = useState(true);

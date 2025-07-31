@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   FlatList,
   TouchableOpacity,
@@ -28,6 +28,8 @@ import { Colors } from "@/constants/Colors";
 import { useRouter } from "expo-router";
 
 export default function UserChatsScreen() {
+  const [loading, setLoading] = useState(true);
+
   const queryClient = useQueryClient();
 
   const auth = getAuth();
@@ -59,8 +61,16 @@ export default function UserChatsScreen() {
         (item) => item?.messages?.participants[1] === auth?.currentUser?.uid
       );
 
+      setTimeout(() => {
+        setLoading(false);
+      }, 3000);
+
       return filterMyMessageTwo;
     }
+
+    setTimeout(() => {
+      setLoading(false);
+    }, 3000);
 
     return filterMyMessageOne;
   }, [queryAllMessages?.data, auth?.currentUser?.uid]);
@@ -154,7 +164,7 @@ export default function UserChatsScreen() {
 
   return (
     <Container>
-      {queryMyMessages.isLoading && (
+      {loading && (
         <>
           {renderHeader()}
           {queryMyMessages?.data?.map(() => (
@@ -163,7 +173,7 @@ export default function UserChatsScreen() {
         </>
       )}
 
-      {!queryMyMessages.isLoading && (
+      {!loading && (
         <FlatList
           data={queryMyMessages.data}
           keyExtractor={(item) => item.id}
