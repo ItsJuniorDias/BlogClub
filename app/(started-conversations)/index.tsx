@@ -74,15 +74,7 @@ export default function UserChatsScreen() {
 
       queryClient.invalidateQueries({ queryKey: ["chatsMyMessages"] });
     }
-  }, [queryMyMessages, queryAllMessages]);
-
-  const conditionTarget = () => {
-    if (findTarget()) {
-      return Platform.OS === "android"
-        ? queryMyMessages?.data[0].messages.participants[0]
-        : queryMyMessages?.data[0].messages.participants[1];
-    }
-  };
+  }, [queryMyMessages, queryAllMessages, queryClient]);
 
   const renderItem = ({ item }) => (
     <TouchableOpacity
@@ -91,7 +83,10 @@ export default function UserChatsScreen() {
         router.push({
           pathname: "/(chat)",
           params: {
-            uid: conditionTarget(),
+            uid:
+              Platform.OS === "android"
+                ? queryMyMessages?.data[0].messages.participants[0]
+                : queryMyMessages?.data[0].messages.participants[1],
           },
         });
       }}
