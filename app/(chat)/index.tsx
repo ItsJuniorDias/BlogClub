@@ -109,11 +109,9 @@ export default function ChatScreen() {
           name: user.name,
           text: text,
           createdAt,
-          thumbnail: queryParamsUser?.data?.thumbnail,
+          thumbnailTarget: queryParamsUser?.data?.thumbnail,
+          thumbnailUser: queryUser?.data?.thumbnail,
         },
-      },
-      {
-        merge: true,
       }
     );
   }, []);

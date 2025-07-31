@@ -71,15 +71,21 @@ export default function UserChatsScreen() {
   });
 
   useEffect(() => {
-    queryClient.invalidateQueries({ queryKey: ["chatsAll"] });
-
     queryClient.invalidateQueries({ queryKey: ["chatsMyMessages"] });
   }, [queryMyMessages.data, queryClient]);
 
   const conditionTarget = () => {
     return Platform.OS === "android"
-      ? queryMyMessages?.data[0].messages?.participants[0]
-      : queryMyMessages?.data[0].messages?.participants[1];
+      ? queryMyMessages?.data[0].messages?.participants[1]
+      : queryMyMessages?.data[0].messages?.participants[0];
+  };
+
+  const getThumbnail = () => {
+    return queryMyMessages?.data[0]?.messages?.participants.includes(
+      auth.currentUser?.uid
+    )
+      ? queryMyMessages?.data[0]?.messages?.thumbnailTarget
+      : queryMyMessages?.data[0]?.messages?.thumbnailUser;
   };
 
   const renderItem = ({ item }) => (
@@ -95,7 +101,11 @@ export default function UserChatsScreen() {
       }}
     >
       <Row>
-        <Thumbnail source={{ uri: `${item.messages.thumbnail}` }} />
+        <Thumbnail
+          source={{
+            uri: `${getThumbnail()}`,
+          }}
+        />
 
         <ContentText>
           <Text
@@ -141,8 +151,6 @@ export default function UserChatsScreen() {
       </>
     );
   };
-
-  console.log(queryMyMessages.data, "DATA");
 
   return (
     <Container>
