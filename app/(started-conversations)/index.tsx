@@ -86,12 +86,14 @@ export default function UserChatsScreen() {
       : queryMyMessages?.data[0].messages?.participants[0];
   };
 
-  const getThumbnail = () => {
-    return queryMyMessages?.data[0]?.messages?.participants.indexOf(
+  const getThumbnail = (item) => {
+    const result = queryMyMessages?.data[0]?.messages?.participants.indexOf(
       auth.currentUser?.uid
-    ) === 0
-      ? queryMyMessages?.data[0]?.messages?.thumbnailUser
-      : queryMyMessages?.data[0]?.messages?.thumbnailTarget;
+    );
+
+    return result === 0
+      ? item.messages.thumbnailUser
+      : item.messages.thumbnailTarget;
   };
 
   const renderItem = ({ item }) => (
@@ -109,7 +111,7 @@ export default function UserChatsScreen() {
       <Row>
         <Thumbnail
           source={{
-            uri: `${getThumbnail()}`,
+            uri: `${getThumbnail(item)}`,
           }}
         />
 
