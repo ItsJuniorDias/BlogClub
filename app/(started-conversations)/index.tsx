@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { Text, FlatList, TouchableOpacity, StyleSheet } from "react-native";
 import { collection, query, getDocs } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
@@ -30,7 +30,7 @@ export default function UserChatsScreen() {
     queryFn: fetchAllMessages,
   });
 
-  const formatMyMessages = () => {
+  const formatMyMessages = useCallback(() => {
     const filterMyMessageOne = queryAllMessages?.data?.filter(
       (item) => item?.messages?.participants[0] === auth?.currentUser?.uid
     );
@@ -44,7 +44,7 @@ export default function UserChatsScreen() {
     }
 
     return filterMyMessageOne;
-  };
+  }, [queryAllMessages?.data, auth?.currentUser?.uid]);
 
   const queryMyMessages = useQuery({
     queryKey: ["chatsMyMessages"],
@@ -52,7 +52,9 @@ export default function UserChatsScreen() {
   });
 
   useEffect(() => {
-    queryMyMessages.refetch();
+    if (!queryMyMessages.data) {
+      queryMyMessages.refetch();
+    }
   }, [queryMyMessages]);
 
   const renderItem = ({ item }) => (
@@ -62,7 +64,7 @@ export default function UserChatsScreen() {
         router.push({
           pathname: "/(chat)",
           params: {
-            uid: item.messages.participants[1],
+            uid: queryMyMessages?.data[0].messages.participants[0],
           },
         });
       }}
