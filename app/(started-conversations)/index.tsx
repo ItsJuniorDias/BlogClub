@@ -1,16 +1,24 @@
 import React, { useCallback, useEffect } from "react";
-import { Text, FlatList, TouchableOpacity, StyleSheet } from "react-native";
+import {
+  Text,
+  FlatList,
+  TouchableOpacity,
+  StyleSheet,
+  Platform,
+} from "react-native";
 import { collection, query, getDocs } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { db } from "../../firebaseConfig";
 
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { ButtonContent, Container, Skeleton } from "./styles";
 import { AntDesign } from "@expo/vector-icons";
 import { Colors } from "@/constants/Colors";
 import { useRouter } from "expo-router";
 
 export default function UserChatsScreen() {
+  const queryClient = useQueryClient();
+
   const auth = getAuth();
 
   const router = useRouter();
@@ -51,11 +59,30 @@ export default function UserChatsScreen() {
     queryFn: formatMyMessages,
   });
 
+  const findTarget = () => {
+    const result = queryMyMessages?.data?.find(
+      (item, index) =>
+        item?.messages?.participants[index] !== auth?.currentUser?.uid
+    );
+
+    return !!result;
+  };
+
   useEffect(() => {
     if (!queryMyMessages.data) {
-      queryMyMessages.refetch();
+      queryClient.invalidateQueries({ queryKey: ["chatsAll"] });
+
+      queryClient.invalidateQueries({ queryKey: ["chatsMyMessages"] });
     }
-  }, [queryMyMessages]);
+  }, [queryMyMessages, queryAllMessages]);
+
+  const conditionTarget = () => {
+    if (findTarget()) {
+      return Platform.OS === "android"
+        ? queryMyMessages?.data[0].messages.participants[0]
+        : queryMyMessages?.data[0].messages.participants[1];
+    }
+  };
 
   const renderItem = ({ item }) => (
     <TouchableOpacity
@@ -64,7 +91,7 @@ export default function UserChatsScreen() {
         router.push({
           pathname: "/(chat)",
           params: {
-            uid: queryMyMessages?.data[0].messages.participants[0],
+            uid: conditionTarget(),
           },
         });
       }}
