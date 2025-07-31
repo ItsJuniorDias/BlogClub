@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Text, FlatList, TouchableOpacity, StyleSheet } from "react-native";
 import { collection, query, getDocs } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
@@ -31,17 +31,29 @@ export default function UserChatsScreen() {
   });
 
   const formatMyMessages = () => {
-    const filterMyMessage = queryAllMessages?.data?.filter(
+    const filterMyMessageOne = queryAllMessages?.data?.filter(
       (item) => item?.messages?.participants[0] === auth?.currentUser?.uid
     );
 
-    return filterMyMessage;
+    if (!filterMyMessageOne?.length) {
+      const filterMyMessageTwo = queryAllMessages?.data?.filter(
+        (item) => item?.messages?.participants[1] === auth?.currentUser?.uid
+      );
+
+      return filterMyMessageTwo;
+    }
+
+    return filterMyMessageOne;
   };
 
   const queryMyMessages = useQuery({
     queryKey: ["chatsMyMessages"],
     queryFn: formatMyMessages,
   });
+
+  useEffect(() => {
+    queryMyMessages.refetch();
+  }, [queryMyMessages]);
 
   const renderItem = ({ item }) => (
     <TouchableOpacity
@@ -50,7 +62,7 @@ export default function UserChatsScreen() {
         router.push({
           pathname: "/(chat)",
           params: {
-            uid: item.messages.participants[0],
+            uid: item.messages.participants[1],
           },
         });
       }}
@@ -80,14 +92,14 @@ export default function UserChatsScreen() {
 
   return (
     <Container>
-      {query.isLoading && (
+      {queryMyMessages.isLoading && (
         <>
           {renderHeader()}
           <Skeleton />
         </>
       )}
 
-      {!query.isLoading && (
+      {!queryMyMessages.isLoading && (
         <FlatList
           data={queryMyMessages.data}
           keyExtractor={(item) => item.id}
