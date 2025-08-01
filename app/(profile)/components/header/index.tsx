@@ -94,15 +94,13 @@ export default function HeaderProfile({
       {
         text: "OK",
         onPress: () => {
-          if (!!queryUserUID) {
-            signOut(auth)
-              .then(() => {
-                router.replace("/(sign-in)");
-              })
-              .catch((error) => {
-                console.error("Sign out error:", error);
-              });
-          }
+          signOut(auth)
+            .then(() => {
+              router.replace("/(sign-in)");
+            })
+            .catch((error) => {
+              console.error("Sign out error:", error);
+            });
         },
       },
     ]);
@@ -334,7 +332,7 @@ export default function HeaderProfile({
 
             <ContentText>
               <Text
-                title={data?.email ?? dataUserStore?.data?.email}
+                title={data?.email ?? (dataUserStore?.data?.email || "Email")}
                 numberOfLines={1}
                 fontFamily="regular"
                 fontSize={14}
@@ -342,7 +340,7 @@ export default function HeaderProfile({
               />
 
               <Text
-                title={data?.name ?? dataUserStore?.data?.name}
+                title={data?.name ?? (dataUserStore?.data?.name || "Name")}
                 numberOfLines={1}
                 fontFamily="semi-bold"
                 fontSize={18}
