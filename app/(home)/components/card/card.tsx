@@ -12,6 +12,7 @@ import { useUIDStore } from "@/store/useIDStore";
 import { getUsersWithPriority } from "@/utils/getUsersWithPriority";
 import { getAuth } from "firebase/auth";
 import { getUserPosts } from "@/utils/getUserPosts";
+import { useCallback } from "react";
 
 interface ItemProps {
   id: string;
@@ -19,40 +20,21 @@ interface ItemProps {
   thumbnail: string;
 }
 
-export default function Card() {
+export default function Card({ data }) {
   const queryClient = useQueryClient();
 
-  const { data, fetch } = useUIDStore();
-
-  const auth = getAuth();
+  const { fetch } = useUIDStore();
 
   const router = useRouter();
 
-  const queryStoryUsers = useQuery({
-    queryKey: ["userStoryByUID"],
-    queryFn: () => getUsersWithPriority(auth.currentUser?.uid),
-  });
-
-  const queryUserPosts = useQuery({
-    queryKey: ["userPosts"],
-    queryFn: () => getUserPosts(data.uid),
-  });
-
-  const mutation = useMutation({
-    mutationFn: getUserPosts,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["userPosts"] });
-    },
-  });
-
-  const handleRedirect = (id: string) => {
-    mutation.mutate(id);
+  const handleRedirect = useCallback(async (id: string) => {
+    const result = await getUserPosts(id);
 
     fetch({
       uid: id,
     });
 
-    if (queryUserPosts.data?.length === 0) {
+    if (result.length === 0) {
       router.push({
         pathname: "/(tabs)/profile",
         params: {
@@ -62,11 +44,14 @@ export default function Card() {
 
       setTimeout(() => {
         queryClient.invalidateQueries({ queryKey: ["userByUID"] });
+        queryClient.invalidateQueries({ queryKey: ["getFollowing"] });
+        queryClient.invalidateQueries({ queryKey: ["getFollowers"] });
+        queryClient.invalidateQueries({ queryKey: ["repoData"] });
       }, 1000);
     } else {
       router.push("/(story)");
     }
-  };
+  }, []);
 
   const Item = ({ id, title, thumbnail }: ItemProps) => (
     <Content onPress={() => handleRedirect(id)}>
@@ -93,7 +78,7 @@ export default function Card() {
   return (
     <Container>
       <FlatList
-        data={queryStoryUsers.data}
+        data={data}
         horizontal
         showsHorizontalScrollIndicator={false}
         renderItem={({ item }) => (

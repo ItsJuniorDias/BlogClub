@@ -332,7 +332,7 @@ export default function HeaderProfile({
 
             <ContentText>
               <Text
-                title={data?.email ?? (dataUserStore?.data?.email || "Email")}
+                title={data?.email ?? dataUserStore?.data?.email}
                 numberOfLines={1}
                 fontFamily="regular"
                 fontSize={14}
@@ -340,7 +340,7 @@ export default function HeaderProfile({
               />
 
               <Text
-                title={data?.name ?? (dataUserStore?.data?.name || "Name")}
+                title={data?.name ?? dataUserStore?.data?.name}
                 numberOfLines={1}
                 fontFamily="semi-bold"
                 fontSize={18}

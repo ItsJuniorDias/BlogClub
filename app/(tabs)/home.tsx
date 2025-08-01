@@ -10,21 +10,27 @@ import { useCallback, useEffect, useState } from "react";
 import { getAuth } from "firebase/auth";
 import { queryUserByUID } from "@/utils/queryUserByUID";
 import { useLinkingURL, useURL } from "expo-linking";
+import { useUIDStore } from "@/store/useIDStore";
+import { getUserPosts } from "@/utils/getUserPosts";
+import { getUsersWithPriority } from "@/utils/getUsersWithPriority";
 
 export default function HomeScreen() {
-  const queryClient = useQueryClient();
+  const auth = getAuth();
 
   const [snapToItem, setSnapToItem] = useState(0);
 
   const [isLoading, setIsLoading] = useState(true);
-
-  const url = useLinkingURL();
 
   const user = getAuth();
 
   const queryUser = useQuery({
     queryKey: ["user"],
     queryFn: () => queryUserByUID(user?.currentUser?.uid),
+  });
+
+  const queryStoryUsers = useQuery({
+    queryKey: ["userStoryByUID"],
+    queryFn: () => getUsersWithPriority(auth.currentUser?.uid),
   });
 
   const fetch = useCallback(async () => {
@@ -101,7 +107,7 @@ export default function HomeScreen() {
           description="Explore today’s"
         />
 
-        <Card />
+        <Card data={queryStoryUsers.data} />
 
         <CarouselComponent
           onSnapToItem={(item) => {
