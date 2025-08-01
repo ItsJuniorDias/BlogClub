@@ -38,6 +38,10 @@ export const useOpenBrowserAsync = () => {
     return Platform.OS !== "android";
   }
 
+  function waitForRedirectAsync(returnUrl?: string | null): void {
+    router.push("/(tabs)/home");
+  }
+
   async function openAuthSessionPolyfillAsync(
     startUrl: string,
     returnUrl?: string | null,
@@ -84,10 +88,6 @@ export const useOpenBrowserAsync = () => {
       if (state === "active" && onWebBrowserCloseAndroid) {
         onWebBrowserCloseAndroid();
       }
-    }
-
-    function waitForRedirectAsync(returnUrl?: string | null): void {
-      router.push("/(tabs)/home");
     }
 
     function stopWaitingForRedirect() {
@@ -142,17 +142,13 @@ export const useOpenBrowserAsync = () => {
           browserParams
         );
 
-        await waitForRedirectAsync(returnUrl);
+        waitForRedirectAsync(returnUrl);
 
         return {
           ...responseBrowserAsync,
         };
       } else {
-        return await Promise.race([
-          openBrowserAsync(startUrl, browserParams),
-
-          waitForRedirectAsync(returnUrl),
-        ]);
+        const response = await openBrowserAsync(startUrl, browserParams);
       }
     } finally {
       // We can't dismiss the browser on Android, only call this when it's available.
@@ -160,6 +156,8 @@ export const useOpenBrowserAsync = () => {
       if (ExponentWebBrowser.dismissBrowser) {
         ExponentWebBrowser.dismissBrowser();
       }
+
+      waitForRedirectAsync(returnUrl);
 
       stopWaitingForRedirect();
     }
@@ -176,12 +174,17 @@ export const useOpenBrowserAsync = () => {
       }
 
       if (["ios", "macos", "web"].includes(Platform.OS)) {
-        return ExponentWebBrowser.openAuthSessionAsync(
+        const result = await ExponentWebBrowser.openAuthSessionAsync(
           url,
           redirectUrl,
           processOptions(options)
         );
+
+        waitForRedirectAsync();
+
+        return result;
       }
+
       return ExponentWebBrowser.openAuthSessionAsync(url, redirectUrl);
     } else {
       return openAuthSessionPolyfillAsync(url, redirectUrl, options);
