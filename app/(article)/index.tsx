@@ -63,6 +63,8 @@ export default function ArticleScreen() {
     queryFn: () => queryUserByUID(data.foreign_key),
   });
 
+  const renderDelete = data.foreign_key === currentUser?.uid;
+
   const handleLiked = async () => {
     setIsLike((prevState) => !prevState);
 
@@ -145,13 +147,15 @@ export default function ArticleScreen() {
             />
           </ButtonBack>
 
-          <TouchableOpacity onPress={() => handleDelete(data.id)}>
-            <Feather
-              name="more-horizontal"
-              size={32}
-              color={Colors.light.darkBlue}
-            />
-          </TouchableOpacity>
+          {renderDelete && (
+            <TouchableOpacity onPress={() => handleDelete(data.id)}>
+              <Feather
+                name="more-horizontal"
+                size={32}
+                color={Colors.light.darkBlue}
+              />
+            </TouchableOpacity>
+          )}
         </Header>
 
         <ContentTitle>
