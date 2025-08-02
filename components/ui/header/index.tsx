@@ -43,16 +43,16 @@ export default function Header({ title, description }: HeaderProps) {
 
       <TouchableOpacity
         onPress={() => {
+          setTimeout(() => {
+            queryClient.invalidateQueries({ queryKey: ["chatsMyMessages"] });
+          }, 1000);
+
           router.push({
             pathname: "/(started-conversations)",
             params: {
               id: currentUser?.uid,
             },
           });
-
-          setTimeout(() => {
-            queryClient.invalidateQueries({ queryKey: ["chatsMyMessages"] });
-          }, 1000);
         }}
       >
         <Ionicons name="chatbox-outline" size={32} color="black" />
