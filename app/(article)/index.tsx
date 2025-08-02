@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { TouchableOpacity, StyleSheet, Alert } from "react-native";
+import * as Sharing from "expo-sharing";
 
 import SimpleLineIcons from "@expo/vector-icons/SimpleLineIcons";
 import Feather from "@expo/vector-icons/Feather";
@@ -185,12 +186,14 @@ export default function ArticleScreen() {
           </Row>
 
           <Row>
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                Sharing.shareAsync("https://blogclub.dev.br/", {
+                  dialogTitle: "Blog Club - App",
+                });
+              }}
+            >
               <Feather name="send" size={24} color={Colors.light.blue} />
-            </TouchableOpacity>
-
-            <TouchableOpacity>
-              <Fontisto name="favorite" size={24} color={Colors.light.blue} />
             </TouchableOpacity>
           </Row>
         </ContentInfo>

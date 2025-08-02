@@ -72,7 +72,7 @@ export const ContentText = styled.View`
 export const Footer = styled.View`
   width: 100%;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   padding-left: 40px;
   padding-right: 40px;

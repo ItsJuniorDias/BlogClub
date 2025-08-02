@@ -129,8 +129,6 @@ export default function StoryScreen() {
       </ContentBlur>
 
       <Footer>
-        <View />
-
         <ContentButton
           onPress={() => {
             fetch({
@@ -154,17 +152,6 @@ export default function StoryScreen() {
             color={Colors.light.blue}
           />
         </ContentButton>
-
-        <ContentLike onPress={() => {}}>
-          <AntDesign name="heart" size={32} color={"#FF3743"} />
-
-          <Text
-            title="450k"
-            fontFamily="semi-bold"
-            fontSize={16}
-            color={Colors.light.background}
-          />
-        </ContentLike>
       </Footer>
     </Container>
   );
