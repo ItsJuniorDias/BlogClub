@@ -28,52 +28,37 @@ import { Colors } from "@/constants/Colors";
 import { useRouter } from "expo-router";
 
 export default function UserChatsScreen() {
-  const [loading, setLoading] = useState(true);
-
-  const queryClient = useQueryClient();
-
   const auth = getAuth();
 
   const router = useRouter();
 
-  const fetchAllMessages = async () => {
-    const docRef = collection(db, "chats");
+  const formatMyMessages = useCallback(async () => {
+    const fetchAllMessages = async () => {
+      const docRef = collection(db, "chats");
 
-    const docSnap = await getDocs(docRef);
+      const docSnap = await getDocs(docRef);
 
-    return docSnap.docs.map((item) => ({
-      ...item.data(),
-    }));
-  };
+      return docSnap.docs.map((item) => ({
+        ...item.data(),
+      }));
+    };
 
-  const queryAllMessages = useQuery({
-    queryKey: ["chatsAll"],
-    queryFn: fetchAllMessages,
-  });
+    const resultMyMessage = await fetchAllMessages();
 
-  const formatMyMessages = useCallback(() => {
-    const filterMyMessageOne = queryAllMessages?.data?.filter(
+    const filterMyMessageOne = resultMyMessage.filter(
       (item) => item?.messages?.participants[0] === auth?.currentUser?.uid
     );
 
     if (!filterMyMessageOne?.length) {
-      const filterMyMessageTwo = queryAllMessages?.data?.filter(
+      const filterMyMessageTwo = resultMyMessage.filter(
         (item) => item?.messages?.participants[1] === auth?.currentUser?.uid
       );
-
-      setTimeout(() => {
-        setLoading(false);
-      }, 3000);
 
       return filterMyMessageTwo;
     }
 
-    setTimeout(() => {
-      setLoading(false);
-    }, 3000);
-
     return filterMyMessageOne;
-  }, [queryAllMessages?.data, auth?.currentUser?.uid]);
+  }, []);
 
   const queryMyMessages = useQuery({
     queryKey: ["chatsMyMessages"],
@@ -164,7 +149,7 @@ export default function UserChatsScreen() {
 
   return (
     <Container>
-      {loading && (
+      {queryMyMessages.isLoading && (
         <>
           {renderHeader()}
           {queryMyMessages?.data?.map(() => (
@@ -173,7 +158,7 @@ export default function UserChatsScreen() {
         </>
       )}
 
-      {!loading && (
+      {!queryMyMessages.isLoading && (
         <FlatList
           data={queryMyMessages.data}
           keyExtractor={(item) => item.id}
