@@ -25,6 +25,7 @@ import {
 import { AntDesign } from "@expo/vector-icons";
 import { Colors } from "@/constants/Colors";
 import { useRouter } from "expo-router";
+import { formatMyMessages } from "@/utils/formatMyMessages";
 
 export default function UserChatsScreen() {
   const auth = getAuth();
@@ -32,34 +33,6 @@ export default function UserChatsScreen() {
   const router = useRouter();
 
   const queryClient = useQueryClient();
-
-  const formatMyMessages = useCallback(async () => {
-    const fetchAllMessages = async () => {
-      const docRef = collection(db, "chats");
-
-      const docSnap = await getDocs(docRef);
-
-      return docSnap.docs.map((item) => ({
-        ...item.data(),
-      }));
-    };
-
-    const resultMyMessage = await fetchAllMessages();
-
-    const filterMyMessageOne = resultMyMessage.filter(
-      (item) => item?.messages?.participants[0] === auth?.currentUser?.uid
-    );
-
-    if (!filterMyMessageOne?.length) {
-      const filterMyMessageTwo = resultMyMessage.filter(
-        (item) => item?.messages?.participants[1] === auth?.currentUser?.uid
-      );
-
-      return filterMyMessageTwo;
-    }
-
-    return filterMyMessageOne;
-  }, []);
 
   const queryMyMessages = useQuery({
     queryKey: ["chatsMyMessages"],

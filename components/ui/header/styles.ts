@@ -20,3 +20,15 @@ export const Notification = styled(Image)`
   width: 32px;
   height: 32px;
 `;
+
+export const ContentPointer = styled.View`
+  align-items: flex-end;
+`;
+
+export const Pointer = styled.View`
+  width: 12px;
+  height: 12px;
+  border-radius: 50px;
+  background-color: red;
+  position: absolute;
+`;

@@ -4,12 +4,20 @@ import { Colors } from "@/constants/Colors";
 import nofitication from "../../../assets/images/notification.png";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
-import { Container, Content, Notification } from "./styles";
+import {
+  Container,
+  Content,
+  ContentPointer,
+  Notification,
+  Pointer,
+} from "./styles";
 import { TouchableOpacity } from "react-native";
 import { useRouter } from "expo-router";
 import { getAuth } from "firebase/auth";
 import { auth } from "@/firebaseConfig";
-import { useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { formatMyMessages } from "@/utils/formatMyMessages";
+import { useEffect } from "react";
 
 interface HeaderProps {
   title: string;
@@ -17,11 +25,32 @@ interface HeaderProps {
 }
 
 export default function Header({ title, description }: HeaderProps) {
-  const queryClient = useQueryClient();
-
   const router = useRouter();
 
   const { currentUser } = getAuth();
+
+  const queryMyMessages = useQuery({
+    queryKey: ["chatsMyMessages"],
+    queryFn: formatMyMessages,
+  });
+
+  const conditionUserTarget = () => {
+    if (!queryMyMessages.isLoading) {
+      const result = queryMyMessages?.data[0]?.messages?.participants.indexOf(
+        auth.currentUser?.uid
+      );
+
+      return result === 0 ? 0 : 1;
+    }
+  };
+
+  const filterReadAt = () => {
+    const result = queryMyMessages?.data?.filter(
+      (item) => item.messages.readAt !== null
+    );
+
+    return !result?.length;
+  };
 
   return (
     <Container>
@@ -41,18 +70,22 @@ export default function Header({ title, description }: HeaderProps) {
         />
       </Content>
 
-      <TouchableOpacity
-        onPress={() => {
-          router.push({
-            pathname: "/(started-conversations)",
-            params: {
-              id: currentUser?.uid,
-            },
-          });
-        }}
-      >
-        <Ionicons name="chatbox-outline" size={32} color="black" />
-      </TouchableOpacity>
+      <ContentPointer>
+        <TouchableOpacity
+          onPress={() => {
+            router.push({
+              pathname: "/(started-conversations)",
+              params: {
+                id: currentUser?.uid,
+              },
+            });
+          }}
+        >
+          <Ionicons name="chatbox-outline" size={32} color="black" />
+        </TouchableOpacity>
+
+        {filterReadAt() && conditionUserTarget() === 0 && <Pointer />}
+      </ContentPointer>
     </Container>
   );
 }
