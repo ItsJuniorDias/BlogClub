@@ -31,6 +31,7 @@ export const Skeleton = styled.View`
 
 export const Row = styled.View`
   flex-direction: row;
+  justify-content: space-between;
 `;
 
 export const Thumbnail = styled(Image)`
@@ -42,6 +43,26 @@ export const Thumbnail = styled(Image)`
 export const ContentText = styled.View`
   padding-left: 8px;
   gap: 8px;
+`;
+
+export const Content = styled.View`
+  flex-direction: row;
+  gap: 16px;
+`;
+
+export const ContentNotification = styled.View`
+  flex-direction: row;
+  width: 32px;
+  height: 32px;
+  justify-content: flex-end;
+`;
+
+export const Pointer = styled.View`
+  width: 12px;
+  height: 12px;
+  border-radius: 50px;
+  background-color: red;
+  position: absolute;
 `;
 
 export const FooterText = styled.View`

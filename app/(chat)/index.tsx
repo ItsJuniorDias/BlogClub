@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
 
-import { StyleSheet, View, TouchableOpacity } from "react-native";
+import { StyleSheet, View } from "react-native";
 
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { Text } from "../../components/ui";
@@ -26,7 +26,7 @@ import { db } from "../../firebaseConfig";
 import { Colors } from "@/constants/Colors";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { getAuth } from "firebase/auth";
-import { ButtonBack, ButtonContent } from "./styles";
+import { ButtonContent } from "./styles";
 import { useQuery } from "@tanstack/react-query";
 import { queryUserByUID } from "@/utils/queryUserByUID";
 
@@ -113,6 +113,7 @@ export default function ChatScreen() {
               createdAt,
               thumbnailTarget: queryParamsUser?.data?.thumbnail,
               thumbnailUser: queryUser?.data?.thumbnail,
+              readAt: null,
             },
           }
         );
@@ -127,7 +128,6 @@ export default function ChatScreen() {
     ]
   );
 
-  // Customização dos balões de mensagem
   const renderBubble = (props) => {
     return (
       <Bubble
@@ -161,7 +161,6 @@ export default function ChatScreen() {
     );
   };
 
-  // Customização da barra de entrada
   const renderInputToolbar = (props) => {
     return (
       <InputToolbar
@@ -172,7 +171,6 @@ export default function ChatScreen() {
     );
   };
 
-  // Customização do botão de envio
   const renderSend = (props) => {
     return (
       <Send {...props}>

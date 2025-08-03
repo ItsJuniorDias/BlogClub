@@ -1,14 +1,10 @@
-import React, { useCallback, useEffect, useState } from "react";
-import {
-  FlatList,
-  TouchableOpacity,
-  StyleSheet,
-  Platform,
-  View,
-} from "react-native";
-import { collection, query, getDocs } from "firebase/firestore";
+import React, { useCallback } from "react";
+import { FlatList, TouchableOpacity, StyleSheet } from "react-native";
+import { collection, doc, getDocs, setDoc } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { db } from "../../firebaseConfig";
+
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
@@ -17,8 +13,11 @@ import { Text } from "../../components/ui";
 import {
   ButtonContent,
   Container,
+  Content,
+  ContentNotification,
   ContentText,
   FooterText,
+  Pointer,
   Row,
   Skeleton,
   Thumbnail,
@@ -31,6 +30,8 @@ export default function UserChatsScreen() {
   const auth = getAuth();
 
   const router = useRouter();
+
+  const queryClient = useQueryClient();
 
   const formatMyMessages = useCallback(async () => {
     const fetchAllMessages = async () => {
@@ -73,6 +74,14 @@ export default function UserChatsScreen() {
       : item.messages.participants[0];
   };
 
+  const conditionUserTarget = () => {
+    const result = queryMyMessages?.data[0]?.messages?.participants.indexOf(
+      auth.currentUser?.uid
+    );
+
+    return result === 0 ? 0 : 1;
+  };
+
   const getThumbnail = (item) => {
     const result = queryMyMessages?.data[0]?.messages?.participants.indexOf(
       auth.currentUser?.uid
@@ -83,59 +92,96 @@ export default function UserChatsScreen() {
       : item.messages.thumbnailTarget;
   };
 
-  const renderItem = ({ item, index }) => (
-    <TouchableOpacity
-      style={styles.chatItem}
-      onPress={() => {
-        router.push({
-          pathname: "/(chat)",
-          params: {
-            uid: conditionTarget(item, index),
+  const handleReadAt = async (item, index) => {
+    if (conditionUserTarget() === 0) {
+      await setDoc(
+        doc(
+          db,
+          "chats",
+          `${item.messages.participants[0]}_${item.messages.participants[1]}`
+        ),
+        {
+          messages: {
+            ...item.messages,
+            readAt: new Date(),
           },
-        });
-      }}
-    >
-      <Row>
-        <Thumbnail
-          source={{
-            uri: `${getThumbnail(item)}`,
-          }}
-        />
+        },
+        {
+          merge: true,
+        }
+      );
 
-        <ContentText>
-          <Text
-            title={item.messages.name}
-            fontFamily="bold"
-            fontSize={16}
-            color={Colors.light.darkBlue}
-          />
+      queryClient.invalidateQueries({ queryKey: ["chatsMyMessages"] });
+    }
 
+    router.push({
+      pathname: "/(chat)",
+      params: {
+        uid: conditionTarget(item, index),
+      },
+    });
+  };
+
+  const renderItem = ({ item, index }) => {
+    return (
+      <TouchableOpacity
+        style={styles.chatItem}
+        onPress={() => handleReadAt(item, index)}
+      >
+        <Row>
+          <Content>
+            <Thumbnail
+              source={{
+                uri: `${getThumbnail(item)}`,
+              }}
+            />
+
+            <ContentText>
+              <Text
+                title={item.messages.name}
+                fontFamily="bold"
+                fontSize={16}
+                color={Colors.light.darkBlue}
+              />
+
+              <Text
+                title={item.messages.text || "Sem mensagem"}
+                fontFamily="regular"
+                fontSize={14}
+                color={Colors.light.darkBlue}
+              />
+            </ContentText>
+          </Content>
+
+          <ContentNotification>
+            <Ionicons name="notifications-outline" size={32} color="black" />
+
+            {!item.messages.readAt && conditionUserTarget() === 0 && (
+              <Pointer />
+            )}
+          </ContentNotification>
+        </Row>
+
+        <FooterText>
           <Text
-            title={item.messages.text || "Sem mensagem"}
+            title={
+              !!item?.messages?.createdAt
+                ? item?.messages?.createdAt
+                    .toDate()
+                    .toLocaleTimeString("pt-BR", {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })
+                : ""
+            }
             fontFamily="regular"
-            fontSize={14}
+            fontSize={12}
             color={Colors.light.darkBlue}
           />
-        </ContentText>
-      </Row>
-
-      <FooterText>
-        <Text
-          title={
-            !!item?.messages?.createdAt
-              ? item?.messages?.createdAt.toDate().toLocaleTimeString("pt-BR", {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })
-              : ""
-          }
-          fontFamily="regular"
-          fontSize={12}
-          color={Colors.light.darkBlue}
-        />
-      </FooterText>
-    </TouchableOpacity>
-  );
+        </FooterText>
+      </TouchableOpacity>
+    );
+  };
 
   const renderHeader = () => {
     return (
