@@ -6,7 +6,15 @@ import {
   View,
   Alert,
 } from "react-native";
-import { collection, doc, getDoc, getDocs, setDoc } from "firebase/firestore";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  setDoc,
+} from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { db } from "../../firebaseConfig";
 
@@ -14,7 +22,7 @@ import { SwipeListView } from "react-native-swipe-list-view";
 
 import Ionicons from "@expo/vector-icons/Ionicons";
 
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { Text } from "../../components/ui";
 
@@ -47,7 +55,7 @@ export default function UserChatsScreen() {
     queryFn: formatMyMessages,
   });
 
-  const conditionTarget = (item, index) => {
+  const conditionTarget = (item) => {
     const result = item.messages.participants[0] === auth.currentUser?.uid;
 
     return result
@@ -72,6 +80,54 @@ export default function UserChatsScreen() {
       ? item.messages.thumbnailUser
       : item.messages.thumbnailTarget;
   };
+
+  async function getAllMessages(chatId: string) {
+    const messagesRef = collection(db, "chats", chatId, "messages");
+
+    const q = query(messagesRef);
+    const querySnapshot = await getDocs(q);
+
+    const messages = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+    return messages;
+  }
+
+  const handleDelete = async (item) => {
+    try {
+      deleteDoc(
+        doc(db, "chats", `${auth.currentUser?.uid}_${conditionTarget(item)}`)
+      );
+
+      const messages = await getAllMessages(
+        `${auth.currentUser?.uid}_${conditionTarget(item)}`
+      );
+
+      messages.map((messageDoc) =>
+        deleteDoc(
+          doc(
+            db,
+            "chats",
+            `${auth.currentUser?.uid}_${conditionTarget(item)}`,
+            "messages",
+            messageDoc.id
+          )
+        )
+      );
+    } catch (error) {
+      console.error("Erro ao deletar mensagens:", error);
+      throw error;
+    }
+  };
+
+  const mutation = useMutation({
+    mutationFn: handleDelete,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["chatsMyMessages"] });
+    },
+  });
 
   const handleReadAt = async (item, index) => {
     const referencia = doc(
@@ -227,7 +283,10 @@ export default function UserChatsScreen() {
                   onPress: () => console.log("Cancel Pressed"),
                   style: "cancel",
                 },
-                { text: "OK", onPress: () => console.log("OK Pressed") },
+                {
+                  text: "OK",
+                  onPress: () => mutation.mutate(rowMap.undefined.props.item),
+                },
               ]
             );
           }}
