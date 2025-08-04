@@ -15,6 +15,8 @@ import { getUserPosts } from "@/utils/getUserPosts";
 import { getUsersWithPriority } from "@/utils/getUsersWithPriority";
 
 export default function HomeScreen() {
+  const queryClient = useQueryClient();
+
   const auth = getAuth();
 
   const [snapToItem, setSnapToItem] = useState(0);
@@ -32,6 +34,10 @@ export default function HomeScreen() {
     queryKey: ["userStoryByUID"],
     queryFn: () => getUsersWithPriority(auth.currentUser?.uid),
   });
+
+  useEffect(() => {
+    queryClient.invalidateQueries({ queryKey: ["chatsMyMessages"] });
+  }, [queryClient]);
 
   const fetch = useCallback(async () => {
     const querySnapshot = await getDocs(collection(db, "posts"));
