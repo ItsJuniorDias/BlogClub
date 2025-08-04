@@ -16,8 +16,8 @@ export const getLastPostByUser = async (uid: string) => {
 
     const mostRecentItem = filterForeignKeyData.reduce((latest, current) => {
       return new Date(current.createdAt) > new Date(latest.createdAt)
-        ? current
-        : latest;
+        ? latest
+        : current;
     });
 
     return mostRecentItem;
