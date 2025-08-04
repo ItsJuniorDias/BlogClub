@@ -77,6 +77,7 @@ export const Footer = styled.View`
   padding-left: 40px;
   padding-right: 40px;
   margin-top: 32px;
+  margin-bottom: 32px;
 `;
 
 export const ContentButton = styled.TouchableOpacity`

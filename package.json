@@ -50,6 +50,7 @@
     "react-hook-form": "^7.60.0",
     "react-native": "0.79.4",
     "react-native-gesture-handler": "~2.24.0",
+    "react-native-gifted-chat": "2.6.3",
     "react-native-google-signin": "^2.1.1",
     "react-native-reanimated": "~3.17.4",
     "react-native-reanimated-carousel": "^4.0.2",
@@ -57,13 +58,13 @@
     "react-native-safe-area-context": "5.4.0",
     "react-native-screens": "~4.11.1",
     "react-native-svg": "15.11.2",
+    "react-native-swipe-list-view": "^3.2.9",
     "react-native-toast-message": "^2.3.3",
     "react-native-web": "~0.20.0",
     "react-native-webview": "13.13.5",
     "styled-components": "^6.1.19",
     "zod": "^4.0.2",
-    "zustand": "^5.0.6",
-    "react-native-gifted-chat": "2.6.3"
+    "zustand": "^5.0.6"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

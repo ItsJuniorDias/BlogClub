@@ -1,8 +1,16 @@
-import React, { useCallback } from "react";
-import { FlatList, TouchableOpacity, StyleSheet } from "react-native";
+import React, { useCallback, useState } from "react";
+import {
+  FlatList,
+  TouchableOpacity,
+  StyleSheet,
+  View,
+  Alert,
+} from "react-native";
 import { collection, doc, getDoc, getDocs, setDoc } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { db } from "../../firebaseConfig";
+
+import { SwipeListView } from "react-native-swipe-list-view";
 
 import Ionicons from "@expo/vector-icons/Ionicons";
 
@@ -186,11 +194,12 @@ export default function UserChatsScreen() {
       )}
 
       {!queryMyMessages.isLoading && (
-        <FlatList
+        <SwipeListView
           data={queryMyMessages.data}
           keyExtractor={(item) => item.id}
           renderItem={renderItem}
           ListHeaderComponent={renderHeader}
+          renderHiddenItem={({ item }) => <View></View>}
           ListEmptyComponent={
             <Text
               title="You have no conversations."
@@ -200,6 +209,28 @@ export default function UserChatsScreen() {
               style={{ textAlign: "center" }}
             />
           }
+          rightOpenValue={-75}
+          disableRightSwipe
+          onRowOpen={(rowKey, rowMap) => {
+            setTimeout(() => {
+              if (rowMap[rowKey]) {
+                rowMap[rowKey].closeRow();
+              }
+            }, 1000);
+
+            Alert.alert(
+              "Are you sure you want to delete this conversation?",
+              "the conversation will be deleted",
+              [
+                {
+                  text: "Cancel",
+                  onPress: () => console.log("Cancel Pressed"),
+                  style: "cancel",
+                },
+                { text: "OK", onPress: () => console.log("OK Pressed") },
+              ]
+            );
+          }}
         />
       )}
     </Container>
