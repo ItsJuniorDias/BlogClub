@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
 import { FlatList, TouchableOpacity, StyleSheet } from "react-native";
-import { collection, doc, getDocs, setDoc } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, setDoc } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { db } from "../../firebaseConfig";
 
@@ -66,7 +66,15 @@ export default function UserChatsScreen() {
   };
 
   const handleReadAt = async (item, index) => {
-    if (conditionUserTarget() === 0) {
+    const referencia = doc(
+      db,
+      "chats",
+      `${item.messages.participants[0]}_${item.messages.participants[1]}`
+    );
+
+    const snapshot = await getDoc(referencia);
+
+    if (conditionUserTarget() === 0 && snapshot.exists()) {
       await setDoc(
         doc(
           db,
