@@ -276,7 +276,7 @@ export default function UserChatsScreen() {
 
             Alert.alert(
               "Are you sure you want to delete this conversation?",
-              "the conversation will be deleted",
+              "the conversation will be deleted for both users",
               [
                 {
                   text: "Cancel",
