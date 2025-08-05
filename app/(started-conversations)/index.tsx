@@ -7,6 +7,7 @@ import {
   Alert,
 } from "react-native";
 import {
+  arrayUnion,
   collection,
   deleteDoc,
   doc,
@@ -14,6 +15,7 @@ import {
   getDocs,
   query,
   setDoc,
+  updateDoc,
 } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { db } from "../../firebaseConfig";
@@ -95,31 +97,58 @@ export default function UserChatsScreen() {
     return messages;
   }
 
-  const handleDelete = async (item) => {
+  const hideChatForUser = async (item) => {
     try {
-      deleteDoc(
-        doc(db, "chats", `${auth.currentUser?.uid}_${conditionTarget(item)}`)
+      const refDoc = doc(
+        db,
+        "chats",
+        `${conditionTarget(item)}_${auth.currentUser?.uid}`
       );
 
-      const messages = await getAllMessages(
+      const refDocTarget = doc(
+        db,
+        "chats",
         `${auth.currentUser?.uid}_${conditionTarget(item)}`
       );
 
-      messages.map((messageDoc) =>
-        deleteDoc(
-          doc(
-            db,
-            "chats",
-            `${auth.currentUser?.uid}_${conditionTarget(item)}`,
-            "messages",
-            messageDoc.id
-          )
-        )
-      );
+      const getDocs = getDoc(refDoc);
+
+      if ((await getDocs).exists()) {
+        await setDoc(
+          refDoc,
+          {
+            messages: {
+              ...item.messages,
+              removedFor: arrayUnion(auth.currentUser?.uid),
+            },
+          },
+          {
+            merge: true,
+          }
+        );
+      } else {
+        await setDoc(
+          refDocTarget,
+          {
+            messages: {
+              ...item.messages,
+              removedFor: arrayUnion(auth.currentUser?.uid),
+            },
+          },
+          {
+            merge: true,
+          }
+        );
+      }
+
+      console.log("Conversa oculta para o usuário");
     } catch (error) {
-      console.error("Erro ao deletar mensagens:", error);
-      throw error;
+      console.error("Erro ao ocultar a conversa:", error);
     }
+  };
+
+  const handleDelete = async (item) => {
+    hideChatForUser(item);
   };
 
   const mutation = useMutation({

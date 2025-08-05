@@ -74,6 +74,7 @@ export default function ChatScreen() {
           text: firebaseData.text,
           createdAt: firebaseData.createdAt.toDate(),
           user: firebaseData.user,
+          removedFor: [],
         };
       });
 
@@ -114,6 +115,7 @@ export default function ChatScreen() {
               thumbnailTarget: queryParamsUser?.data?.thumbnail,
               thumbnailUser: queryUser?.data?.thumbnail,
               readAt: null,
+              removedFor: [],
             },
           }
         );

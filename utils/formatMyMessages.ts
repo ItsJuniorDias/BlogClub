@@ -17,6 +17,14 @@ export const formatMyMessages = async () => {
 
   const resultMyMessage = await fetchAllMessages();
 
+  const filterHideMessage = resultMyMessage.filter((item) =>
+    item.messages.removedFor.includes(auth.currentUser?.uid)
+  );
+
+  if (!!filterHideMessage.length) {
+    return [];
+  }
+
   const filterMyMessageOne = resultMyMessage.filter(
     (item) => item?.messages?.participants[0] === auth?.currentUser?.uid
   );
