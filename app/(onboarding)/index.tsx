@@ -35,7 +35,7 @@ export default function OnboardingScreen() {
         />
 
         <Text
-          title={`You can read thousands of articles on Blog\nClub, save them in the application and share\nthem with your loved ones.`}
+          title={`You can read hundreds of articles on Blog\nClub, save them in the application and share\nthem with your loved ones.`}
           fontFamily="regular"
           fontSize={14}
           lineHeight={22}
