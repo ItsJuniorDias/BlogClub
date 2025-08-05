@@ -17,12 +17,12 @@ export const formatMyMessages = async () => {
 
   const resultMyMessage = await fetchAllMessages();
 
-  const filterHideMessage = resultMyMessage.filter((item) =>
-    item.messages.removedFor.includes(auth.currentUser?.uid)
+  const filterHideMessage = resultMyMessage.filter(
+    (item) => !item.messages.removedFor.includes(auth.currentUser?.uid)
   );
 
-  if (!!filterHideMessage.length) {
-    return [];
+  if (!!filterHideMessage) {
+    return filterHideMessage;
   }
 
   const filterMyMessageOne = resultMyMessage.filter(
