@@ -17,14 +17,6 @@ export const formatMyMessages = async () => {
 
   const resultMyMessage = await fetchAllMessages();
 
-  const filterHideMessage = resultMyMessage.filter(
-    (item) => !item.messages.removedFor.includes(auth.currentUser?.uid)
-  );
-
-  if (!!filterHideMessage) {
-    return filterHideMessage;
-  }
-
   const filterMyMessageOne = resultMyMessage.filter(
     (item) => item?.messages?.participants[0] === auth?.currentUser?.uid
   );
@@ -33,6 +25,14 @@ export const formatMyMessages = async () => {
     const filterMyMessageTwo = resultMyMessage.filter(
       (item) => item?.messages?.participants[1] === auth?.currentUser?.uid
     );
+
+    const filterHideMessage = filterMyMessageTwo.filter(
+      (item) => !item.messages.removedFor.includes(auth.currentUser?.uid)
+    );
+
+    if (!!filterHideMessage) {
+      return filterHideMessage;
+    }
 
     return filterMyMessageTwo;
   }

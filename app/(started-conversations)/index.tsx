@@ -141,6 +141,8 @@ export default function UserChatsScreen() {
         );
       }
 
+      queryClient.invalidateQueries({ queryKey: ["chatsMyMessages"] });
+
       console.log("Conversa oculta para o usuário");
     } catch (error) {
       console.error("Erro ao ocultar a conversa:", error);
@@ -153,9 +155,7 @@ export default function UserChatsScreen() {
 
   const mutation = useMutation({
     mutationFn: handleDelete,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["chatsMyMessages"] });
-    },
+    onSuccess: () => {},
   });
 
   const handleReadAt = async (item, index) => {
