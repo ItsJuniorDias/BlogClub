@@ -17,6 +17,7 @@ import {
 } from "./styles";
 import { useRouter } from "expo-router";
 import { useDataStore } from "@/store/useDataStore";
+import { timeAgo } from "@/utils/timeAgo";
 
 interface LatestNewsProps {
   id: string;
@@ -31,7 +32,8 @@ interface LatestNewsProps {
   numberLike: number;
   hours: number;
   foreign_key: string;
-  type: "technology" | "adventure";
+  type: "technology" | "adventure" | "philosophy";
+  createdAt: Date;
 }
 
 export default function LatestNews({
@@ -48,6 +50,7 @@ export default function LatestNews({
   hours,
   foreign_key,
   type,
+  createdAt,
 }: LatestNewsProps) {
   const fetch = useDataStore((state) => state.fetch);
 
@@ -64,15 +67,6 @@ export default function LatestNews({
               fontSize={20}
               color={Colors.light.darkBlue}
             />
-
-            <TouchableOpacity onPress={() => {}}>
-              <Text
-                title="More"
-                fontFamily="regular"
-                fontSize={14}
-                color={Colors.light.blue}
-              />
-            </TouchableOpacity>
           </ContentText>
         )}
 
@@ -93,6 +87,7 @@ export default function LatestNews({
                 hours,
                 foreign_key,
                 type,
+                createdAt,
               });
 
               router.push("/(article)");
@@ -139,7 +134,7 @@ export default function LatestNews({
                   />
 
                   <Text
-                    title={`${hours}hr ago`}
+                    title={`${timeAgo(createdAt)}`}
                     fontFamily="regular"
                     fontSize={12}
                     color={Colors.light.darkBlue}

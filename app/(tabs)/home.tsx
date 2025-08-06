@@ -9,9 +9,7 @@ import { Header, LatestNews } from "@/components/ui";
 import { useCallback, useEffect, useState } from "react";
 import { getAuth } from "firebase/auth";
 import { queryUserByUID } from "@/utils/queryUserByUID";
-import { useLinkingURL, useURL } from "expo-linking";
-import { useUIDStore } from "@/store/useIDStore";
-import { getUserPosts } from "@/utils/getUserPosts";
+
 import { getUsersWithPriority } from "@/utils/getUsersWithPriority";
 
 export default function HomeScreen() {
@@ -97,6 +95,7 @@ export default function HomeScreen() {
         isLike={item.isLike}
         foreign_key={item.foreign_key}
         type={item.type}
+        createdAt={item.createdAt}
       />
     ),
     [isLoading]

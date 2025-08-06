@@ -1,14 +1,11 @@
 import { useState } from "react";
-import { TouchableOpacity, StyleSheet, Alert } from "react-native";
+import { TouchableOpacity, Alert } from "react-native";
 import * as Sharing from "expo-sharing";
 
 import SimpleLineIcons from "@expo/vector-icons/SimpleLineIcons";
 import Feather from "@expo/vector-icons/Feather";
-import Fontisto from "@expo/vector-icons/Fontisto";
-import AntDesign from "@expo/vector-icons/AntDesign";
 
-import profile_picture from "../../assets/images/profile_picture.png";
-import image_body from "../../assets/images/image_body.png";
+import AntDesign from "@expo/vector-icons/AntDesign";
 
 import { Text } from "../../components/ui";
 import { Colors } from "@/constants/Colors";
@@ -46,6 +43,7 @@ import { db } from "@/firebaseConfig";
 import { getAuth } from "firebase/auth";
 import { StatusBar } from "expo-status-bar";
 import { queryUserByUID } from "@/utils/queryUserByUID";
+import { timeAgo } from "@/utils/timeAgo";
 
 export default function ArticleScreen() {
   const queryClient = useQueryClient();
@@ -181,7 +179,7 @@ export default function ArticleScreen() {
               />
 
               <Text
-                title="2m ago"
+                title={`${timeAgo(data.createdAt)}`}
                 fontFamily="regular"
                 fontSize={12}
                 color={Colors.light.darkGray}
