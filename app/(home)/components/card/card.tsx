@@ -80,6 +80,7 @@ export default function Card({ data }) {
       <FlatList
         data={data}
         horizontal
+        contentContainerStyle={{ paddingRight: 32 }}
         showsHorizontalScrollIndicator={false}
         renderItem={({ item }) => (
           <Item id={item.id} title={item.name} thumbnail={item.thumbnail} />
