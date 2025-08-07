@@ -6,7 +6,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { Card, CarouselComponent } from "../(home)/components";
 import { Header, LatestNews } from "@/components/ui";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { getAuth } from "firebase/auth";
 import { queryUserByUID } from "@/utils/queryUserByUID";
 
@@ -17,7 +17,7 @@ export default function HomeScreen() {
 
   const auth = getAuth();
 
-  const [snapToItem, setSnapToItem] = useState(0);
+  const snapToItemRef = useRef(0);
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -61,18 +61,18 @@ export default function HomeScreen() {
       setIsLoading(false);
     }, 2000);
 
-    if (snapToItem === 0) {
+    if (snapToItemRef.current === 0) {
       return filterDataTechnology;
     }
 
-    if (snapToItem === 1) {
+    if (snapToItemRef.current === 1) {
       return filterDataAdventure;
     }
 
-    if (snapToItem === 2) {
+    if (snapToItemRef.current === 2) {
       return filterDataPhilosophy;
     }
-  }, [snapToItem]);
+  }, []);
 
   const { data, refetch } = useQuery({
     queryKey: ["posts"],
@@ -116,7 +116,7 @@ export default function HomeScreen() {
 
         <CarouselComponent
           onSnapToItem={(item) => {
-            setSnapToItem(item);
+            snapToItemRef.current = item;
 
             refetch();
           }}
