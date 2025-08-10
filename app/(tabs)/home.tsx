@@ -12,6 +12,23 @@ import { queryUserByUID } from "@/utils/queryUserByUID";
 
 import { getUsersWithPriority } from "@/utils/getUsersWithPriority";
 
+interface ItemProps {
+  item: {
+    id: string;
+    thumbnail: string;
+    title: string;
+    description: string;
+    article: string;
+    numberLike: number;
+    hours: number;
+    isLike: boolean;
+    foreign_key: string;
+    type: "technology" | "adventure" | "philosophy";
+    createdAt: Date;
+  };
+  index: number;
+}
+
 export default function HomeScreen() {
   const queryClient = useQueryClient();
 
@@ -37,7 +54,7 @@ export default function HomeScreen() {
     queryClient.invalidateQueries({ queryKey: ["chatsMyMessages"] });
   }, [queryClient]);
 
-  const fetch = useCallback(async () => {
+  const handleFetch = useCallback(async () => {
     const querySnapshot = await getDocs(collection(db, "posts"));
 
     const dataList = (querySnapshot?.docs ?? []).map((doc) => ({
@@ -76,11 +93,11 @@ export default function HomeScreen() {
 
   const { data, refetch } = useQuery({
     queryKey: ["posts"],
-    queryFn: () => fetch(),
+    queryFn: () => handleFetch(),
   });
 
   const renderItem = useCallback(
-    ({ item, index }) => (
+    ({ item, index }: ItemProps) => (
       <LatestNews
         id={item.id}
         isLoading={isLoading}
