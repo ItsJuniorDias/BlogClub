@@ -4,7 +4,7 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
 
 ### Evidence 
 
-<img width="1941" height="1614" alt="Frame 1 (3)" src="https://github.com/user-attachments/assets/6dc2bd58-02f7-4ee1-a235-3135ba76d41c" />
+<img width="2323" height="1614" alt="Frame 1 (5)" src="https://github.com/user-attachments/assets/6883b65b-c85a-4b3b-961c-168d032cdf8e" />
 
 
 #### Figma 
