@@ -57,6 +57,8 @@ export default function StoryScreen() {
     queryFn: () => queryUserByUID(data.uid),
   });
 
+  console.log("Create branch to EAS generate builds");
+
   return (
     <Container
       contentContainerStyle={{
