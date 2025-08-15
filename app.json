@@ -11,7 +11,10 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.itsjuniordias1997.blogclub"
+      "bundleIdentifier": "com.itsjuniordias1997.blogclub",
+      "infoPlist": {
+        "NSMicrophoneUsageDescription": "Este aplicativo usa o microfone para reprodução de voz."
+      }
     },
     "android": {
       "adaptiveIcon": {

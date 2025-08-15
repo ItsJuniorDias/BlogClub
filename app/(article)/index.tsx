@@ -1,6 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { TouchableOpacity, Alert } from "react-native";
 import * as Sharing from "expo-sharing";
+
+import * as Speech from "expo-speech";
+import { Audio } from "expo-av";
 
 import SimpleLineIcons from "@expo/vector-icons/SimpleLineIcons";
 import Feather from "@expo/vector-icons/Feather";
@@ -13,6 +16,23 @@ import { Colors } from "@/constants/Colors";
 import { useRouter } from "expo-router";
 
 import { useDataStore } from "@/store/useDataStore";
+
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+
+import {
+  deleteDoc,
+  doc,
+  getDoc,
+  increment,
+  setDoc,
+  updateDoc,
+} from "firebase/firestore";
+
+import { db } from "@/firebaseConfig";
+import { getAuth } from "firebase/auth";
+import { StatusBar } from "expo-status-bar";
+import { queryUserByUID } from "@/utils/queryUserByUID";
+import { timeAgo } from "@/utils/timeAgo";
 
 import {
   Body,
@@ -29,23 +49,10 @@ import {
   Row,
   Thumbnail,
 } from "./styles";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import {
-  deleteDoc,
-  doc,
-  getDoc,
-  increment,
-  setDoc,
-  updateDoc,
-} from "firebase/firestore";
-import { db } from "@/firebaseConfig";
-import { getAuth } from "firebase/auth";
-import { StatusBar } from "expo-status-bar";
-import { queryUserByUID } from "@/utils/queryUserByUID";
-import { timeAgo } from "@/utils/timeAgo";
 
 export default function ArticleScreen() {
+  const [isPlay, setIsPlay] = useState(false);
+
   const queryClient = useQueryClient();
 
   const { currentUser } = getAuth();
@@ -55,6 +62,17 @@ export default function ArticleScreen() {
   const [isLike, setIsLike] = useState(data.isLike);
 
   const router = useRouter();
+
+  const handleAudio = async () => {
+    await Audio.setAudioModeAsync({
+      allowsRecordingIOS: false,
+      playsInSilentModeIOS: true,
+    });
+  };
+
+  useEffect(() => {
+    handleAudio();
+  }, []);
 
   const query = useQuery({
     queryKey: ["userByUID"],
@@ -131,13 +149,33 @@ export default function ArticleScreen() {
     );
   };
 
+  const handleSpeak = () => {
+    setIsPlay(true);
+
+    const thingToSay = data.article;
+
+    if (!isPlay) {
+      Speech.speak(thingToSay, {
+        language: "en-US",
+      });
+    } else {
+      Speech.stop();
+      setIsPlay(false);
+    }
+  };
+
   return (
     <>
       <StatusBar style="dark" />
 
       <Container>
         <Header>
-          <ButtonBack onPress={() => router.back()}>
+          <ButtonBack
+            onPress={() => {
+              router.back();
+              Speech.stop();
+            }}
+          >
             <SimpleLineIcons
               name="arrow-left"
               size={24}
@@ -185,6 +223,16 @@ export default function ArticleScreen() {
                 color={Colors.light.darkGray}
               />
             </ContentText>
+          </Row>
+
+          <Row>
+            <TouchableOpacity onPress={() => handleSpeak()}>
+              <Feather
+                name={!isPlay ? "play" : "pause"}
+                size={24}
+                color={Colors.light.blue}
+              />
+            </TouchableOpacity>
           </Row>
 
           <Row>
