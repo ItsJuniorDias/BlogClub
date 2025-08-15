@@ -1,13 +1,18 @@
-import { TouchableOpacity, View } from "react-native";
+import { TouchableOpacity } from "react-native";
 import { useEffect, useState } from "react";
 import { Colors } from "@/constants/Colors";
 import { useRouter } from "expo-router";
 
-import { collection, getDocs } from "firebase/firestore";
-
 import { ProgressBar, Text } from "../../components/ui";
 
 import AntDesign from "@expo/vector-icons/AntDesign";
+
+import { StatusBar } from "expo-status-bar";
+import { useUIDStore } from "@/store/useIDStore";
+import { useQuery } from "@tanstack/react-query";
+import { useDataStore } from "@/store/useDataStore";
+import { getLastPostByUser } from "@/utils/getLastPostByUser";
+import { queryUserByUID } from "@/utils/queryUserByUID";
 
 import {
   Container,
@@ -20,15 +25,7 @@ import {
   ContentProgress,
   Footer,
   ContentButton,
-  ContentLike,
 } from "./styles";
-import { StatusBar } from "expo-status-bar";
-import { useUIDStore } from "@/store/useIDStore";
-import { useQuery } from "@tanstack/react-query";
-import { db } from "@/firebaseConfig";
-import { useDataStore } from "@/store/useDataStore";
-import { getLastPostByUser } from "@/utils/getLastPostByUser";
-import { queryUserByUID } from "@/utils/queryUserByUID";
 
 export default function StoryScreen() {
   const [progress, setProgress] = useState(0);
@@ -56,8 +53,6 @@ export default function StoryScreen() {
     queryKey: ["getUser"],
     queryFn: () => queryUserByUID(data.uid),
   });
-
-  console.log("Create branch to EAS generate builds");
 
   return (
     <Container
