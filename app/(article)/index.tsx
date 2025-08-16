@@ -123,7 +123,7 @@ export default function ArticleScreen() {
     }
   };
 
-  const handleDelete = async (uid) => {
+  const handleDelete = async (uid: string) => {
     Alert.alert(
       "do you really want to delete the file?",
       "the article will be permanently deleted",
