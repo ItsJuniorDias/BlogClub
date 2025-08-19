@@ -2,9 +2,9 @@ import { create } from "zustand";
 
 type UserProps = {
   id: string;
-  name: string;
+  name: string | null;
   email: string;
-  thumbnail: string;
+  thumbnail: string | null;
 };
 
 type DataStore = {
