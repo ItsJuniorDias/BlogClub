@@ -1,10 +1,13 @@
+import { useUserStore } from "@/store/useUserStore";
 import * as AppleAuthentication from "expo-apple-authentication";
 import { useRouter } from "expo-router";
 import * as SecureStore from "expo-secure-store";
 import React from "react";
-import { Alert } from "react-native";
+import { Alert, StyleSheet } from "react-native";
 
 export default function AppleLogin() {
+  const { fetch } = useUserStore();
+
   const router = useRouter();
 
   const signInWithApple = async () => {
@@ -16,14 +19,28 @@ export default function AppleLogin() {
         ],
       });
 
-      await SecureStore.setItemAsync("user", JSON.stringify(credential));
+      if (!!credential.email) {
+        await SecureStore.setItemAsync("user", JSON.stringify(credential));
+
+        const defaultUser = await SecureStore.getItemAsync("user");
+
+        const user = JSON.parse(defaultUser);
+
+        fetch({
+          id: user,
+          email: user.email,
+          name: `${user.fullName.givenName} ${user.fullName.familyName}`,
+          thumbnail: "",
+        });
+      }
 
       router.push("/(tabs)/home");
-    } catch (e: any) {
-      if (e.code === "ERR_CANCELED") {
+    } catch (error: any) {
+      if (error.code === "ERR_CANCELED") {
         Alert.alert("Canceled", "User canceled Apple Sign-In.");
       } else {
-        Alert.alert("Error", e.message);
+        Alert.alert("Error", error.message);
+        console.log(error, "ERROR");
       }
     }
   };
@@ -33,8 +50,20 @@ export default function AppleLogin() {
       buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
       buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
       cornerRadius={5}
-      style={{ width: 200, height: 44 }}
+      style={styles.button}
       onPress={signInWithApple}
     />
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  button: {
+    width: 200,
+    height: 44,
+  },
+});

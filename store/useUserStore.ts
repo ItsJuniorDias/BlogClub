@@ -3,7 +3,7 @@ import { create } from "zustand";
 type UserProps = {
   id: string;
   name: string | null;
-  email: string;
+  email: string | null;
   thumbnail: string | null;
 };
 

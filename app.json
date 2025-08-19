@@ -14,7 +14,8 @@
       "bundleIdentifier": "com.itsjuniordias1997.blogclub",
       "infoPlist": {
         "NSMicrophoneUsageDescription": "Este aplicativo usa o microfone para reprodução de voz."
-      }
+      },
+      "usesAppleSignIn": true
     },
     "android": {
       "adaptiveIcon": {
@@ -75,7 +76,8 @@
         {
           "experimentalLauncherActivity": true
         }
-      ]
+      ],
+      ["expo-apple-authentication"]
     ],
     "experiments": {
       "typedRoutes": true

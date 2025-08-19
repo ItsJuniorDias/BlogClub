@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import * as WebBrowser from "expo-web-browser";
 
 import {
@@ -17,7 +17,7 @@ import { useUserStore } from "@/store/useUserStore";
 
 WebBrowser.maybeCompleteAuthSession();
 
-const result = GoogleSignin.configure({
+GoogleSignin.configure({
   iosClientId:
     "482652111919-rf1smagh2da9adn247c21d7q226qp712.apps.googleusercontent.com",
   webClientId:
@@ -31,49 +31,43 @@ const result = GoogleSignin.configure({
   ],
 });
 
-console.log(result, "CONFIG");
-
 export default function GoogleLogin() {
-  const [data, setData] = useState<User>();
-
   const { fetch } = useUserStore();
 
   const router = useRouter();
 
+  const handleGoogleSignIn = async () => {
+    try {
+      await GoogleSignin.hasPlayServices({
+        showPlayServicesUpdateDialog: true,
+      });
+
+      const response: User = await GoogleSignin.signIn();
+
+      fetch({
+        id: response.user.id,
+        email: response.user.email,
+        name: response?.user?.name,
+        thumbnail: response?.user?.photo,
+      });
+
+      router.push("/(tabs)/home");
+    } catch (error: any) {
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        console.log(error.code, "CANCELLED");
+      } else if (error.code === statusCodes.IN_PROGRESS) {
+        console.log(error.code, "IN_PROGRESS");
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        console.log(error.code, "PLAY_SERVICES_NOT_AVAILABLE");
+      } else {
+        console.error(error);
+      }
+    }
+  };
+
   return (
     <>
-      <Container
-        onPress={async () => {
-          try {
-            await GoogleSignin.hasPlayServices({
-              showPlayServicesUpdateDialog: true,
-            });
-
-            const response = await GoogleSignin.signIn();
-
-            setData(response);
-
-            fetch({
-              id: response.user.id,
-              email: response.user.email,
-              name: response?.user?.name,
-              thumbnail: response?.user?.photo,
-            });
-
-            router.push("/(tabs)/home");
-          } catch (error: any) {
-            if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-              console.log(error.code, "CANCELLED");
-            } else if (error.code === statusCodes.IN_PROGRESS) {
-              console.log(error.code, "IN_PROGRESS");
-            } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-              console.log(error.code, "PLAY_SERVICES_NOT_AVAILABLE");
-            } else {
-              console.error(error);
-            }
-          }
-        }}
-      >
+      <Container onPress={handleGoogleSignIn}>
         <Logo source={logo_google} />
       </Container>
     </>

@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { deleteUser, getAuth, signOut } from "firebase/auth";
 import {
   collection,
@@ -9,6 +10,8 @@ import {
   updateDoc,
   getFirestore,
 } from "firebase/firestore";
+
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
 
 import * as ImagePicker from "expo-image-picker";
 
@@ -32,6 +35,9 @@ import { db, auth } from "@/firebaseConfig";
 import { queryUserByUID } from "@/utils/queryUserByUID";
 import { useUIDStore } from "@/store/useIDStore";
 
+import { useRouter } from "expo-router";
+import { useUserStore } from "@/store/useUserStore";
+
 import {
   BorderContainer,
   ButtonDelete,
@@ -48,9 +54,6 @@ import {
   Row,
   Thumbnail,
 } from "./styles";
-import { useEffect, useState } from "react";
-import { useRouter } from "expo-router";
-import { useUserStore } from "@/store/useUserStore";
 
 interface HeaderProfileProps {
   uid: string | string[];
@@ -97,6 +100,8 @@ export default function HeaderProfile({
           signOut(auth)
             .then(() => {
               router.replace("/(sign-in)");
+
+              GoogleSignin.signOut();
             })
             .catch((error) => {
               console.error("Sign out error:", error);
