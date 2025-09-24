@@ -36,7 +36,6 @@ export default function Layout() {
           drawable="ic_menu_manage"
           selectedColor={Colors.light.darkblueInfo}
         />
-        {/* <Badge>9+</Badge> */}
       </NativeTabs.Trigger>
 
       <NativeTabs.Trigger name="profile">
@@ -52,7 +51,6 @@ export default function Layout() {
           drawable="ic_menu_manage"
           selectedColor={Colors.light.darkblueInfo}
         />
-        {/* <Badge>9+</Badge> */}
       </NativeTabs.Trigger>
     </NativeTabs>
   );
