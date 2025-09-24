@@ -4,7 +4,7 @@ import {
   ThemeProvider,
 } from "@react-navigation/native";
 import { useFonts } from "expo-font";
-import { Stack } from "expo-router";
+import { Stack, router } from "expo-router";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { StatusBar } from "expo-status-bar";
@@ -12,6 +12,7 @@ import { StatusBar } from "expo-status-bar";
 import "react-native-reanimated";
 
 import { useColorScheme } from "../hooks/useColorScheme";
+import { TouchableOpacity } from "react-native";
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
@@ -60,7 +61,9 @@ export default function RootLayout() {
 
           <Stack.Screen
             name="(started-conversations)/index"
-            options={{ headerShown: false }}
+            options={{
+              headerShown: false,
+            }}
           />
 
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
