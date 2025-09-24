@@ -14,12 +14,7 @@ export default function Profile() {
   const { uid } = useLocalSearchParams();
 
   return (
-    <ScrollView
-      contentContainerStyle={{
-        paddingBottom: 96,
-      }}
-      style={styles.container}
-    >
+    <ScrollView contentContainerStyle={{}} style={styles.container}>
       <StatusBar style="dark" />
 
       <HeaderProfile

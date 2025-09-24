@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet } from "react-native";
+import { KeyboardAvoidingView, ScrollView, StyleSheet } from "react-native";
 import { useCallback, useRef, useState } from "react";
 import axios from "axios";
 
@@ -96,7 +96,5 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#f2f2f2",
   },
-  padding: {
-    paddingBottom: 96,
-  },
+  padding: {},
 });
