@@ -1,11 +1,10 @@
-import { useState } from "react";
 import { KeyboardTypeOptions, TextInputProps } from "react-native";
 
-import { Text } from "../../ui";
+import { Text } from "..";
 
-import { Container, InputCustom } from "./styles";
 import { Colors } from "@/constants/Colors";
 import { FieldError } from "react-hook-form";
+import { Container, InputCustom } from "./styles";
 
 interface InputPros extends TextInputProps {
   title: string;

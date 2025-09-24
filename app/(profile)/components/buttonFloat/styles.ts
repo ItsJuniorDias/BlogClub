@@ -1,4 +1,5 @@
-import { Colors } from "react-native/Libraries/NewAppScreen";
+
+import { Colors } from "@/constants/Colors";
 import styled from "styled-components/native";
 
 export const Container = styled.TouchableOpacity`

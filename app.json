@@ -1,21 +1,16 @@
 {
   "expo": {
-    "name": "BlogClub",
-    "slug": "blog-club",
+    "name": "Blog-Club",
+    "slug": "Blog-Club",
     "version": "1.0.0",
     "orientation": "portrait",
-    "scheme": "blogclub",
-    "deepLinking": true,
     "icon": "./assets/images/icon.png",
+    "scheme": "blogclub",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.itsjuniordias1997.blogclub",
-      "infoPlist": {
-        "NSMicrophoneUsageDescription": "Este aplicativo usa o microfone para reprodução de voz."
-      },
-      "usesAppleSignIn": true
+      "bundleIdentifier": "com.itsjuniordias1997.blogclub"
     },
     "android": {
       "adaptiveIcon": {
@@ -23,7 +18,9 @@
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "permissions": ["android.permission.RECORD_AUDIO"],
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ],
       "package": "com.itsjuniordias1997.blogclub",
       "intentFilters": [
         {
@@ -39,54 +36,35 @@
               "scheme": "blogclub"
             }
           ],
-          "category": ["BROWSABLE", "DEFAULT"]
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
         }
       ]
     },
     "web": {
-      "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/icon.png"
+      "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
       "expo-router",
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/icon.png",
+          "image": "./assets/images/splash-icon.png",
           "imageWidth": 200,
           "resizeMode": "contain",
-          "backgroundColor": "#ffffff"
+          "backgroundColor": "#ffffff",
+          "dark": {
+            "backgroundColor": "#000000"
+          }
         }
-      ],
-      [
-        "expo-image-picker",
-        {
-          "photosPermission": "The app accesses your photos to let you share them with your friends."
-        }
-      ],
-      [
-        "@react-native-google-signin/google-signin",
-        {
-          "iosUrlScheme": "com.googleusercontent.apps.482652111919-rf1smagh2da9adn247c21d7q226qp712"
-        }
-      ],
-      [
-        "expo-web-browser",
-        {
-          "experimentalLauncherActivity": true
-        }
-      ],
-      ["expo-apple-authentication"]
+      ]
     ],
     "experiments": {
-      "typedRoutes": true
-    },
-    "extra": {
-      "router": {},
-      "eas": {
-        "projectId": "eed8d769-92a1-4104-933e-1e53b8f38490"
-      }
+      "typedRoutes": true,
+      "reactCompiler": true
     }
   }
 }

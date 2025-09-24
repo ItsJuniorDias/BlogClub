@@ -4,12 +4,10 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 import logo from "../../assets/images/logo.png";
 
-import { Container, Logo } from "./styles";
 import { useRouter } from "expo-router";
-import { db } from "@/firebaseConfig";
-import { collection, getDocs, query, where } from "firebase/firestore";
-import { useUserStore } from "@/store/useUserStore";
-import { queryUserByUID } from "@/utils/queryUserByUID";
+import { useUserStore } from "../../store/useUserStore";
+import { queryUserByUID } from "../../utils/queryUserByUID";
+import { Container, Logo } from "./styles";
 
 export default function SplashScreen() {
   const { fetch } = useUserStore();

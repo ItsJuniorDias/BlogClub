@@ -1,6 +1,6 @@
-import { db } from "@/firebaseConfig";
 import { getAuth } from "firebase/auth";
 import { collection, getDocs } from "firebase/firestore";
+import { db } from "../firebaseConfig";
 
 const auth = getAuth();
 

@@ -1,16 +1,16 @@
-import { StyleSheet, ScrollView, FlatList } from "react-native";
+import { FlatList, ScrollView, StyleSheet } from "react-native";
 
-import { collection, getDocs } from "firebase/firestore";
-import { db } from "@/firebaseConfig";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "../../firebaseConfig";
 
-import { Card, CarouselComponent } from "../(home)/components";
-import { Header, LatestNews } from "@/components/ui";
-import { useCallback, useEffect, useRef, useState } from "react";
 import { getAuth } from "firebase/auth";
-import { queryUserByUID } from "@/utils/queryUserByUID";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { Card, CarouselComponent } from "../(home)/components";
+import { Header, LatestNews } from "../../components/ui";
+import { queryUserByUID } from "../../utils/queryUserByUID";
 
-import { getUsersWithPriority } from "@/utils/getUsersWithPriority";
+import { getUsersWithPriority } from "../..//utils/getUsersWithPriority";
 
 interface ItemProps {
   item: {

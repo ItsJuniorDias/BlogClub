@@ -1,23 +1,15 @@
-import { Text } from "../../ui";
 import { Colors } from "@/constants/Colors";
+import { Text } from "..";
 
-import nofitication from "../../../assets/images/notification.png";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
-import {
-  Container,
-  Content,
-  ContentPointer,
-  Notification,
-  Pointer,
-} from "./styles";
-import { TouchableOpacity } from "react-native";
+import { auth } from "@/firebaseConfig";
+import { formatMyMessages } from "@/utils/formatMyMessages";
+import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "expo-router";
 import { getAuth } from "firebase/auth";
-import { auth } from "@/firebaseConfig";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { formatMyMessages } from "@/utils/formatMyMessages";
-import { useEffect } from "react";
+import { TouchableOpacity } from "react-native";
+import { Container, Content, ContentPointer, Pointer } from "./styles";
 
 interface HeaderProps {
   title: string;

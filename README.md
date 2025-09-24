@@ -2,15 +2,6 @@
 
 This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
 
-### Evidence 
-
-<img width="2323" height="1614" alt="Frame 1 (6)" src="https://github.com/user-attachments/assets/80c50692-aa7c-4f4e-841e-6752da6c0e78" />
-
-
-#### Figma 
-
-https://www.figma.com/design/KgWJivYpORQVK5jKdxJNaa/Blog-Club?node-id=0-1&p=f&t=1arXeNnlYiR4gleh-0
-
 ## Get started
 
 1. Install dependencies

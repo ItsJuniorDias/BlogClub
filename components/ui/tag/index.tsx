@@ -1,10 +1,9 @@
 import AntDesign from "@expo/vector-icons/AntDesign";
 
 import { Colors } from "@/constants/Colors";
-import { Text } from "../../ui";
+import { Text } from "..";
 
-import { Container, Button } from "./styles";
-import { useState } from "react";
+import { Button, Container } from "./styles";
 
 interface TagProps {
   isChecked: boolean;

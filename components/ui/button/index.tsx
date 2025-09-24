@@ -1,7 +1,7 @@
 import { ActivityIndicator, TouchableOpacityProps } from "react-native";
 
 import { Colors } from "@/constants/Colors";
-import { Text } from "../../ui";
+import { Text } from "..";
 
 import { Container } from "./styles";
 
