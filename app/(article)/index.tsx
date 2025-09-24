@@ -134,7 +134,8 @@ export default function ArticleScreen() {
           style: "cancel",
         },
         {
-          text: "OK",
+          text: "Delete",
+          style: "destructive",
           onPress: async () => {
             await deleteDoc(doc(db, "posts", uid));
 
@@ -272,11 +273,7 @@ export default function ArticleScreen() {
 
       <ContentFloat>
         <ButtonFloat activeOpacity={0.7} onPress={() => handleLiked()}>
-          <AntDesign
-            name={isLike ? "like1" : "like2"}
-            size={24}
-            color="white"
-          />
+          <AntDesign name={isLike ? "like" : "like"} size={24} color="white" />
 
           <Text
             title={`${data.numberLike}`}

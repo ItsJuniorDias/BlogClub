@@ -29,6 +29,7 @@ import { getAuth } from "firebase/auth";
 import { ButtonContent } from "./styles";
 import { useQuery } from "@tanstack/react-query";
 import { queryUserByUID } from "@/utils/queryUserByUID";
+import { FontAwesome6 } from "@expo/vector-icons";
 
 export default function ChatScreen() {
   const [messages, setMessages] = useState([]);
@@ -200,7 +201,11 @@ export default function ChatScreen() {
       }}
     >
       <ButtonContent onPress={() => router.back()}>
-        <AntDesign name="arrowleft" size={32} color={Colors.light.darkBlue} />
+        <FontAwesome6
+          name="chevron-left"
+          size={24}
+          color={Colors.light.darkBlue}
+        />
       </ButtonContent>
 
       <GiftedChat

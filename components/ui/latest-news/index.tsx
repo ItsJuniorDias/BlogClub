@@ -116,7 +116,7 @@ export default function LatestNews({
 
               <Row>
                 <Row>
-                  <AntDesign name="like2" size={16} color={Colors.light.blue} />
+                  <AntDesign name="like" size={16} color={Colors.light.blue} />
 
                   <Text
                     title={`${numberLike}k`}
@@ -128,7 +128,7 @@ export default function LatestNews({
 
                 <Row>
                   <AntDesign
-                    name="clockcircleo"
+                    name="clock-circle"
                     size={16}
                     color={Colors.light.blue}
                   />

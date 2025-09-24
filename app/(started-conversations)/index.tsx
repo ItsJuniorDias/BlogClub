@@ -40,7 +40,7 @@ import {
   Skeleton,
   Thumbnail,
 } from "./styles";
-import { AntDesign } from "@expo/vector-icons";
+import { AntDesign, FontAwesome6 } from "@expo/vector-icons";
 import { Colors } from "@/constants/Colors";
 import { useRouter } from "expo-router";
 import { formatMyMessages } from "@/utils/formatMyMessages";
@@ -261,7 +261,11 @@ export default function UserChatsScreen() {
     return (
       <>
         <ButtonContent onPress={() => router.back()}>
-          <AntDesign name="arrowleft" size={32} color={Colors.light.darkBlue} />
+          <FontAwesome6
+            name="chevron-left"
+            size={24}
+            color={Colors.light.darkBlue}
+          />
         </ButtonContent>
       </>
     );

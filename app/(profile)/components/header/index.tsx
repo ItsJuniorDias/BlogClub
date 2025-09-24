@@ -95,7 +95,8 @@ export default function HeaderProfile({
         style: "cancel",
       },
       {
-        text: "OK",
+        text: "leave",
+        style: "destructive",
         onPress: () => {
           signOut(auth)
             .then(() => {

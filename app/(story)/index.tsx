@@ -1,4 +1,9 @@
-import { TouchableOpacity, View } from "react-native";
+import {
+  TouchableOpacity,
+  ActivityIndicatorComponent,
+  ActivityIndicator,
+  View,
+} from "react-native";
 import { useEffect, useState } from "react";
 import { Colors } from "@/constants/Colors";
 import { useRouter } from "expo-router";
@@ -58,101 +63,120 @@ export default function StoryScreen() {
   });
 
   return (
-    <Container
-      contentContainerStyle={{
-        alignItems: "center",
-      }}
-    >
-      <StatusBar style="light" />
+    <>
+      {queryLastPost.isLoading && (
+        <>
+          <View
+            style={{
+              flex: 10,
+              alignItems: "center",
+              justifyContent: "center",
+              backgroundColor: Colors.light.blue,
+            }}
+          >
+            <ActivityIndicator size="large" color={Colors.light.background} />
+          </View>
+        </>
+      )}
 
-      <ContentProgress>
-        <ProgressBar progress={progress} color={Colors.light.blue} />
-      </ContentProgress>
+      <Container
+        contentContainerStyle={{
+          alignItems: "center",
+        }}
+      >
+        {!queryLastPost.isLoading && (
+          <>
+            <StatusBar style="light" />
 
-      <ContentHeader>
-        <TouchableOpacity
-          onPress={() => {
-            router.push({
-              pathname: "/(tabs)/profile",
-              params: {
-                uid: data.uid,
-              },
-            });
-          }}
-        >
-          <Row>
-            <Thumbnail source={queryUser?.data?.thumbnail} />
+            <ContentProgress>
+              <ProgressBar progress={progress} color={Colors.light.blue} />
+            </ContentProgress>
 
-            <ContentText>
+            <ContentHeader>
+              <TouchableOpacity
+                onPress={() => {
+                  router.push({
+                    pathname: "/(tabs)/profile",
+                    params: {
+                      uid: data.uid,
+                    },
+                  });
+                }}
+              >
+                <Row>
+                  <Thumbnail source={queryUser?.data?.thumbnail} />
+
+                  <ContentText>
+                    <Text
+                      title={`${queryUser?.data?.name}`}
+                      fontFamily="semi-bold"
+                      fontSize={16}
+                      color="white"
+                    />
+
+                    <Text
+                      title={`4m ago`}
+                      fontFamily="regular"
+                      fontSize={14}
+                      color="white"
+                    />
+                  </ContentText>
+                </Row>
+              </TouchableOpacity>
+
+              <TouchableOpacity onPress={() => router.back()}>
+                <AntDesign name="close" size={32} color="white" />
+              </TouchableOpacity>
+            </ContentHeader>
+
+            <BackgroundImage source={queryLastPost?.data?.thumbnail} />
+
+            <ContentBlur intensity={30}>
               <Text
-                title={`${queryUser?.data?.name}`}
+                title={`${queryLastPost?.data?.title}`}
                 fontFamily="semi-bold"
-                fontSize={16}
+                fontSize={18}
+                numberOfLines={2}
                 color="white"
               />
 
               <Text
-                title={`4m ago`}
+                title={queryLastPost?.data?.article}
                 fontFamily="regular"
                 fontSize={14}
+                numberOfLines={4}
                 color="white"
               />
-            </ContentText>
-          </Row>
-        </TouchableOpacity>
+            </ContentBlur>
 
-        <TouchableOpacity onPress={() => router.back()}>
-          <AntDesign name="close" size={32} color="white" />
-        </TouchableOpacity>
-      </ContentHeader>
+            <Footer>
+              <ContentButton
+                onPress={() => {
+                  fetch({
+                    id: queryLastPost.data?.id,
+                    isLike: false,
+                    thumbnail: queryLastPost.data.thumbnail,
+                    title: queryLastPost?.data?.title,
+                    description: queryLastPost?.data?.description,
+                    article: queryLastPost?.data?.article,
+                    numberLike: 0,
+                    hours: 0,
+                  });
 
-      <BackgroundImage
-        source={queryLastPost?.data?.thumbnail}
-      ></BackgroundImage>
-
-      <ContentBlur intensity={30}>
-        <Text
-          title={`${queryLastPost?.data?.title}`}
-          fontFamily="semi-bold"
-          fontSize={18}
-          numberOfLines={2}
-          color="white"
-        />
-
-        <Text
-          title={queryLastPost?.data?.article}
-          fontFamily="regular"
-          fontSize={14}
-          numberOfLines={4}
-          color="white"
-        />
-      </ContentBlur>
-
-      <Footer>
-        <ContentButton
-          onPress={() => {
-            fetch({
-              id: queryLastPost.data?.id,
-              isLike: false,
-              thumbnail: queryLastPost.data.thumbnail,
-              title: queryLastPost?.data?.title,
-              description: queryLastPost?.data?.description,
-              article: queryLastPost?.data?.article,
-              numberLike: 0,
-              hours: 0,
-            });
-
-            router.push("/(article)");
-          }}
-        >
-          <Text
-            title="Read More"
-            fontFamily="semi-bold"
-            fontSize={14}
-            color={Colors.light.blue}
-          />
-        </ContentButton>
-      </Footer>
-    </Container>
+                  router.push("/(article)");
+                }}
+              >
+                <Text
+                  title="Read More"
+                  fontFamily="semi-bold"
+                  fontSize={14}
+                  color={Colors.light.blue}
+                />
+              </ContentButton>
+            </Footer>
+          </>
+        )}
+      </Container>
+    </>
   );
 }
