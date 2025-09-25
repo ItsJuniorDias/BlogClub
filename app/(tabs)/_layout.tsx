@@ -1,12 +1,13 @@
 import { Icon, Label, NativeTabs } from "expo-router/unstable-native-tabs";
 import { Colors } from "../../constants/Colors";
+import { Ionicons } from "@expo/vector-icons";
 
 export default function Layout() {
   return (
     <NativeTabs
       backgroundColor="transparent"
-      rippleColor={Colors.light.darkBlue}
-      indicatorColor={Colors.light.darkBlue}
+      rippleColor={Colors.light.background}
+      indicatorColor={Colors.light.background}
     >
       <NativeTabs.Trigger name="home">
         <Label
@@ -33,7 +34,7 @@ export default function Layout() {
         </Label>
         <Icon
           sf={"book.fill"}
-          drawable="ic_menu_manage"
+          drawable="ic_menu_add"
           selectedColor={Colors.light.darkblueInfo}
         />
       </NativeTabs.Trigger>
@@ -46,9 +47,10 @@ export default function Layout() {
         >
           Profile
         </Label>
+
         <Icon
           sf={"person.fill"}
-          drawable="ic_menu_manage"
+          drawable="ic_menu_preferences"
           selectedColor={Colors.light.darkblueInfo}
         />
       </NativeTabs.Trigger>
