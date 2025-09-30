@@ -3,6 +3,7 @@ import { Dimensions } from "react-native";
 import { BlurView } from "expo-blur";
 import { Colors } from "@/constants/Colors";
 import { Image } from "expo-image";
+import { GlassView } from 'expo-glass-effect';
 
 const windowWidth = Dimensions.get("window").width;
 
@@ -18,7 +19,7 @@ export const BackgroundImage = styled(Image)`
   border-bottom-right-radius: 32px;
 `;
 
-export const ContentBlur = styled(BlurView)`
+export const ContentBlur = styled(GlassView)`
   width: 295px;
   height: 200px;
   overflow: hidden;
