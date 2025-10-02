@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Blog-Club",
-    "slug": "Blog-Club",
+    "name": "Blog Club",
+    "slug": "Blog Club",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -19,9 +19,7 @@
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "permissions": [
-        "android.permission.RECORD_AUDIO"
-      ],
+      "permissions": ["android.permission.RECORD_AUDIO"],
       "package": "com.itsjuniordias1997.blogclub",
       "intentFilters": [
         {
@@ -37,10 +35,7 @@
               "scheme": "blogclub"
             }
           ],
-          "category": [
-            "BROWSABLE",
-            "DEFAULT"
-          ]
+          "category": ["BROWSABLE", "DEFAULT"]
         }
       ]
     },
