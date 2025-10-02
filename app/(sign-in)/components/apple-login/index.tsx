@@ -1,11 +1,15 @@
+import { Text } from "@/components/ui";
 import { useUserStore } from "@/store/useUserStore";
 import * as AppleAuthentication from "expo-apple-authentication";
+
 import { useRouter } from "expo-router";
 import * as SecureStore from "expo-secure-store";
-import React from "react";
+import React, { useState } from "react";
 import { Alert, StyleSheet } from "react-native";
 
 export default function AppleLogin() {
+  const [result, setResult] = useState<string | null>(null);
+
   const { fetch } = useUserStore();
 
   const router = useRouter();
@@ -19,12 +23,14 @@ export default function AppleLogin() {
         ],
       });
 
+      console.log(credential, "CREDENTIAL");
+
       if (!!credential.email) {
         await SecureStore.setItemAsync("user", JSON.stringify(credential));
 
         const defaultUser = await SecureStore.getItemAsync("user");
 
-        const user = JSON.parse(defaultUser);
+        const user = JSON.parse(defaultUser ?? "");
 
         fetch({
           id: user,
@@ -46,13 +52,15 @@ export default function AppleLogin() {
   };
 
   return (
-    <AppleAuthentication.AppleAuthenticationButton
-      buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
-      buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
-      cornerRadius={5}
-      style={styles.button}
-      onPress={signInWithApple}
-    />
+    <>
+      <AppleAuthentication.AppleAuthenticationButton
+        buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
+        buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
+        cornerRadius={8}
+        style={styles.button}
+        onPress={signInWithApple}
+      />
+    </>
   );
 }
 

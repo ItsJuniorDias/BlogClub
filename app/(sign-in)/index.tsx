@@ -57,8 +57,6 @@ export default function SignInScreen() {
     isActiveSignUp: false,
   });
 
-  const [html, setHTML] = useState("");
-
   const router = useRouter();
 
   useEffect(() => {

@@ -7,29 +7,29 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		06376341E13E15FFE6E10172 /* libPods-BlogClub.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 492E8DCF180E0499AB42CB2B /* libPods-BlogClub.a */; };
-		135962D23F4AC33C856B918E /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA42A7F44C5B10EDBD633979 /* ExpoModulesProvider.swift */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
+		20703707FC859AA4A78D7C1E /* libPods-BlogClub.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C4725176435155E89791795E /* libPods-BlogClub.a */; };
 		3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
-		68ECD7D951F3387C6BD72C97 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 3274B0404A2E4EEAA76604F6 /* PrivacyInfo.xcprivacy */; };
+		B3D8530735C4AB861AB147BB /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = BE2C6F3343C2F750EEDFFB33 /* PrivacyInfo.xcprivacy */; };
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
 		F11748422D0307B40044C1D9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11748412D0307B40044C1D9 /* AppDelegate.swift */; };
+		F9E98C4604397048FE1A9FE3 /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D8A3F5EDEA614209E35F9A0 /* ExpoModulesProvider.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		08A5482A54063A933BDD466B /* Pods-BlogClub.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlogClub.debug.xcconfig"; path = "Target Support Files/Pods-BlogClub/Pods-BlogClub.debug.xcconfig"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* BlogClub.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BlogClub.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = BlogClub/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = BlogClub/Info.plist; sourceTree = "<group>"; };
-		3274B0404A2E4EEAA76604F6 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = BlogClub/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
-		492E8DCF180E0499AB42CB2B /* libPods-BlogClub.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BlogClub.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		1D8A3F5EDEA614209E35F9A0 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-BlogClub/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
+		A68245D61D1532D90BCF2FFA /* Pods-BlogClub.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlogClub.release.xcconfig"; path = "Target Support Files/Pods-BlogClub/Pods-BlogClub.release.xcconfig"; sourceTree = "<group>"; };
 		AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = BlogClub/SplashScreen.storyboard; sourceTree = "<group>"; };
 		BB2F792C24A3F905000567C9 /* Expo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
-		CA42A7F44C5B10EDBD633979 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-BlogClub/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
+		BE2C6F3343C2F750EEDFFB33 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = BlogClub/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		C4725176435155E89791795E /* libPods-BlogClub.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BlogClub.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C4CCF24761890F0BEA359ABE /* Pods-BlogClub.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlogClub.debug.xcconfig"; path = "Target Support Files/Pods-BlogClub/Pods-BlogClub.debug.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		F11748412D0307B40044C1D9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = BlogClub/AppDelegate.swift; sourceTree = "<group>"; };
 		F11748442D0722820044C1D9 /* BlogClub-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "BlogClub-Bridging-Header.h"; path = "BlogClub/BlogClub-Bridging-Header.h"; sourceTree = "<group>"; };
-		F30BA6921AC867C8D34861E1 /* Pods-BlogClub.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlogClub.release.xcconfig"; path = "Target Support Files/Pods-BlogClub/Pods-BlogClub.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -37,7 +37,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				06376341E13E15FFE6E10172 /* libPods-BlogClub.a in Frameworks */,
+				20703707FC859AA4A78D7C1E /* libPods-BlogClub.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -53,7 +53,7 @@
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */,
-				3274B0404A2E4EEAA76604F6 /* PrivacyInfo.xcprivacy */,
+				BE2C6F3343C2F750EEDFFB33 /* PrivacyInfo.xcprivacy */,
 			);
 			name = BlogClub;
 			sourceTree = "<group>";
@@ -62,9 +62,18 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				492E8DCF180E0499AB42CB2B /* libPods-BlogClub.a */,
+				C4725176435155E89791795E /* libPods-BlogClub.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		4F40AD5CD0B37EBA347E581A /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				C4CCF24761890F0BEA359ABE /* Pods-BlogClub.debug.xcconfig */,
+				A68245D61D1532D90BCF2FFA /* Pods-BlogClub.release.xcconfig */,
+			);
+			path = Pods;
 			sourceTree = "<group>";
 		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
@@ -81,8 +90,8 @@
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
-				CB155894EB901E75F8F554EC /* Pods */,
-				F1F83B0710256026ED0D5C15 /* ExpoModulesProviders */,
+				4F40AD5CD0B37EBA347E581A /* Pods */,
+				FF39500162EED489C4E75DCF /* ExpoModulesProviders */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -106,28 +115,18 @@
 			path = BlogClub/Supporting;
 			sourceTree = "<group>";
 		};
-		CB155894EB901E75F8F554EC /* Pods */ = {
+		DD8530149B3DC9BB5FCF60C9 /* BlogClub */ = {
 			isa = PBXGroup;
 			children = (
-				08A5482A54063A933BDD466B /* Pods-BlogClub.debug.xcconfig */,
-				F30BA6921AC867C8D34861E1 /* Pods-BlogClub.release.xcconfig */,
-			);
-			name = Pods;
-			path = Pods;
-			sourceTree = "<group>";
-		};
-		CCA341535EC294EC0A908A19 /* BlogClub */ = {
-			isa = PBXGroup;
-			children = (
-				CA42A7F44C5B10EDBD633979 /* ExpoModulesProvider.swift */,
+				1D8A3F5EDEA614209E35F9A0 /* ExpoModulesProvider.swift */,
 			);
 			name = BlogClub;
 			sourceTree = "<group>";
 		};
-		F1F83B0710256026ED0D5C15 /* ExpoModulesProviders */ = {
+		FF39500162EED489C4E75DCF /* ExpoModulesProviders */ = {
 			isa = PBXGroup;
 			children = (
-				CCA341535EC294EC0A908A19 /* BlogClub */,
+				DD8530149B3DC9BB5FCF60C9 /* BlogClub */,
 			);
 			name = ExpoModulesProviders;
 			sourceTree = "<group>";
@@ -140,13 +139,13 @@
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "BlogClub" */;
 			buildPhases = (
 				08A4A3CD28434E44B6B9DE2E /* [CP] Check Pods Manifest.lock */,
-				D20C0B581DC9DFA655030D87 /* [Expo] Configure project */,
+				D327B3A044B70622624C9D49 /* [Expo] Configure project */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				800E24972A6A228C8D4807E9 /* [CP] Copy Pods Resources */,
-				87F0AB17714748BFB45BE9C4 /* [CP] Embed Pods Frameworks */,
+				AB30D7B7A8EA6DB347597C63 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -196,7 +195,7 @@
 				BB2F792D24A3F905000567C9 /* Expo.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */,
-				68ECD7D951F3387C6BD72C97 /* PrivacyInfo.xcprivacy in Resources */,
+				B3D8530735C4AB861AB147BB /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -286,7 +285,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BlogClub/Pods-BlogClub-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		87F0AB17714748BFB45BE9C4 /* [CP] Embed Pods Frameworks */ = {
+		AB30D7B7A8EA6DB347597C63 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -308,7 +307,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BlogClub/Pods-BlogClub-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		D20C0B581DC9DFA655030D87 /* [Expo] Configure project */ = {
+		D327B3A044B70622624C9D49 /* [Expo] Configure project */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
@@ -340,7 +339,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F11748422D0307B40044C1D9 /* AppDelegate.swift in Sources */,
-				135962D23F4AC33C856B918E /* ExpoModulesProvider.swift in Sources */,
+				F9E98C4604397048FE1A9FE3 /* ExpoModulesProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -349,12 +348,15 @@
 /* Begin XCBuildConfiguration section */
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 08A5482A54063A933BDD466B /* Pods-BlogClub.debug.xcconfig */;
+			baseConfigurationReference = C4CCF24761890F0BEA359ABE /* Pods-BlogClub.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = BlogClub/BlogClub.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = KB2JC3QNG8;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
@@ -375,6 +377,7 @@
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.itsjuniordias1997.blogclub;
 				PRODUCT_NAME = BlogClub;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "BlogClub/BlogClub-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -385,12 +388,15 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F30BA6921AC867C8D34861E1 /* Pods-BlogClub.release.xcconfig */;
+			baseConfigurationReference = A68245D61D1532D90BCF2FFA /* Pods-BlogClub.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = BlogClub/BlogClub.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = KB2JC3QNG8;
 				INFOPLIST_FILE = BlogClub/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -406,6 +412,7 @@
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = com.itsjuniordias1997.blogclub;
 				PRODUCT_NAME = BlogClub;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "BlogClub/BlogClub-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
