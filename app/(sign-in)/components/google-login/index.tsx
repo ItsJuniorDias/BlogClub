@@ -47,7 +47,7 @@ export default function GoogleLogin() {
         [
           {
             text: "Cancel",
-            style: "cancel",
+            style: "destructive",
           },
           {
             text: "OK",
