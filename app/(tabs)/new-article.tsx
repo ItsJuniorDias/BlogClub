@@ -1,4 +1,4 @@
-import { KeyboardAvoidingView, ScrollView, StyleSheet } from "react-native";
+import { ScrollView, StyleSheet } from "react-native";
 import { useCallback, useRef, useState } from "react";
 import axios from "axios";
 
@@ -17,8 +17,6 @@ export default function NewArticle() {
   const [isLoading, setIsLoading] = useState(true);
 
   const [queryUnplash, setQueryUnplash] = useState();
-
-  const [thumbnail, setThumbnail] = useState("");
 
   const thumbnailRef = useRef("");
 
@@ -59,7 +57,7 @@ export default function NewArticle() {
       <ScrollView style={styles.container}>
         <HeaderNewArticle
           onPress={() => {
-            bottomSheetRef.current?.open();
+            (bottomSheetRef.current as any)?.open?.();
 
             setIsLoading(true);
 
@@ -78,9 +76,9 @@ export default function NewArticle() {
           data={data?.results}
           isLoading={isLoading}
           setIsLoading={setIsLoading}
-          onClose={() => bottomSheetRef.current?.close()}
-          queryUnplash={queryUnplash}
-          setQueryUnplash={(item) => setQueryUnplash(item)}
+          onClose={() => (bottomSheetRef.current as any)?.close?.()}
+          queryUnplash={queryUnplash ?? ""}
+          setQueryUnplash={(item: string) => setQueryUnplash(item as any)}
           onThumbnail={(item: string) => {
             thumbnailRef.current = item;
           }}
@@ -96,5 +94,4 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#f2f2f2",
   },
-  padding: {},
 });

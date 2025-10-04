@@ -32,9 +32,9 @@ interface StateTypeProps {
 }
 
 const formSchema = z.object({
-  title: z.string("* Required field"),
-  description: z.string("* Required field"),
-  article: z.string("* Required field"),
+  title: z.string({ required_error: "* Required field" }),
+  description: z.string({ required_error: "* Required field" }),
+  article: z.string({ required_error: "* Required field" }),
 });
 
 type FormData = z.infer<typeof formSchema>;
@@ -123,7 +123,7 @@ export default function InputBody({ thumbnail, setThumbnailRef }: InputProps) {
         name="title"
         render={({ field: { onChange, value } }) => (
           <InputCustom
-            placeholder="The art of beign an artist"
+            placeholder="Write the title of the article"
             onChangeText={(item) => {
               onChange(item);
 
@@ -160,7 +160,7 @@ export default function InputBody({ thumbnail, setThumbnailRef }: InputProps) {
               }
             }}
             value={value}
-            placeholder="Simplified products"
+            placeholder="Write the subtitle"
             placeholderTextColor={Colors.light.darkBlue}
             isError={!!errors.description}
           />
