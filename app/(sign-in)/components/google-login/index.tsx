@@ -31,7 +31,7 @@ export default function GoogleLogin() {
 
       const { data } = await GoogleSignin.signIn();
 
-      console.log(data, "DATA");
+      console.log(data, "DATAA");
 
       fetch({
         id: data?.user.id || "",
