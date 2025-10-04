@@ -11,6 +11,10 @@ report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
 
 .expo
+.idea
+credentials.json
+credentials
+upload_certificate.pem
 
 # Runtime data
 pids
