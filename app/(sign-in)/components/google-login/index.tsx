@@ -11,6 +11,13 @@ import { useRouter } from "expo-router";
 
 import { useUserStore } from "@/store/useUserStore";
 import { Alert } from "react-native";
+import {
+  createUserWithEmailAndPassword,
+  getAuth,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { db } from "@/firebaseConfig";
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -32,30 +39,65 @@ export default function GoogleLogin() {
 
       const { data } = await GoogleSignin.signIn();
 
+      const email = data?.user?.email;
+      const name = data?.user?.name || "";
+      const photo = data?.user?.photo || "";
+
       console.log(data, "DATAA");
 
+      if (!email) {
+        Alert.alert("Erro", "Não foi possível obter o e-mail do Google.");
+        return;
+      }
+
+      const auth = getAuth();
+      const fakePassword = "google_login_password";
+      let user;
+
+      try {
+        const userCredential = await createUserWithEmailAndPassword(
+          auth,
+          email,
+          fakePassword
+        );
+
+        user = userCredential.user;
+      } catch (error: any) {
+        if (error.code === "auth/email-already-in-use") {
+          const userCredential = await signInWithEmailAndPassword(
+            auth,
+            email,
+            fakePassword
+          );
+          user = userCredential.user;
+        } else {
+          throw error;
+        }
+      }
+
+      const userRef = doc(db, "users", user.uid);
+      const existingDoc = await getDoc(userRef);
+
+      if (!existingDoc.exists()) {
+        await setDoc(userRef, {
+          uid: user.uid,
+          name,
+          email,
+          thumbnail: photo,
+          aboutMe: "",
+          profession: "",
+          createdAt: new Date(),
+        });
+      }
+
       fetch({
-        id: data?.user.id || "",
-        email: data?.user.email || "",
-        name: data?.user?.name || "",
-        thumbnail: data?.user?.photo || "",
+        id: user.uid,
+        email,
+        name,
+        thumbnail: photo,
       });
 
-      Alert.alert(
-        "Read Only Mode",
-        "This is a read-only section. Please create a BlogClub account to start posting.",
-        [
-          {
-            text: "Cancel",
-            style: "destructive",
-          },
-          {
-            text: "OK",
-            onPress: () => router.push("/(tabs)/home"),
-            style: "default",
-          },
-        ]
-      );
+      return router.push("/(tabs)/home");
     } catch (error: any) {
       console.log(error, "ERROR");
     }
