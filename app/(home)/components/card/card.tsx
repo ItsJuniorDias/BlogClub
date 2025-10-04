@@ -13,6 +13,7 @@ import { getUsersWithPriority } from "@/utils/getUsersWithPriority";
 import { getAuth } from "firebase/auth";
 import { getUserPosts } from "@/utils/getUserPosts";
 import { useCallback } from "react";
+import { useUserStore } from "@/store/useUserStore";
 
 interface ItemProps {
   id: string;
@@ -25,6 +26,8 @@ export default function Card({ data }) {
 
   const { fetch } = useUIDStore();
 
+  const { data: dataUserStore, fetch: fetchUserStore } = useUserStore();
+
   const router = useRouter();
 
   const handleRedirect = useCallback(async (id: string) => {
@@ -32,6 +35,11 @@ export default function Card({ data }) {
 
     fetch({
       uid: id,
+    });
+
+    fetchUserStore({
+      ...dataUserStore,
+      thumbnail: "" ?? dataUserStore.thumbnail,
     });
 
     if (result.length === 0) {
