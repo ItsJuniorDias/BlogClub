@@ -10,6 +10,7 @@ import { Container, Logo } from "./styles";
 import { useRouter } from "expo-router";
 
 import { useUserStore } from "@/store/useUserStore";
+import { Alert } from "react-native";
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -40,7 +41,21 @@ export default function GoogleLogin() {
         thumbnail: data?.user?.photo || "",
       });
 
-      router.push("/(tabs)/home");
+      Alert.alert(
+        "Read Only Mode",
+        "This is a read-only section. Please create a BlogClub account to start posting.",
+        [
+          {
+            text: "Cancel",
+            style: "cancel",
+          },
+          {
+            text: "OK",
+            onPress: () => router.push("/(tabs)/home"),
+            style: "default",
+          },
+        ]
+      );
     } catch (error: any) {
       console.log(error, "ERROR");
     }
