@@ -84,8 +84,8 @@ export default function GoogleLogin() {
           name,
           email,
           thumbnail: photo,
-          aboutMe: "",
-          profession: "",
+          aboutMe: null,
+          profession: null,
           createdAt: new Date(),
         });
       }
