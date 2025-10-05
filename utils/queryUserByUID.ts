@@ -1,15 +1,14 @@
 import { db } from "@/firebaseConfig";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 
 export const queryUserByUID = async (uid: string | undefined) => {
-  const usersRef = collection(db, "users");
+  if (!uid) return null;
 
-  const queryUser = query(usersRef, where("id", "==", uid));
+  const userRef = doc(db, "users", uid);
+  const userSnap = await getDoc(userRef);
 
-  const querySnapshot = await getDocs(queryUser);
-
-  if (!querySnapshot.empty) {
-    return querySnapshot.docs[0].data();
+  if (userSnap.exists()) {
+    return { id: userSnap.id, ...userSnap.data() };
   } else {
     return null;
   }

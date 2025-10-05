@@ -11,6 +11,7 @@ import { Header, LatestNews } from "../../components/ui";
 import { queryUserByUID } from "../../utils/queryUserByUID";
 
 import { getUsersWithPriority } from "../..//utils/getUsersWithPriority";
+import { useUserStore } from "@/store/useUserStore";
 
 interface ItemProps {
   item: {
@@ -39,6 +40,8 @@ export default function HomeScreen() {
   const [isLoading, setIsLoading] = useState(true);
 
   const user = getAuth();
+
+  const { data: dataUserStore } = useUserStore();
 
   const queryUser = useQuery({
     queryKey: ["user"],

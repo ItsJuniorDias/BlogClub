@@ -6,6 +6,8 @@ import { useRouter } from "expo-router";
 import { useUserStore } from "../../store/useUserStore";
 import { queryUserByUID } from "../../utils/queryUserByUID";
 import { Container } from "./styles";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "@/firebaseConfig";
 
 export default function SplashScreen() {
   const { fetch } = useUserStore();
@@ -19,7 +21,31 @@ export default function SplashScreen() {
   const handleAuthState = async () => {
     onAuthStateChanged(auth, async (user) => {
       const uid = user?.uid;
-      fetch(queryUserByUID(uid));
+
+      if (!uid) {
+        return;
+      }
+
+      const userRef = doc(db, "users", uid);
+      const userSnap = await getDoc(userRef);
+
+      if (userSnap.exists()) {
+        const userData = userSnap.data();
+
+        if (
+          userData &&
+          typeof userData.name === "string" &&
+          typeof userData.email === "string" &&
+          typeof userData.thumbnail === "string"
+        ) {
+          fetch({
+            id: userSnap.id,
+            name: userData.name,
+            email: userData.email,
+            thumbnail: userData.thumbnail,
+          });
+        }
+      }
 
       Animated.sequence([
         Animated.timing(translateX, {

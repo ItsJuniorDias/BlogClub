@@ -80,6 +80,8 @@ export default function HeaderProfile({
 
   const dataUserStore = useUserStore();
 
+  console.log(dataUserStore, "DATA USER STORE");
+
   const queryUserUID = !!uid ? uid : auth.currentUser?.uid;
 
   const { data } = useQuery({
