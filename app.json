@@ -2,6 +2,7 @@
   "expo": {
     "name": "Blog Club",
     "slug": "Blog-Club",
+    "platforms": ["ios", "android"],
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -11,7 +12,10 @@
     "ios": {
       "supportsTablet": true,
       "usesAppleSignIn": true,
-      "bundleIdentifier": "com.itsjuniordias1997.blogclub"
+      "bundleIdentifier": "com.itsjuniordias1997.blogclub",
+      "infoPlist": {
+        "GADApplicationIdentifier": "ca-app-pub-5426118153355097~4916760349"
+      }
     },
     "android": {
       "adaptiveIcon": {

@@ -1,12 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  TouchableOpacity,
-  Alert,
-  Dimensions,
-  StyleSheet,
-  View,
-  Button,
-} from "react-native";
+import { TouchableOpacity, Alert, StyleSheet } from "react-native";
 import * as Sharing from "expo-sharing";
 
 import mobileAds, {
@@ -47,13 +40,11 @@ import { StatusBar } from "expo-status-bar";
 import { queryUserByUID } from "@/utils/queryUserByUID";
 import { timeAgo } from "@/utils/timeAgo";
 
-const interstitialAdUnitId = "ca-app-pub-5426118153355097/5961430468";
+const interstitialAdUnitId = TestIds.INTERSTITIAL;
 
 const interstitial = InterstitialAd.createForAdRequest(interstitialAdUnitId, {
   requestNonPersonalizedAdsOnly: true,
 });
-
-const { width } = Dimensions.get("window");
 
 import {
   Body,
@@ -90,7 +81,7 @@ export default function ArticleScreen() {
       .initialize()
       .then(() => console.log("AdMob initialized"));
 
-    let intervalId: NodeJS.Timeout;
+    let intervalId: NodeJS.Timer;
 
     const showAdIfLoaded = () => {
       if (loaded) {
@@ -119,10 +110,9 @@ export default function ArticleScreen() {
     // Carrega o primeiro anúncio
     interstitial.load();
 
-    // Intervalo para abrir anúncio a cada 3 minutos
     intervalId = setInterval(() => {
       showAdIfLoaded();
-    }, 30000); // 180000ms = 1 minutos
+    }, 30000);
 
     // Cleanup ao desmontar
     return () => {
