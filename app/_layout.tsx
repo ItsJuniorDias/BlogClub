@@ -5,6 +5,7 @@ import {
 } from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import { Stack, router } from "expo-router";
+// import mobileAds from "react-native-google-mobile-ads";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { StatusBar } from "expo-status-bar";
@@ -13,10 +14,19 @@ import "react-native-reanimated";
 
 import { useColorScheme } from "../hooks/useColorScheme";
 import { TouchableOpacity } from "react-native";
+import { useEffect } from "react";
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
   const queryClient = new QueryClient();
+
+  // useEffect(() => {
+  //   mobileAds()
+  //     .initialize()
+  //     .then((adapterStatuses) => {
+  //       console.log("AdMob initialized", adapterStatuses);
+  //     });
+  // }, []);
 
   const [loaded] = useFonts({
     MontserratRegular: require("../assets/fonts/Montserrat-Regular.ttf"),

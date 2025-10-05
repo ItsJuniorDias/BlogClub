@@ -1,6 +1,19 @@
 import { useEffect, useState } from "react";
-import { TouchableOpacity, Alert } from "react-native";
+import {
+  TouchableOpacity,
+  Alert,
+  Dimensions,
+  StyleSheet,
+  View,
+  Button,
+} from "react-native";
 import * as Sharing from "expo-sharing";
+
+import mobileAds, {
+  InterstitialAd,
+  AdEventType,
+  TestIds,
+} from "react-native-google-mobile-ads";
 
 import * as Speech from "expo-speech";
 import { Audio } from "expo-av";
@@ -34,6 +47,14 @@ import { StatusBar } from "expo-status-bar";
 import { queryUserByUID } from "@/utils/queryUserByUID";
 import { timeAgo } from "@/utils/timeAgo";
 
+const interstitialAdUnitId = "ca-app-pub-5426118153355097/5961430468";
+
+const interstitial = InterstitialAd.createForAdRequest(interstitialAdUnitId, {
+  requestNonPersonalizedAdsOnly: true,
+});
+
+const { width } = Dimensions.get("window");
+
 import {
   Body,
   BodyText,
@@ -52,6 +73,7 @@ import {
 
 export default function ArticleScreen() {
   const [isPlay, setIsPlay] = useState(false);
+  const [loaded, setLoaded] = useState(false);
 
   const queryClient = useQueryClient();
 
@@ -62,6 +84,53 @@ export default function ArticleScreen() {
   const [isLike, setIsLike] = useState(data.isLike);
 
   const router = useRouter();
+
+  useEffect(() => {
+    mobileAds()
+      .initialize()
+      .then(() => console.log("AdMob initialized"));
+
+    let intervalId: NodeJS.Timeout;
+
+    const showAdIfLoaded = () => {
+      if (loaded) {
+        interstitial.show();
+        setLoaded(false); // marca como não carregado para recarregar o próximo
+      }
+    };
+
+    // Listener quando o anúncio estiver carregado
+    const unsubscribeLoaded = interstitial.addAdEventListener(
+      AdEventType.LOADED,
+      () => {
+        setLoaded(true);
+        showAdIfLoaded(); // mostra imediatamente ao carregar
+      }
+    );
+
+    // Listener quando o anúncio for fechado
+    const unsubscribeClosed = interstitial.addAdEventListener(
+      AdEventType.CLOSED,
+      () => {
+        interstitial.load(); // prepara próximo anúncio
+      }
+    );
+
+    // Carrega o primeiro anúncio
+    interstitial.load();
+
+    // Intervalo para abrir anúncio a cada 3 minutos
+    intervalId = setInterval(() => {
+      showAdIfLoaded();
+    }, 30000); // 180000ms = 1 minutos
+
+    // Cleanup ao desmontar
+    return () => {
+      unsubscribeLoaded();
+      unsubscribeClosed();
+      clearInterval(intervalId);
+    };
+  }, [loaded]);
 
   const handleAudio = async () => {
     await Audio.setAudioModeAsync({
@@ -286,3 +355,15 @@ export default function ArticleScreen() {
     </>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  text: {
+    fontSize: 20,
+    marginBottom: 20,
+  },
+});
