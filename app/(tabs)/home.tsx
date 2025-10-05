@@ -41,8 +41,6 @@ export default function HomeScreen() {
 
   const user = getAuth();
 
-  const { data: dataUserStore } = useUserStore();
-
   const queryUser = useQuery({
     queryKey: ["user"],
     queryFn: () => queryUserByUID(user?.currentUser?.uid),

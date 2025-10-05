@@ -1,6 +1,6 @@
 import { TouchableOpacity, StyleSheet, ActivityIndicator } from "react-native";
 
-import { Text } from "@/components/ui";
+import { SkeletonNews, Text } from "@/components/ui";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { Colors } from "@/constants/Colors";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
@@ -12,7 +12,6 @@ import {
   ContentText,
   ContentTextBody,
   Row,
-  Skeleton,
   Thumbnail,
 } from "./styles";
 import { useRouter } from "expo-router";
@@ -70,7 +69,7 @@ export default function LatestNews({
           </ContentText>
         )}
 
-        {isLoading && <Skeleton />}
+        {isLoading && <SkeletonNews />}
 
         {!isLoading && (
           <Body

@@ -84,10 +84,16 @@ export default function HeaderProfile({
 
   const queryUserUID = !!uid ? uid : auth.currentUser?.uid;
 
+  const resolvedUID = Array.isArray(uid)
+    ? uid[0]
+    : uid ?? auth.currentUser?.uid;
+
   const { data } = useQuery({
     queryKey: ["userByUID"],
-    queryFn: () => queryUserByUID(uid ?? auth.currentUser?.uid),
+    queryFn: () => queryUserByUID(resolvedUID),
   });
+
+  console.log(data, "DATA");
 
   const handleSignOut = async () => {
     Alert.alert("really want to leave", "you will be logged out of the app", [
@@ -143,9 +149,9 @@ export default function HeaderProfile({
 
     data.append("file", {
       uri: fileUri,
-      type: "image/jpeg",
+      type: fileType,
       name: fileName,
-    });
+    } as any);
 
     data.append("upload_preset", "expo-upload");
     data.append("cloud_name", "dqvujibkn");
@@ -166,7 +172,13 @@ export default function HeaderProfile({
 
     const result = await res?.json();
 
-    const userRef = doc(db, "users", auth.currentUser?.uid);
+    const uid = auth.currentUser?.uid;
+
+    if (!uid) {
+      throw new Error("User is not authenticated");
+    }
+
+    const userRef = doc(db, "users", uid);
 
     await updateDoc(userRef, {
       thumbnail: result.secure_url,
@@ -194,7 +206,13 @@ export default function HeaderProfile({
 
   const queryGetFollowers = useQuery({
     queryKey: ["getFollowers"],
-    queryFn: () => getFollowers(queryUserUID),
+    queryFn: () => {
+      if (typeof queryUserUID !== "string") {
+        throw new Error("Invalid user UID");
+      }
+      return getFollowers(queryUserUID);
+    },
+    enabled: typeof queryUserUID === "string",
   });
 
   const getFollowing = async (userId: string) => {
@@ -207,7 +225,13 @@ export default function HeaderProfile({
 
   const queryGetFollowing = useQuery({
     queryKey: ["getFollowing"],
-    queryFn: () => getFollowing(queryUserUID),
+    queryFn: () => {
+      if (typeof queryUserUID !== "string") {
+        throw new Error("Invalid user UID");
+      }
+      return getFollowing(queryUserUID);
+    },
+    enabled: typeof queryUserUID === "string",
   });
 
   const followUser = async (currentUserId: string, targetUserId: string) => {
@@ -287,10 +311,18 @@ export default function HeaderProfile({
   });
 
   const handleFollowUnfollow = () => {
-    if (queryGetFollowers.data?.length > 0) {
-      unfollowUser(auth.currentUser?.uid, dataUID?.data?.uid);
+    const currentUserId = auth.currentUser?.uid;
+    const targetUserId = dataUID?.data?.uid;
+
+    if (!currentUserId || !targetUserId) {
+      console.error("User IDs are undefined. Cannot follow/unfollow.");
+      return;
+    }
+
+    if (queryGetFollowers.data && queryGetFollowers.data.length > 0) {
+      unfollowUser(currentUserId, targetUserId);
     } else {
-      followUser(auth.currentUser?.uid, dataUID?.data?.uid);
+      followUser(currentUserId, targetUserId);
     }
 
     setFollow((prevState) => !prevState);

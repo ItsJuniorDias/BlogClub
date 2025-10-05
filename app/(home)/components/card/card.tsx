@@ -62,25 +62,27 @@ export default function Card({ data }) {
   }, []);
 
   const Item = ({ id, title, thumbnail }: ItemProps) => (
-    <Content onPress={() => handleRedirect(id)}>
-      {thumbnail ? (
-        <LinearGradientCustom>
-          <Thumbnail source={thumbnail} />
-        </LinearGradientCustom>
-      ) : (
-        <LinearGradientCustom>
-          <FontAwesome5 name="user" size={24} color="#333" />
-        </LinearGradientCustom>
-      )}
+    <>
+      <Content onPress={() => handleRedirect(id)}>
+        {thumbnail ? (
+          <LinearGradientCustom>
+            <Thumbnail source={thumbnail} />
+          </LinearGradientCustom>
+        ) : (
+          <LinearGradientCustom>
+            <FontAwesome5 name="user" size={24} color="#333" />
+          </LinearGradientCustom>
+        )}
 
-      <Text
-        title={title.split(" ")[0]}
-        fontFamily="regular"
-        fontSize={14}
-        numberOfLines={1}
-        color={Colors.light.blueText}
-      />
-    </Content>
+        <Text
+          title={title.split(" ")[0]}
+          fontFamily="regular"
+          fontSize={14}
+          numberOfLines={1}
+          color={Colors.light.blueText}
+        />
+      </Content>
+    </>
   );
 
   return (
