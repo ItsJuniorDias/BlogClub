@@ -20,11 +20,12 @@ import {
   Row,
 } from "./styles";
 import { getAuth } from "firebase/auth";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface InputProps {
   thumbnail: string;
   setThumbnailRef: React.RefObject<string>;
+  onChecked: (item: string) => void;
 }
 
 interface StateTypeProps {
@@ -39,10 +40,28 @@ const formSchema = z.object({
 
 type FormData = z.infer<typeof formSchema>;
 
-export default function InputBody({ thumbnail, setThumbnailRef }: InputProps) {
+export default function InputBody({
+  thumbnail,
+  setThumbnailRef,
+  onChecked,
+}: InputProps) {
   const [valueType, setValueType] = useState<StateTypeProps>({
     type: "technology",
   });
+
+  useEffect(() => {
+    if (valueType.type === "technology") {
+      onChecked("technology");
+    }
+
+    if (valueType.type === "philosophy") {
+      onChecked("philosophy");
+    }
+
+    if (valueType.type === "adventure") {
+      onChecked("adventure");
+    }
+  }, [valueType, onChecked]);
 
   const [checked, setChecked] = useState({
     technology: true,
@@ -68,8 +87,6 @@ export default function InputBody({ thumbnail, setThumbnailRef }: InputProps) {
 
   const onSubmit = async (data: FormData) => {
     try {
-      console.log("Formulário válido:", data);
-
       const docRef = await addDoc(collection(db, "posts"), {
         title: data.title,
         description: data.description,
@@ -99,8 +116,6 @@ export default function InputBody({ thumbnail, setThumbnailRef }: InputProps) {
       setValue("article", "");
 
       setThumbnailRef.current === "";
-
-      console.log("Documento criado com ID: ", docRef.id);
     } catch (e) {
       console.error("Erro ao adicionar documento: ", e);
     }
@@ -202,6 +217,8 @@ export default function InputBody({ thumbnail, setThumbnailRef }: InputProps) {
                   adventure: false,
                   philosophy: false,
                 }));
+
+                onChecked("technology");
               }}
               title="technology"
             />
@@ -220,6 +237,8 @@ export default function InputBody({ thumbnail, setThumbnailRef }: InputProps) {
                   technology: false,
                   philosophy: false,
                 }));
+
+                onChecked("adventure");
               }}
               title="adventure"
             />
@@ -238,6 +257,8 @@ export default function InputBody({ thumbnail, setThumbnailRef }: InputProps) {
                   technology: false,
                   adventure: false,
                 }));
+
+                onChecked("philosophy");
               }}
               title="philosophy"
             />

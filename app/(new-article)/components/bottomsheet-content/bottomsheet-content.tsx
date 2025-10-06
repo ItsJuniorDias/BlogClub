@@ -1,24 +1,18 @@
-import { useCallback, useState } from "react";
-import { Alert, FlatList, ScrollView } from "react-native";
+import React, { useMemo } from "react";
+import { Alert, FlatList, ActivityIndicator, View, Text } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { Colors } from "@/constants/Colors";
-
-import success_checked from "../../../../assets/images/success_checked.gif";
-
 import { Input } from "@/components/ui";
-
 import {
   Container,
   ContentInput,
   Row,
   Thumbnail,
-  Checked,
   Touchable,
   TouchableSkeleton,
   ButtonBack,
   RowItem,
 } from "./styles";
-import { useQueryClient } from "@tanstack/react-query";
 
 type ItemProps = {
   id: string;
@@ -28,119 +22,97 @@ type ItemProps = {
 interface BottomSheetContentProps {
   onClose: () => void;
   data: ItemProps[];
-  isLoading: boolean;
-  setIsLoading: (item: boolean) => void;
   queryUnplash: string;
-  setQueryUnplash: (item: string) => void;
   onThumbnail: (item: string) => void;
+  onEndReached: () => void;
+  isLoading: boolean;
+  isLoadingMore: boolean;
+  refetch: () => void;
 }
 
 export default function BottomSheetContent({
-  data,
   onClose,
-  isLoading,
-  setIsLoading,
+  data,
   queryUnplash,
-  setQueryUnplash,
   onThumbnail,
+  onEndReached,
+  isLoading,
+  isLoadingMore,
+  refetch,
 }: BottomSheetContentProps) {
-  const queryClient = useQueryClient();
+  // Memoriza os dados — evita recriar o array e resetar o scroll
+  const memoizedData = useMemo(() => data ?? [], [data]);
 
-  const Item = ({ id, image }: ItemProps) => {
-    return (
-      <>
-        <Touchable
-          activeOpacity={0.7}
-          onPress={() => {
-            onThumbnail(image);
-
-            Alert.alert(
-              "Photo selected with success",
-              "Your photos by selected",
-              [
-                {
-                  text: "Cancel",
-                  onPress: () => console.log("Cancel Pressed"),
-                  style: "cancel",
-                },
-                { text: "OK", onPress: () => console.log("OK Pressed") },
-              ]
-            );
-          }}
-        >
-          <Thumbnail
-            source={{
-              uri: image,
-            }}
-          />
-        </Touchable>
-      </>
-    );
-  };
+  const Item = ({ id, image }: ItemProps) => (
+    <Touchable
+      activeOpacity={0.7}
+      onPress={() => {
+        onThumbnail(image);
+        Alert.alert("Photo selected", "Your photo has been selected!", [
+          { text: "OK" },
+        ]);
+      }}
+    >
+      <Thumbnail source={{ uri: image }} />
+    </Touchable>
+  );
 
   return (
     <Container>
+      {/* Header */}
       <Row>
-        <ButtonBack
-          onPress={() => {
-            onClose();
-
-            setIsLoading(true);
-          }}
-        >
+        <ButtonBack onPress={onClose}>
           <AntDesign name="close" size={24} color={Colors.light.darkGray} />
         </ButtonBack>
       </Row>
 
+      {/* Input de busca */}
       <ContentInput>
         <Input
-          title={""}
+          title=""
           value={queryUnplash}
-          onChangeText={(item) => {
-            setIsLoading(true);
-
-            setQueryUnplash(item ?? "");
-
-            queryClient.invalidateQueries({ queryKey: ["photos"] });
-          }}
+          onChangeText={() => {}}
           placeholder="Search"
-          keyboardType="default"
-          autoCapitalize="none"
+          editable={false}
+          keyboardType="twitter"
           errors={undefined}
         />
       </ContentInput>
 
-      {isLoading && (
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <RowItem>
-            <TouchableSkeleton activeOpacity={0.7} />
-            <TouchableSkeleton activeOpacity={0.7} />
-          </RowItem>
-
-          <RowItem>
-            <TouchableSkeleton activeOpacity={0.7} />
-            <TouchableSkeleton activeOpacity={0.7} />
-          </RowItem>
-
-          <RowItem>
-            <TouchableSkeleton activeOpacity={0.7} />
-            <TouchableSkeleton activeOpacity={0.7} />
-          </RowItem>
-        </ScrollView>
-      )}
-
-      {!isLoading && (
-        <FlatList
-          data={data}
-          numColumns={2}
-          refreshing
-          renderItem={({ item }) => (
-            <Item id={item.id} image={item.links.download} />
-          )}
-          keyExtractor={(item: ItemProps) => item.id}
-          showsVerticalScrollIndicator={false}
-        />
-      )}
+      {/* FlatList sempre montada para manter a posição */}
+      <FlatList
+        data={memoizedData}
+        numColumns={2}
+        renderItem={({ item }) => <Item id={item.id} image={item.image} />}
+        keyExtractor={(item) => item.id}
+        showsVerticalScrollIndicator={false}
+        onEndReached={onEndReached}
+        onEndReachedThreshold={0.1}
+        ListEmptyComponent={
+          isLoading ? (
+            // Skeleton loading durante o carregamento inicial
+            <>
+              {[1, 2, 3].map((row) => (
+                <RowItem key={row}>
+                  <TouchableSkeleton activeOpacity={0.7} />
+                  <TouchableSkeleton activeOpacity={0.7} />
+                </RowItem>
+              ))}
+            </>
+          ) : (
+            <Text style={{ textAlign: "center", marginTop: 20 }}>
+              Nenhuma imagem encontrada.
+            </Text>
+          )
+        }
+        ListFooterComponent={
+          isLoadingMore ? (
+            <View style={{ marginVertical: 20 }}>
+              <ActivityIndicator size="large" color={Colors.light.blue} />
+            </View>
+          ) : null
+        }
+      />
     </Container>
   );
 }
