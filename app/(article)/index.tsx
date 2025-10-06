@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { TouchableOpacity, Alert, StyleSheet } from "react-native";
+import { TouchableOpacity, Alert, StyleSheet, Platform } from "react-native";
 import * as Sharing from "expo-sharing";
 
 import mobileAds, {
@@ -40,7 +40,10 @@ import { StatusBar } from "expo-status-bar";
 import { queryUserByUID } from "@/utils/queryUserByUID";
 import { timeAgo } from "@/utils/timeAgo";
 
-const interstitialAdUnitId = TestIds.INTERSTITIAL;
+const interstitialAdUnitId =
+  Platform.OS === "android"
+    ? "ca-app-pub-5426118153355097/5961430468"
+    : "ca-app-pub-5426118153355097/9298040240";
 
 const interstitial = InterstitialAd.createForAdRequest(interstitialAdUnitId, {
   requestNonPersonalizedAdsOnly: true,
