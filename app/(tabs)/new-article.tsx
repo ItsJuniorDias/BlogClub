@@ -74,7 +74,10 @@ export default function NewArticle() {
 
   return (
     <>
-      <ScrollView style={styles.container}>
+      <ScrollView
+        style={styles.container}
+        contentContainerStyle={{ paddingBottom: 32 }}
+      >
         <HeaderNewArticle
           onPress={() => {
             if (!queryUnplash) {
@@ -123,6 +126,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#f2f2f2",
-    paddingTop: 64,
+    paddingTop: 32,
   },
 });

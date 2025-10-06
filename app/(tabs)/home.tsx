@@ -1,4 +1,4 @@
-import { FlatList, ScrollView, StyleSheet } from "react-native";
+import { FlatList, Platform, ScrollView, StyleSheet } from "react-native";
 
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { collection, getDocs } from "firebase/firestore";
@@ -155,5 +155,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#f2f2f2",
   },
-  padding: {},
+  padding: {
+    paddingBottom: Platform.OS === "android" ? 96 : 0,
+  },
 });

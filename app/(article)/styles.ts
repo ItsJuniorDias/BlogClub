@@ -10,7 +10,7 @@ export const Container = styled.ScrollView`
 export const Header = styled.View`
   flex-direction: row;
   justify-content: space-between;
-  padding-top: 72px;
+  padding-top: 32px;
   margin-bottom: 24px;
   padding-left: 40px;
   padding-right: 40px;

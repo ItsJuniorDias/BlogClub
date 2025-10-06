@@ -1,4 +1,5 @@
 import { Image } from "expo-image";
+import { Platform } from "react-native";
 import styled from "styled-components/native";
 
 export const Container = styled.View`
@@ -6,13 +7,14 @@ export const Container = styled.View`
   padding-left: 40px;
   padding-right: 40px;
   flex-direction: row;
-  margin-top: 24px;
+  margin-top: ${Platform.OS === 'android' ? '44px' : "24px"} ;
   justify-content: space-between;
 
 `;
 
 export const Content = styled.View`
   gap: 8px;
+  width: 90%;
 `;
 
 export const Notification = styled(Image)`

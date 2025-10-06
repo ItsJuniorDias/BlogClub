@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+
 import { TouchableOpacity } from "react-native";
 import { Colors } from "@/constants/Colors";
 import { Tag, Text, Button, Input } from "@/components/ui";
@@ -17,7 +19,8 @@ import {
   Row,
 } from "./styles";
 import { getAuth } from "firebase/auth";
-import { useEffect, useState } from "react";
+
+import { OPENAI_API_KEY } from "@env";
 
 interface InputProps {
   thumbnail: string;
@@ -139,7 +142,7 @@ export default function InputBody({
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer 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`,
+            Authorization: `Bearer ${OPENAI_API_KEY}`,
           },
           body: JSON.stringify({
             model: "gpt-3.5-turbo", // free model

@@ -3,7 +3,7 @@ import { Image } from "expo-image";
 import styled from "styled-components/native";
 
 export const Container = styled.View`
-  margin-top: 24px;
+  margin-top: 32px;
   padding-left: 40px;
   padding-right: 40px;
   flex-direction: row;
