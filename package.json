@@ -13,6 +13,8 @@
   "dependencies": {
     "@expo/metro-runtime": "~6.1.2",
     "@expo/vector-icons": "^15.0.2",
+    "@google/genai": "^1.22.0",
+    "@google/generative-ai": "^0.24.1",
     "@hookform/resolvers": "^5.2.2",
     "@react-native-async-storage/async-storage": "^1.24.0",
     "@react-native-google-signin/google-signin": "^16.0.0",

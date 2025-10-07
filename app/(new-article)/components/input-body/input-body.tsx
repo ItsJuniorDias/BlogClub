@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
-
 import { TouchableOpacity } from "react-native";
 import { Colors } from "@/constants/Colors";
-import { Tag, Text, Button, Input } from "@/components/ui";
+import { Tag, Text, Button } from "@/components/ui";
 import { addDoc, collection } from "firebase/firestore";
 import { db } from "@/firebaseConfig";
 import Toast from "react-native-toast-message";
@@ -20,7 +19,14 @@ import {
 } from "./styles";
 import { getAuth } from "firebase/auth";
 
-import { OPENAI_API_KEY } from "@env";
+// === Gemini Client ===
+import { GoogleGenerativeAI } from "@google/generative-ai";
+
+const genai = new GoogleGenerativeAI("AIzaSyCgHxrYkgdEpYcSa8ClzLxb8CR9l1uXzPk");
+
+const model = genai.getGenerativeModel({
+  model: "gemini-2.5-flash",
+});
 
 interface InputProps {
   thumbnail: string;
@@ -44,6 +50,7 @@ export default function InputBody({
   onChecked,
 }: InputProps) {
   const [valueType, setValueType] = useState(tags[0]);
+
   const [checked, setChecked] = useState({
     technology: true,
     adventure: false,
@@ -88,7 +95,7 @@ export default function InputBody({
       await addDoc(collection(db, "posts"), {
         title: data.title,
         description: data.description,
-        thumbnail: thumbnail,
+        thumbnail: setThumbnailRef.current,
         article: data.article,
         hours: 0,
         numberLike: 0,
@@ -107,6 +114,7 @@ export default function InputBody({
           fontSize: 14,
         },
       });
+
       setValue("title", "");
       setValue("description", "");
       setValue("article", "");
@@ -124,63 +132,112 @@ export default function InputBody({
     },
   });
 
-  // === Generate article in English using GPT-3.5 Turbo ===
-  const generateArticle = async (tag: string) => {
-    const prompt = `You are a content creation assistant. 
-      For the tag: "${tag}", create:
-      1. An engaging title
-      2. A captivating subtitle
-      3. An article of approximately 200 words
-      4. A thumbnail suggestion (keywords for image)
-      Return it in JSON format:
-      {"title":"","subtitle":"","thumbnail":"","content":""}`;
+  const YOUR_ACCESS_KEY = "-Jly_R_E6OQDhkCGJdYbdo8065H14QGir9VaDqSxumg"; // Substitua pela sua chave de acesso
+  const CLIENT_ID_QUERY_PARAM = `client_id=${YOUR_ACCESS_KEY}`;
 
+  const fetchUnsplashImageURL = async (
+    tag?: string // 'tag' agora é opcional
+  ): Promise<string | undefined> => {
     try {
-      const response = await fetch(
-        "https://api.openai.com/v1/chat/completions",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${OPENAI_API_KEY}`,
-          },
-          body: JSON.stringify({
-            model: "gpt-3.5-turbo", // free model
-            messages: [{ role: "user", content: prompt }],
-            temperature: 0.7,
-            max_tokens: 500,
-          }),
-        }
-      );
+      let url = `https://api.unsplash.com/photos/random?${CLIENT_ID_QUERY_PARAM}`;
+
+      if (tag) {
+        url += `&query=${tag}`; // Adiciona a query da tag se for fornecida
+      }
+
+      const response = await fetch(url);
+
+      if (!response.ok) {
+        console.error(
+          `Erro ao buscar imagem aleatória: ${response.status} ${response.statusText}`
+        );
+        return undefined;
+      }
 
       const data = await response.json();
 
-      const content = data.choices[0].message.content;
+      // Para o endpoint random, a resposta é um único objeto de foto, não um array 'results'
+      if (data && data.urls && data.urls.regular) {
+        return data.urls.regular; // Retorna a URL da imagem regular
+      } else {
+        console.log(
+          `Nenhuma imagem aleatória encontrada (ou para a tag: ${tag})`
+        );
+        return undefined;
+      }
+    } catch (error) {
+      console.error(
+        "Erro na requisição Unsplash para imagem aleatória:",
+        error
+      );
+      return undefined;
+    }
+  };
 
-      // Parse JSON safely
+  // === Generate article using Google Gemini ===
+  const generateArticle = async (tag: string) => {
+    const imageUrl = await fetchUnsplashImageURL(tag);
+
+    const prompt = `You are a content creation assistant. 
+      For the tag: "${tag}", create:
+      1. An engaging title
+      2. An description of approximately 10 words
+      3. An article of approximately 500 words
+      5. make the return in this identical pattern
+      { 
+        "title":"",
+        "description":"",
+        "thumbnail":${imageUrl}, 
+        "type":${tag}, 
+        "article":"", 
+        "foreign_key": "e0Q33RHZT5ajQiWy6vRyLfeEW2h2",
+        }`;
+
+    try {
+      const { response } = await model.generateContent(prompt);
+
+      const { candidates } = response;
+
+      if (!candidates || !candidates[0]?.content?.parts?.[0]?.text) {
+        console.error(
+          "No candidates or content returned from Gemini:",
+          candidates
+        );
+        return null;
+      }
+
+      const content = candidates[0].content.parts[0].text;
+      const cleanedContent = content.replace(/```json\n|\n```/g, "");
+
       try {
-        return JSON.parse(content);
+        return JSON.parse(cleanedContent);
       } catch {
-        console.error("Error parsing GPT output:", content);
+        console.error("Error parsing Gemini output:", cleanedContent);
         return null;
       }
     } catch (err) {
-      console.error("Error generating article:", err);
+      console.error("Error generating article with Gemini:", err);
       return null;
     }
   };
 
   const handleGenerateArticle = async () => {
     const result = await generateArticle(valueType);
+
+    console.log(result, "RESULT");
+
     if (!result) {
       Toast.show({ type: "error", text1: "Error generating article" });
       return;
     }
+
     setValue("title", result.title);
-    setValue("description", result.subtitle);
-    setValue("article", result.content);
+    setValue("description", result.description);
+    setValue("article", result.article);
     setThumbnailRef.current = result.thumbnail;
     Toast.show({ type: "success", text1: "Article generated automatically!" });
+
+    mutate({});
   };
 
   return (
@@ -293,6 +350,12 @@ export default function InputBody({
           color="red"
         />
       )}
+
+      {/* <Button
+        isLoading={false}
+        title="GENERATE ARTICLE WITH GEMINI"
+        onPress={handleGenerateArticle}
+      /> */}
 
       <Button
         isLoading={isPending}
