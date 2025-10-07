@@ -3,7 +3,7 @@
     "name": "Blog Club",
     "slug": "Blog-Club",
     "platforms": ["ios", "android"],
-    "version": "1.0.0",
+    "version": "12.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "blogclub",
@@ -22,6 +22,7 @@
         "foregroundImage": "./assets/images/icon.png",
         "backgroundColor": "#ffffff"
       },
+      "versionCode": 9,
       "edgeToEdgeEnabled": true,
       "permissions": ["android.permission.RECORD_AUDIO"],
       "package": "com.itsjuniordias1997.blogclub",

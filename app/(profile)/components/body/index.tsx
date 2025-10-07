@@ -8,7 +8,7 @@ import { collection, getDocs } from "firebase/firestore";
 import { db } from "@/firebaseConfig";
 import { useQuery } from "@tanstack/react-query";
 import { getAuth } from "firebase/auth";
-import { FlatList } from "react-native";
+import { FlatList, Platform } from "react-native";
 import { Colors } from "@/constants/Colors";
 import { useUIDStore } from "@/store/useIDStore";
 
@@ -91,6 +91,9 @@ export default function Body({ onForeignKey }: BodyProps) {
           renderItem={renderItem}
           keyExtractor={(item) => item.id}
           ListEmptyComponent={emptyList}
+          contentContainerStyle={{
+            paddingBottom: Platform.OS === "android" ? 96 : 0,
+          }}
         />
       </Container>
     </>

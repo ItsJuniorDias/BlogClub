@@ -222,7 +222,17 @@ export default function InputBody({
   };
 
   const handleGenerateArticle = async () => {
-    const result = await generateArticle(valueType);
+    const randomTag = tags[Math.floor(Math.random() * tags.length)];
+
+    setValueType(randomTag);
+    setChecked({
+      technology: randomTag === "technology",
+      adventure: randomTag === "adventure",
+      philosophy: randomTag === "philosophy",
+    });
+    onChecked(randomTag);
+
+    const result = await generateArticle(randomTag);
 
     console.log(result, "RESULT");
 

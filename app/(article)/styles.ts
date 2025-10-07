@@ -50,6 +50,7 @@ export const Thumbnail = styled(Image)`
 
 export const ContentText = styled.View`
   gap: 6px;
+  width: 60%;
 `;
 
 export const Body = styled.View`
