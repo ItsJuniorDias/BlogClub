@@ -11,18 +11,11 @@ export default function Profile() {
     post: 0,
   });
 
-  const { uid } = useLocalSearchParams();
-
   return (
     <ScrollView contentContainerStyle={{}} style={styles.container}>
       <StatusBar style="dark" />
 
-      <HeaderProfile
-        uid={uid}
-        posts={value.post}
-        title="Profile"
-        icon="exit-to-app"
-      />
+      <HeaderProfile posts={value.post} title="Profile" icon="exit-to-app" />
 
       <BodyProfile
         onForeignKey={(item) =>

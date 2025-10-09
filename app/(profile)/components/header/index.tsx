@@ -56,48 +56,32 @@ import {
 } from "./styles";
 
 interface HeaderProfileProps {
-  uid: string | string[];
   title: string;
   icon: string;
   posts: number;
 }
 
 export default function HeaderProfile({
-  uid,
   title,
   icon,
   posts,
 }: HeaderProfileProps) {
-  console.log(uid, "UID PARAMS LOCAL");
-
-  const [isFollow, setFollow] = useState(false);
-
   const queryClient = useQueryClient();
 
   const router = useRouter();
 
   const auth = getAuth();
 
-  // const dataUID = useUIDStore();
-
-  // console.log(dataUID.data.uid, "DATA UID");
+  const dataUID = useUIDStore();
 
   const dataUserStore = useUserStore();
 
-  // console.log(dataUserStore, "DATA USER STORE");
-
-  const queryUserUID = !!uid ? uid : auth.currentUser?.uid;
-
-  // const resolvedUID = Array.isArray(uid)
-  //   ? uid[0]
-  //   : uid ?? auth.currentUser?.uid;
+  const queryUserUID = dataUID.data.uid ?? auth.currentUser?.uid;
 
   const { data } = useQuery({
     queryKey: ["userByUID"],
     queryFn: () => queryUserByUID(queryUserUID),
   });
-
-  console.log(data, "DATA");
 
   const handleSignOut = async () => {
     Alert.alert("really want to leave", "you will be logged out of the app", [
@@ -329,8 +313,6 @@ export default function HeaderProfile({
     } else {
       followUser(currentUserId, targetUserId);
     }
-
-    setFollow((prevState) => !prevState);
   };
 
   return (

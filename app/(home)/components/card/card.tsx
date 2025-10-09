@@ -5,12 +5,10 @@ import { Text } from "../../../../components/ui";
 
 import { Container, Content, LinearGradientCustom, Thumbnail } from "./styles";
 import { useRouter } from "expo-router";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 
 import { FontAwesome5 } from "@expo/vector-icons";
 import { useUIDStore } from "@/store/useIDStore";
-import { getUsersWithPriority } from "@/utils/getUsersWithPriority";
-import { getAuth } from "firebase/auth";
 import { getUserPosts } from "@/utils/getUserPosts";
 import { useCallback } from "react";
 import { useUserStore } from "@/store/useUserStore";
@@ -24,7 +22,7 @@ interface ItemProps {
 export default function Card({ data }) {
   const queryClient = useQueryClient();
 
-  // const { fetch } = useUIDStore();
+  const { fetch } = useUIDStore();
 
   const { data: dataUserStore, fetch: fetchUserStore } = useUserStore();
 
@@ -33,9 +31,9 @@ export default function Card({ data }) {
   const handleRedirect = useCallback(async (id: string) => {
     const result = await getUserPosts(id);
 
-    // fetch({
-    //   uid: id,
-    // });
+    fetch({
+      uid: id,
+    });
 
     fetchUserStore({
       ...dataUserStore,
@@ -45,9 +43,6 @@ export default function Card({ data }) {
     if (result.length === 0) {
       router.push({
         pathname: "/(tabs)/profile",
-        params: {
-          uid: id,
-        },
       });
 
       setTimeout(() => {
