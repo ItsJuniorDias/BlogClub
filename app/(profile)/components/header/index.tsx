@@ -74,9 +74,9 @@ export default function HeaderProfile({
 
   const dataUID = useUIDStore();
 
-  const dataUserStore = useUserStore();
-
-  const queryUserUID = dataUID.data.uid ?? auth.currentUser?.uid;
+  const queryUserUID = dataUID.data.uid
+    ? dataUID.data.uid
+    : auth.currentUser?.uid;
 
   const { data } = useQuery({
     queryKey: ["userByUID"],
@@ -346,10 +346,8 @@ export default function HeaderProfile({
                 </>
               ) : (
                 <>
-                  {!!data?.thumbnail || !!dataUserStore?.data?.thumbnail ? (
-                    <Thumbnail
-                      source={data?.thumbnail ?? dataUserStore?.data?.thumbnail}
-                    />
+                  {!!data?.thumbnail ? (
+                    <Thumbnail source={data?.thumbnail} />
                   ) : (
                     <FontAwesome5 name="user" size={40} color="#333" />
                   )}
@@ -359,7 +357,7 @@ export default function HeaderProfile({
 
             <ContentText>
               <Text
-                title={data?.email ?? dataUserStore?.data?.email}
+                title={data?.email}
                 numberOfLines={1}
                 fontFamily="regular"
                 fontSize={14}
@@ -367,7 +365,7 @@ export default function HeaderProfile({
               />
 
               <Text
-                title={data?.name ?? dataUserStore?.data?.name}
+                title={data?.name}
                 numberOfLines={1}
                 fontFamily="semi-bold"
                 fontSize={18}
