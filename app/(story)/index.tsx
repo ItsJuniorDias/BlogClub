@@ -131,7 +131,7 @@ export default function StoryScreen() {
 
             <BackgroundImage source={queryLastPost?.data?.thumbnail} />
 
-            <ContentBlur glassEffectStyle="clear" isInteractive>
+            <ContentBlur intensity={60}>
               <Text
                 title={`${queryLastPost?.data?.title}`}
                 fontFamily="semi-bold"

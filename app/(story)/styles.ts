@@ -19,7 +19,7 @@ export const BackgroundImage = styled(Image)`
   border-bottom-right-radius: 32px;
 `;
 
-export const ContentBlur = styled(GlassView)`
+export const ContentBlur = styled(BlurView)`
   width: 295px;
   height: 200px;
   overflow: hidden;
