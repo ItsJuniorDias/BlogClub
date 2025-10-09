@@ -80,7 +80,7 @@ export default function GoogleLogin() {
 
       if (!existingDoc.exists()) {
         await setDoc(userRef, {
-          uid: user.uid,
+          id: user.uid,
           name,
           email,
           thumbnail: photo,

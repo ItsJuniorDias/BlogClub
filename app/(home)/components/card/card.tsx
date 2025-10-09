@@ -11,7 +11,6 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { useUIDStore } from "@/store/useIDStore";
 import { getUserPosts } from "@/utils/getUserPosts";
 import { useCallback } from "react";
-import { useUserStore } from "@/store/useUserStore";
 
 interface ItemProps {
   id: string;
@@ -24,20 +23,15 @@ export default function Card({ data }) {
 
   const { fetch } = useUIDStore();
 
-  const { data: dataUserStore, fetch: fetchUserStore } = useUserStore();
-
   const router = useRouter();
 
   const handleRedirect = useCallback(async (id: string) => {
     const result = await getUserPosts(id);
 
+    console.log(id, "ID");
+
     fetch({
       uid: id,
-    });
-
-    fetchUserStore({
-      ...dataUserStore,
-      thumbnail: "" ?? dataUserStore.thumbnail,
     });
 
     if (result.length === 0) {
