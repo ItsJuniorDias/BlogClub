@@ -84,7 +84,7 @@ export default function ArticleScreen() {
       .initialize()
       .then(() => console.log("AdMob initialized"));
 
-    let intervalId: NodeJS.Timer;
+    let intervalId: NodeJS.Timeout;
 
     const showAdIfLoaded = () => {
       if (loaded) {
