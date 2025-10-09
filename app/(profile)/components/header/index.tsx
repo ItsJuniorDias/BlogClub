@@ -68,6 +68,8 @@ export default function HeaderProfile({
   icon,
   posts,
 }: HeaderProfileProps) {
+  console.log(uid, "UID PARAMS LOCAL");
+
   const [isFollow, setFollow] = useState(false);
 
   const queryClient = useQueryClient();
@@ -76,21 +78,23 @@ export default function HeaderProfile({
 
   const auth = getAuth();
 
-  const dataUID = useUIDStore();
+  // const dataUID = useUIDStore();
+
+  // console.log(dataUID.data.uid, "DATA UID");
 
   const dataUserStore = useUserStore();
 
-  console.log(dataUserStore, "DATA USER STORE");
+  // console.log(dataUserStore, "DATA USER STORE");
 
   const queryUserUID = !!uid ? uid : auth.currentUser?.uid;
 
-  const resolvedUID = Array.isArray(uid)
-    ? uid[0]
-    : uid ?? auth.currentUser?.uid;
+  // const resolvedUID = Array.isArray(uid)
+  //   ? uid[0]
+  //   : uid ?? auth.currentUser?.uid;
 
   const { data } = useQuery({
     queryKey: ["userByUID"],
-    queryFn: () => queryUserByUID(resolvedUID),
+    queryFn: () => queryUserByUID(queryUserUID),
   });
 
   console.log(data, "DATA");
@@ -312,7 +316,8 @@ export default function HeaderProfile({
 
   const handleFollowUnfollow = () => {
     const currentUserId = auth.currentUser?.uid;
-    const targetUserId = dataUID?.data?.uid;
+
+    const targetUserId = uid;
 
     if (!currentUserId || !targetUserId) {
       console.error("User IDs are undefined. Cannot follow/unfollow.");

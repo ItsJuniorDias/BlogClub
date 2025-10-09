@@ -24,7 +24,7 @@ interface ItemProps {
 export default function Card({ data }) {
   const queryClient = useQueryClient();
 
-  const { fetch } = useUIDStore();
+  // const { fetch } = useUIDStore();
 
   const { data: dataUserStore, fetch: fetchUserStore } = useUserStore();
 
@@ -33,9 +33,9 @@ export default function Card({ data }) {
   const handleRedirect = useCallback(async (id: string) => {
     const result = await getUserPosts(id);
 
-    fetch({
-      uid: id,
-    });
+    // fetch({
+    //   uid: id,
+    // });
 
     fetchUserStore({
       ...dataUserStore,
