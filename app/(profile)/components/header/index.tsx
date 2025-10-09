@@ -184,7 +184,7 @@ export default function HeaderProfile({
     },
   });
 
-  const getFollowers = async (userId: string) => {
+  const getFollowers = async (userId: string | undefined) => {
     const followersRef = collection(db, "users", userId, "followers");
 
     const snapshot = await getDocs(followersRef);
@@ -194,16 +194,10 @@ export default function HeaderProfile({
 
   const queryGetFollowers = useQuery({
     queryKey: ["getFollowers"],
-    queryFn: () => {
-      if (typeof queryUserUID !== "string") {
-        throw new Error("Invalid user UID");
-      }
-      return getFollowers(queryUserUID);
-    },
-    enabled: typeof queryUserUID === "string",
+    queryFn: () => getFollowers(queryUserUID),
   });
 
-  const getFollowing = async (userId: string) => {
+  const getFollowing = async (userId: string | undefined) => {
     const followingRef = collection(db, "users", userId, "following");
 
     const snapshot = await getDocs(followingRef);
@@ -213,13 +207,7 @@ export default function HeaderProfile({
 
   const queryGetFollowing = useQuery({
     queryKey: ["getFollowing"],
-    queryFn: () => {
-      if (typeof queryUserUID !== "string") {
-        throw new Error("Invalid user UID");
-      }
-      return getFollowing(queryUserUID);
-    },
-    enabled: typeof queryUserUID === "string",
+    queryFn: () => getFollowing(queryUserUID),
   });
 
   const followUser = async (currentUserId: string, targetUserId: string) => {
@@ -301,12 +289,7 @@ export default function HeaderProfile({
   const handleFollowUnfollow = () => {
     const currentUserId = auth.currentUser?.uid;
 
-    const targetUserId = uid;
-
-    if (!currentUserId || !targetUserId) {
-      console.error("User IDs are undefined. Cannot follow/unfollow.");
-      return;
-    }
+    const targetUserId = dataUID.data.uid;
 
     if (queryGetFollowers.data && queryGetFollowers.data.length > 0) {
       unfollowUser(currentUserId, targetUserId);
@@ -389,7 +372,7 @@ export default function HeaderProfile({
                     <Text
                       title={
                         queryGetFollowers.data?.length > 0
-                          ? "Following"
+                          ? "Unfollow"
                           : "Follow"
                       }
                       numberOfLines={1}
