@@ -2,7 +2,10 @@
   "expo": {
     "name": "Blog Club",
     "slug": "Blog-Club",
-    "platforms": ["ios", "android"],
+    "platforms": [
+      "ios",
+      "android"
+    ],
     "version": "12.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -14,7 +17,15 @@
       "usesAppleSignIn": true,
       "bundleIdentifier": "com.itsjuniordias1997.blogclub",
       "infoPlist": {
-        "GADApplicationIdentifier": "ca-app-pub-5426118153355097~4916760349"
+        "GADApplicationIdentifier": "ca-app-pub-5426118153355097~4916760349",
+        "CFBundleURLTypes": [
+          {
+            "CFBundleURLSchemes": [
+              "com.googleusercontent.apps.482652111919-rf1smagh2da9adn247c21d7q226qp712"
+            ]
+          },
+         
+        ]
       }
     },
     "android": {
@@ -24,7 +35,9 @@
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "permissions": ["android.permission.RECORD_AUDIO"],
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ],
       "package": "com.itsjuniordias1997.blogclub",
       "intentFilters": [
         {
@@ -40,7 +53,10 @@
               "scheme": "blogclub"
             }
           ],
-          "category": ["BROWSABLE", "DEFAULT"]
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
         }
       ]
     },
@@ -65,9 +81,11 @@
       [
         "react-native-google-mobile-ads",
         {
-          "androidAppId": "ca-app-pub-5426118153355097~9031265177"
+          "androidAppId": "ca-app-pub-5426118153355097~9031265177",
+          "iosAppId": "ca-app-pub-5426118153355097~4916760349"
         }
-      ]
+      ],
+      "expo-font"
     ],
     "experiments": {
       "typedRoutes": true,

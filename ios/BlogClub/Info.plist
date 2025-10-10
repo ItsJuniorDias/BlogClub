@@ -24,15 +24,12 @@
     <string>12.0.0</string>
     <key>CFBundleSignature</key>
     <string>????</string>
-    <key>GADApplicationIdentifier</key>
-    <string>ca-app-pub-5426118153355097~4916760349</string>
     <key>CFBundleURLTypes</key>
     <array>
       <dict>
         <key>CFBundleURLSchemes</key>
         <array>
-          <string>blogclub</string>
-          <string>com.itsjuniordias1997.blogclub</string>
+          <string>com.googleusercontent.apps.482652111919-rf1smagh2da9adn247c21d7q226qp712</string>
         </array>
       </dict>
       <dict>
@@ -44,6 +41,8 @@
     </array>
     <key>CFBundleVersion</key>
     <string>1</string>
+    <key>GADApplicationIdentifier</key>
+    <string>ca-app-pub-5426118153355097~4916760349</string>
     <key>GADDelayAppMeasurementInit</key>
     <false/>
     <key>LSMinimumSystemVersion</key>
