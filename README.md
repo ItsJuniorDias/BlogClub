@@ -14,13 +14,17 @@ https://github.com/user-attachments/assets/a982afeb-f18b-4b05-b6b1-3d347393535b
 1. Install dependencies
 
    ```bash
-   npm install
+   yarn install
    ```
 
 2. Start the app
 
    ```bash
-   npx expo start
+   npx expo prebuild
+   
+   yarn run android
+   or
+   yarn run ios 
    ```
 
 In the output, you'll find options to open the app in a
