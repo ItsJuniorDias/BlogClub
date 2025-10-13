@@ -23,10 +23,10 @@ import { Colors } from "@/constants/Colors";
 
 const schema = z.object({
   email: z
-    .string("* Required field")
+    .string({ required_error: "* Required field" })
     .email({ message: "Invalid email address" }),
   password: z
-    .string("* Required field")
+    .string({ required_error: "* Required field" })
     .min(6, { message: "Password must be at least 6 characters long" }),
 });
 
@@ -86,7 +86,6 @@ export default function InputLogin() {
             value={value}
             onChangeText={(text) => {
               onChange(text);
-
               if (errors.email) {
                 clearErrors("email");
               }
@@ -115,7 +114,6 @@ export default function InputLogin() {
             title="Password"
             placeholder="Enter with password"
             secureTextEntry={true}
-            multiline
             errors={errors.password}
           />
         )}

@@ -39,7 +39,7 @@ export default function SplashScreen() {
   }
 
   useEffect(() => {
-    requestIntegrityToken();
+    // requestIntegrityToken();
   }, []);
 
   useEffect(() => {

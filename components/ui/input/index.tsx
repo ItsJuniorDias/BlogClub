@@ -9,7 +9,7 @@ import { Container, InputCustom } from "./styles";
 interface InputPros extends TextInputProps {
   title: string;
   placeholder: string;
-  keyboardType: KeyboardTypeOptions;
+  keyboardType?: KeyboardTypeOptions;
   errors: FieldError | undefined;
 }
 

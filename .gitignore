@@ -16,6 +16,10 @@ credentials.json
 credentials
 upload_certificate.pem
 
+blog-club-466306-d543f6582dd6.json
+serviceAccountKey.json
+serviceAccountKey
+
 # Runtime data
 pids
 *.pid

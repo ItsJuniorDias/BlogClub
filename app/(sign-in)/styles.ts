@@ -82,7 +82,3 @@ export const IconLogo = styled(Image)`
   height: 36px;
 `;
 
-export const FakeKeyboard = styled.View`
-  width: 100%;
-  height: 220px;
-`;

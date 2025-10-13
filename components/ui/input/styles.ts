@@ -1,3 +1,4 @@
+import { Colors } from "@/constants/Colors";
 import { TextInputProps } from "react-native";
 import styled from "styled-components/native";
 
@@ -18,4 +19,5 @@ export const InputCustom = styled.TextInput<InputCustomProps>`
   font-size: 14px;
   border-bottom-width: 1px;
   border-color: ${({ isError }) => (isError ? "red" : "#d9dfeb")};
+  color: ${Colors.light.darkBlue}; 
 `;
