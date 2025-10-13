@@ -60,7 +60,18 @@ export default function HomeScreen() {
 
     const dataList = (querySnapshot?.docs ?? []).map((doc) => ({
       id: doc.id,
-      ...doc.data(),
+      ...(doc.data() as {
+        thumbnail: string;
+        title: string;
+        description: string;
+        article: string;
+        numberLike: number;
+        hours: number;
+        isLike: boolean;
+        foreign_key: string;
+        type: "technology" | "adventure" | "philosophy";
+        createdAt: Date;
+      }),
     }));
 
     const filterDataTechnology = dataList.filter(
@@ -126,7 +137,9 @@ export default function HomeScreen() {
         style={styles.container}
       >
         <Header
-          title={`Hi, ${queryUser?.data?.name ?? "Everyone"}!`}
+          title={`Hi, ${
+            (queryUser?.data as { name?: string })?.name ?? "Everyone"
+          }!`}
           description="Explore today’s"
         />
 

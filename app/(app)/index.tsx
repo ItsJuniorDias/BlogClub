@@ -9,6 +9,11 @@ import { Container } from "./styles";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/firebaseConfig";
 
+import * as Crypto from "expo-crypto";
+import { Buffer } from "buffer";
+import { NativeModules } from "react-native";
+const { IntegrityModule } = NativeModules;
+
 export default function SplashScreen() {
   const { fetch } = useUserStore();
   const router = useRouter();
@@ -17,6 +22,25 @@ export default function SplashScreen() {
   const translateX = useRef(new Animated.Value(300)).current;
   const scale = useRef(new Animated.Value(1)).current;
   const opacity = useRef(new Animated.Value(1)).current;
+
+  async function requestIntegrityToken() {
+    try {
+      const randomBytes = await Crypto.getRandomBytesAsync(32);
+      const nonce = Buffer.from(randomBytes).toString("base64");
+
+      console.log("Nonce gerado:", nonce);
+
+      const token = await IntegrityModule.getIntegrityToken(nonce);
+
+      console.log("Token recebido:", token);
+    } catch (e) {
+      console.error("Erro ao obter token:", e);
+    }
+  }
+
+  useEffect(() => {
+    requestIntegrityToken();
+  }, []);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
