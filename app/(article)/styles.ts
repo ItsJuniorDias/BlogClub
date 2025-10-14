@@ -1,5 +1,6 @@
 import { Colors } from "@/constants/Colors";
 import { Image } from "expo-image";
+import { Platform } from "react-native";
 import styled from "styled-components/native";
 
 export const Container = styled.ScrollView`
@@ -10,7 +11,7 @@ export const Container = styled.ScrollView`
 export const Header = styled.View`
   flex-direction: row;
   justify-content: space-between;
-  padding-top: 32px;
+  padding-top: ${Platform.OS === "ios" ?  64 : 32 }px;
   margin-bottom: 24px;
   padding-left: 40px;
   padding-right: 40px;

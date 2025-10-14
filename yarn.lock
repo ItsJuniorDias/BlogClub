@@ -4258,7 +4258,7 @@ expo-crypto@~15.0.7:
   dependencies:
     base64-js "^1.3.0"
 
-expo-dev-client@~6.0.15:
+expo-dev-client@~6.0.14:
   version "6.0.15"
   resolved "https://registry.yarnpkg.com/expo-dev-client/-/expo-dev-client-6.0.15.tgz#7b715cb45ed560b98c54c2db54197936d7298855"
   integrity sha512-zdpuK7wPp7q01qE90EDQunL49cumGPEKCGDykB86K0myCPZt1lvkpyy4OHTh3urm3pkikWOb9biuVgLdq7oq/g==
@@ -4385,7 +4385,7 @@ expo-modules-core@3.0.21:
   dependencies:
     invariant "^2.2.4"
 
-expo-router@~6.0.11:
+expo-router@~6.0.8:
   version "6.0.12"
   resolved "https://registry.yarnpkg.com/expo-router/-/expo-router-6.0.12.tgz#ec2ea4d8d35bd5cb6d005db44805680325fa6d09"
   integrity sha512-GBfMHAbHoPv7aCfHOEgFNxcadw4euPyI/SqHNNtw+Sm+JtvauHP34wi7Bg25JxatHQ8EdhxAj6w0D8D6QRnayg==

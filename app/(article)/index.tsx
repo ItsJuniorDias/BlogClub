@@ -67,6 +67,7 @@ import {
 
 export default function ArticleScreen() {
   const [isPlay, setIsPlay] = useState(false);
+
   const [loaded, setLoaded] = useState(false);
 
   const queryClient = useQueryClient();
@@ -80,50 +81,64 @@ export default function ArticleScreen() {
   const router = useRouter();
 
   useEffect(() => {
+    console.log("🚀 Iniciando AdMob + intervalo de 30s...");
+
     mobileAds()
       .initialize()
-      .then(() => console.log("AdMob initialized"));
+      .then(() => console.log("✅ AdMob initialized"));
 
-    let intervalId: NodeJS.Timeout;
+    let intervalId: ReturnType<typeof setInterval>;
+    let secondsElapsed = 0;
+    let isLoaded = false;
 
     const showAdIfLoaded = () => {
-      if (loaded) {
+      secondsElapsed += 30;
+      console.log(`⏱️ ${secondsElapsed}s se passaram — verificando anúncio...`);
+
+      if (isLoaded) {
+        console.log("🎯 Anúncio carregado — exibindo agora!");
         interstitial.show();
-        setLoaded(false); // marca como não carregado para recarregar o próximo
+        isLoaded = false;
+        interstitial.load(); // carrega o próximo
+      } else {
+        console.log("🕓 Ainda não carregado, aguardando próximo ciclo...");
       }
     };
 
-    // Listener quando o anúncio estiver carregado
+    // Listener: anúncio carregado
     const unsubscribeLoaded = interstitial.addAdEventListener(
       AdEventType.LOADED,
       () => {
-        setLoaded(true);
-        showAdIfLoaded(); // mostra imediatamente ao carregar
+        console.log("📦 Anúncio carregado e pronto para exibir");
+        isLoaded = true;
       }
     );
 
-    // Listener quando o anúncio for fechado
+    // Listener: anúncio fechado
     const unsubscribeClosed = interstitial.addAdEventListener(
       AdEventType.CLOSED,
       () => {
-        interstitial.load(); // prepara próximo anúncio
+        console.log("🔁 Anúncio fechado — recarregando próximo...");
+        interstitial.load();
       }
     );
 
     // Carrega o primeiro anúncio
     interstitial.load();
 
-    intervalId = setInterval(() => {
-      showAdIfLoaded();
-    }, 15000);
+    // Chama imediatamente e depois a cada 30 segundos
+    showAdIfLoaded();
+
+    intervalId = setInterval(showAdIfLoaded, 30000);
 
     // Cleanup ao desmontar
     return () => {
+      clearInterval(intervalId);
       unsubscribeLoaded();
       unsubscribeClosed();
-      clearInterval(intervalId);
+      console.log("🧹 Limpando intervalo e listeners do AdMob");
     };
-  }, [loaded]);
+  }, []);
 
   const handleAudio = async () => {
     await Audio.setAudioModeAsync({
@@ -137,7 +152,7 @@ export default function ArticleScreen() {
   }, []);
 
   const query = useQuery({
-    queryKey: ["userByUID"],
+    queryKey: ["userByArticleUID"],
     queryFn: () => queryUserByUID(data.foreign_key),
   });
 
