@@ -115,7 +115,7 @@ export default function ArticleScreen() {
 
     intervalId = setInterval(() => {
       showAdIfLoaded();
-    }, 30000);
+    }, 15000);
 
     // Cleanup ao desmontar
     return () => {
@@ -235,6 +235,8 @@ export default function ArticleScreen() {
         <Header>
           <ButtonBack
             onPress={() => {
+              queryClient.invalidateQueries({ queryKey: ["userByUID"] });
+
               router.back();
               Speech.stop();
             }}
@@ -348,15 +350,3 @@ export default function ArticleScreen() {
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  text: {
-    fontSize: 20,
-    marginBottom: 20,
-  },
-});
