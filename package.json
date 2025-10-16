@@ -4,9 +4,11 @@
   "version": "1.0.0",
   "scripts": {
     "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
-    "web": "expo start --web"
+    "reset-project": "node ./scripts/reset-project.js",
+    "android": "yarn expo run:android",
+    "ios": "yarn expo run:ios",
+    "web": "yarn expo run:web",
+    "lint": "yarn expo lint"
   },
   "dependencies": {
     "@expo/metro-runtime": "^6.1.2",
@@ -71,6 +73,7 @@
     "zustand": "^5.0.8"
   },
   "devDependencies": {
+    "@react-native-community/cli": "^20.0.2",
     "@types/react": "~19.1.0",
     "babel-plugin-dotenv-import": "^3.0.1",
     "babel-plugin-transform-inline-environment-variables": "^0.4.4",
@@ -78,5 +81,6 @@
     "eslint-config-expo": "~10.0.0",
     "typescript": "~5.9.2"
   },
-  "private": true
+  "private": true,
+  "packageManager": "yarn@4.10.3"
 }
