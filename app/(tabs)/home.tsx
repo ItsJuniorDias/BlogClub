@@ -1,4 +1,4 @@
-import { FlatList, Platform, ScrollView, StyleSheet } from "react-native";
+import { FlatList, Platform, ScrollView, StyleSheet, View } from "react-native";
 
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { collection, getDocs } from "firebase/firestore";
@@ -9,9 +9,12 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Card, CarouselComponent } from "../(home)/components";
 import { Header, LatestNews } from "../../components/ui";
 import { queryUserByUID } from "../../utils/queryUserByUID";
+import { getUsersWithPriority } from "../../utils/getUsersWithPriority";
 
-import { getUsersWithPriority } from "../..//utils/getUsersWithPriority";
-import { useUserStore } from "@/store/useUserStore";
+import mobileAds, {
+  BannerAd,
+  BannerAdSize,
+} from "react-native-google-mobile-ads";
 
 interface ItemProps {
   item: {
@@ -30,16 +33,21 @@ interface ItemProps {
   index: number;
 }
 
+const adUnitId = "ca-app-pub-5426118153355097/5727493102";
+
 export default function HomeScreen() {
   const queryClient = useQueryClient();
-
   const auth = getAuth();
-
   const snapToItemRef = useRef(0);
-
   const [isLoading, setIsLoading] = useState(true);
-
   const user = getAuth();
+
+  // 🔹 Inicializa o AdMob ao abrir o app
+  useEffect(() => {
+    mobileAds()
+      .initialize()
+      .then(() => console.log("AdMob inicializado"));
+  }, []);
 
   const queryUser = useQuery({
     queryKey: ["user"],
@@ -77,11 +85,9 @@ export default function HomeScreen() {
     const filterDataTechnology = dataList.filter(
       (item) => item.type === "technology"
     );
-
     const filterDataAdventure = dataList.filter(
       (item) => item.type === "adventure"
     );
-
     const filterDataPhilosophy = dataList.filter(
       (item) => item.type === "philosophy"
     );
@@ -90,17 +96,9 @@ export default function HomeScreen() {
       setIsLoading(false);
     }, 2000);
 
-    if (snapToItemRef.current === 0) {
-      return filterDataTechnology;
-    }
-
-    if (snapToItemRef.current === 1) {
-      return filterDataAdventure;
-    }
-
-    if (snapToItemRef.current === 2) {
-      return filterDataPhilosophy;
-    }
+    if (snapToItemRef.current === 0) return filterDataTechnology;
+    if (snapToItemRef.current === 1) return filterDataAdventure;
+    if (snapToItemRef.current === 2) return filterDataPhilosophy;
   }, []);
 
   const { data, refetch } = useQuery({
@@ -108,24 +106,40 @@ export default function HomeScreen() {
     queryFn: () => handleFetch(),
   });
 
+  // 🔹 Renderiza cada item + banner a cada 5
   const renderItem = useCallback(
     ({ item, index }: ItemProps) => (
-      <LatestNews
-        id={item.id}
-        isLoading={isLoading}
-        isProfile={index !== 0}
-        profileTitle="Latest News"
-        image={item.thumbnail}
-        title={item.title}
-        description={item.description}
-        article={item.article}
-        numberLike={item.numberLike}
-        hours={item.hours}
-        isLike={item.isLike}
-        foreign_key={item.foreign_key}
-        type={item.type}
-        createdAt={item.createdAt}
-      />
+      <>
+        <LatestNews
+          id={item.id}
+          isLoading={isLoading}
+          isProfile={index !== 0}
+          profileTitle="Latest News"
+          image={item.thumbnail}
+          title={item.title}
+          description={item.description}
+          article={item.article}
+          numberLike={item.numberLike}
+          hours={item.hours}
+          isLike={item.isLike}
+          foreign_key={item.foreign_key}
+          type={item.type}
+          createdAt={item.createdAt}
+        />
+
+        {/* ✅ Banner a cada 5 itens */}
+        {(index + 1) % 5 === 0 && (
+          <View style={styles.bannerContainer}>
+            <BannerAd
+              unitId={adUnitId}
+              size={BannerAdSize.BANNER}
+              requestOptions={{
+                requestNonPersonalizedAdsOnly: true,
+              }}
+            />
+          </View>
+        )}
+      </>
     ),
     [isLoading]
   );
@@ -148,7 +162,6 @@ export default function HomeScreen() {
         <CarouselComponent
           onSnapToItem={(item) => {
             snapToItemRef.current = item;
-
             refetch();
           }}
         />
@@ -170,5 +183,9 @@ const styles = StyleSheet.create({
   },
   padding: {
     paddingBottom: Platform.OS === "android" ? 96 : 0,
+  },
+  bannerContainer: {
+    alignItems: "center",
+    marginVertical: 16,
   },
 });
