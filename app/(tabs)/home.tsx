@@ -33,7 +33,10 @@ interface ItemProps {
   index: number;
 }
 
-const adUnitId = "ca-app-pub-5426118153355097/5727493102";
+const adUnitId =
+  Platform.OS === "android"
+    ? "ca-app-pub-5426118153355097/5727493102"
+    : "ca-app-pub-5426118153355097/4129139273";
 
 export default function HomeScreen() {
   const queryClient = useQueryClient();
