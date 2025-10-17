@@ -1536,7 +1536,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@expo/metro-runtime@npm:^6.1.2":
+"@expo/metro-runtime@npm:^6.1.2, @expo/metro-runtime@npm:~6.1.2":
   version: 6.1.2
   resolution: "@expo/metro-runtime@npm:6.1.2"
   dependencies:
@@ -1673,7 +1673,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@expo/vector-icons@npm:^15.0.2":
+"@expo/vector-icons@npm:^15.0.2, @expo/vector-icons@npm:~15.0.2":
   version: 15.0.2
   resolution: "@expo/vector-icons@npm:15.0.2"
   peerDependencies:
@@ -2244,9 +2244,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@google/genai@npm:^1.22.0":
-  version: 1.25.0
-  resolution: "@google/genai@npm:1.25.0"
+"@google/genai@npm:~1.22.0":
+  version: 1.22.0
+  resolution: "@google/genai@npm:1.22.0"
   dependencies:
     google-auth-library: "npm:^9.14.2"
     ws: "npm:^8.18.0"
@@ -2255,11 +2255,11 @@ __metadata:
   peerDependenciesMeta:
     "@modelcontextprotocol/sdk":
       optional: true
-  checksum: 10c0/a761d8b5881d0439a34523d6a8fe84c5f2a56612cdd664ff407b37444f452ecbaca51ce220821cba6c95fb8adaa634d9c032c23ffc4f4251a42432917f55dcb6
+  checksum: 10c0/c7d4d652e05883a7387b5870bcdedbe51f0dbf3d26e64c702660913a17eb59b102bebf7c0f91dfb123872b45cba6fb470b0ad3c657de4f1404486f47ab1e0dcc
   languageName: node
   linkType: hard
 
-"@google/generative-ai@npm:^0.24.1":
+"@google/generative-ai@npm:~0.24.1":
   version: 0.24.1
   resolution: "@google/generative-ai@npm:0.24.1"
   checksum: 10c0/8da77fc648b04fc2ecef53e75230e2ee67a8fd29a34b6b8874e77a7332b2a1e4b51d44dd9eb604fb063ed8ea46d293aac5b1e2a955ae2435e2582a265f2cb80d
@@ -2306,7 +2306,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@hookform/resolvers@npm:^5.2.2":
+"@hookform/resolvers@npm:~5.2.2":
   version: 5.2.2
   resolution: "@hookform/resolvers@npm:5.2.2"
   dependencies:
@@ -3073,7 +3073,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native-async-storage/async-storage@npm:2.2.0":
+"@react-native-async-storage/async-storage@npm:~2.2.0":
   version: 2.2.0
   resolution: "@react-native-async-storage/async-storage@npm:2.2.0"
   dependencies:
@@ -3262,7 +3262,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native-google-signin/google-signin@npm:^16.0.0":
+"@react-native-google-signin/google-signin@npm:~16.0.0":
   version: 16.0.0
   resolution: "@react-native-google-signin/google-signin@npm:16.0.0"
   peerDependencies:
@@ -3273,6 +3273,16 @@ __metadata:
     expo:
       optional: true
   checksum: 10c0/1ef58e78e1807e691c1be5926393bbc1d31bcc0db549dcc7f7a0bc016cf8590187679fcde5746497cb7f2bb417b78298f04e2119d835180f68eb0bba02cff36c
+  languageName: node
+  linkType: hard
+
+"@react-native-masked-view/masked-view@npm:~0.3.2":
+  version: 0.3.2
+  resolution: "@react-native-masked-view/masked-view@npm:0.3.2"
+  peerDependencies:
+    react: ">=16"
+    react-native: ">=0.57"
+  checksum: 10c0/4ec84b7af2ded49dc21f17cc723a0ef341076cbe40cf758dd2daff8734bea63ba83e2fee7e63958984385314b8915b6804135997e07697abdd4141217c847fe9
   languageName: node
   linkType: hard
 
@@ -3459,7 +3469,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-navigation/bottom-tabs@npm:^7.4.0":
+"@react-navigation/bottom-tabs@npm:^7.4.0, @react-navigation/bottom-tabs@npm:~7.4.9":
   version: 7.4.9
   resolution: "@react-navigation/bottom-tabs@npm:7.4.9"
   dependencies:
@@ -3492,7 +3502,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-navigation/elements@npm:^2.6.3, @react-navigation/elements@npm:^2.6.5":
+"@react-navigation/elements@npm:^2.6.5, @react-navigation/elements@npm:~2.6.3":
   version: 2.6.5
   resolution: "@react-navigation/elements@npm:2.6.5"
   dependencies:
@@ -3512,7 +3522,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-navigation/native-stack@npm:^7.3.16":
+"@react-navigation/native-stack@npm:^7.3.16, @react-navigation/native-stack@npm:~7.3.28":
   version: 7.3.28
   resolution: "@react-navigation/native-stack@npm:7.3.28"
   dependencies:
@@ -3528,7 +3538,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-navigation/native@npm:^7.1.8":
+"@react-navigation/native@npm:^7.1.8, @react-navigation/native@npm:~7.1.18":
   version: 7.1.18
   resolution: "@react-navigation/native@npm:7.1.18"
   dependencies:
@@ -4773,17 +4783,19 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "blog-club@workspace:."
   dependencies:
-    "@expo/metro-runtime": "npm:^6.1.2"
-    "@expo/vector-icons": "npm:^15.0.2"
-    "@google/genai": "npm:^1.22.0"
-    "@google/generative-ai": "npm:^0.24.1"
-    "@hookform/resolvers": "npm:^5.2.2"
-    "@react-native-async-storage/async-storage": "npm:2.2.0"
+    "@expo/metro-runtime": "npm:~6.1.2"
+    "@expo/vector-icons": "npm:~15.0.2"
+    "@google/genai": "npm:~1.22.0"
+    "@google/generative-ai": "npm:~0.24.1"
+    "@hookform/resolvers": "npm:~5.2.2"
+    "@react-native-async-storage/async-storage": "npm:~2.2.0"
     "@react-native-community/cli": "npm:^20.0.2"
-    "@react-native-google-signin/google-signin": "npm:^16.0.0"
-    "@react-navigation/bottom-tabs": "npm:^7.4.0"
-    "@react-navigation/elements": "npm:^2.6.3"
-    "@react-navigation/native": "npm:^7.1.8"
+    "@react-native-google-signin/google-signin": "npm:~16.0.0"
+    "@react-native-masked-view/masked-view": "npm:~0.3.2"
+    "@react-navigation/bottom-tabs": "npm:~7.4.9"
+    "@react-navigation/elements": "npm:~2.6.3"
+    "@react-navigation/native": "npm:~7.1.18"
+    "@react-navigation/native-stack": "npm:~7.3.28"
     "@tanstack/react-query": "npm:^5.90.2"
     "@types/react": "npm:~19.1.0"
     axios: "npm:^1.12.2"
