@@ -1,21 +1,23 @@
-import "react-native-gesture-handler";
-
 import {
   DarkTheme,
   DefaultTheme,
   ThemeProvider,
 } from "@react-navigation/native";
 import { useFonts } from "expo-font";
-import { Stack, router } from "expo-router";
+
+import * as SplashScreen from "expo-splash-screen";
+
+import { Stack } from "expo-router";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { StatusBar } from "expo-status-bar";
 
 import "react-native-reanimated";
 
-import { useColorScheme } from "../hooks/useColorScheme";
-import { TouchableOpacity } from "react-native";
 import { useEffect } from "react";
+import { useColorScheme } from "../hooks/useColorScheme";
+
+SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
@@ -26,6 +28,13 @@ export default function RootLayout() {
     MontserratBold: require("../assets/fonts/Montserrat-Bold.ttf"),
     MontserratSemiBold: require("../assets/fonts/Montserrat-SemiBold.ttf"),
   });
+
+  useEffect(() => {
+    const prepare = async () => {
+      await SplashScreen.hideAsync();
+    };
+    prepare();
+  }, []);
 
   if (!loaded) {
     return null;

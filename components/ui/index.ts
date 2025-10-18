@@ -1,11 +1,12 @@
-import Text from "./text/index";
-import Header from "./header/index";
-import ProgressBar from "./progress-bar/index";
-import LatestNews from "./latest-news/index";
-import Tag from "./tag/index";
-import Input from "./input/index";
 import Button from "./button/index";
-import SkeletonNews  from "./skeleton/index";
+import Header from "./header/index";
+import Input from "./input/index";
+import LatestNews from "./latest-news/index";
+import ProgressBar from "./progress-bar/index";
+import SkeletonNews from "./skeleton/index";
+import Tag from "./tag/index";
+import Text from "./text/index";
+import Tutorial from "./tutorial/index";
 
 
-export { Text, Header, ProgressBar, LatestNews, Tag, Input, Button, SkeletonNews };
+export { Button, Header, Input, LatestNews, ProgressBar, SkeletonNews, Tag, Text, Tutorial };

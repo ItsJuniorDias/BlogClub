@@ -1,16 +1,15 @@
+import { db } from "@/firebaseConfig";
+import { useRouter } from "expo-router";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { doc, getDoc } from "firebase/firestore";
 import React, { useEffect, useRef } from "react";
 import { Animated, Easing } from "react-native";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
 import logo from "../../assets/images/icon.png";
-import { useRouter } from "expo-router";
 import { useUserStore } from "../../store/useUserStore";
-import { queryUserByUID } from "../../utils/queryUserByUID";
 import { Container } from "./styles";
-import { doc, getDoc } from "firebase/firestore";
-import { db } from "@/firebaseConfig";
 
-import * as Crypto from "expo-crypto";
 import { Buffer } from "buffer";
+import * as Crypto from "expo-crypto";
 
 import { NativeModules } from "react-native";
 const { IntegrityModule } = NativeModules;

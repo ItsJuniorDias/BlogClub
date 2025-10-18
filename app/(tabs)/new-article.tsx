@@ -9,9 +9,13 @@ import InputBody from "../(new-article)/components/input-body/input-body";
 import BottomSheet from "@/components/ui/bottomsheet";
 import BottomSheetContent from "../(new-article)/components/bottomsheet-content/bottomsheet-content";
 
+import TutorialOverlay from "@/components/ui/tutorial/index";
+
 const UNSPLASH_ACCESS_KEY = "-Jly_R_E6OQDhkCGJdYbdo8065H14QGir9VaDqSxumg";
 
 export default function NewArticle() {
+  const [showTutorial, setShowTutorial] = useState(true);
+
   const [queryUnplash, setQueryUnplash] = useState("");
   const bottomSheetRef = useRef(null);
   const thumbnailRef = useRef("");
@@ -99,6 +103,11 @@ export default function NewArticle() {
           onChecked={(text) => setQueryUnplash(text)}
         />
       </ScrollView>
+
+      {/* 🪄 Tutorial animado */}
+      {showTutorial && (
+        <TutorialOverlay onFinish={() => setShowTutorial(false)} />
+      )}
 
       <BottomSheet ref={bottomSheetRef}>
         <BottomSheetContent
