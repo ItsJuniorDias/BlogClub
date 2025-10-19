@@ -64,6 +64,7 @@ import {
   Row,
   Thumbnail,
 } from "./styles";
+import { useUIDStore } from "@/store/useIDStore";
 
 export default function ArticleScreen() {
   const [isPlay, setIsPlay] = useState(false);
@@ -75,6 +76,8 @@ export default function ArticleScreen() {
   const { currentUser } = getAuth();
 
   const { data, fetch } = useDataStore((state) => state);
+
+  const dataUID = useUIDStore();
 
   const [isLike, setIsLike] = useState(data.isLike);
 
@@ -92,7 +95,7 @@ export default function ArticleScreen() {
     let isLoaded = false;
 
     const showAdIfLoaded = () => {
-      secondsElapsed += 30;
+      secondsElapsed += 60;
       console.log(`⏱️ ${secondsElapsed}s se passaram — verificando anúncio...`);
 
       if (isLoaded) {
@@ -126,10 +129,10 @@ export default function ArticleScreen() {
     // Carrega o primeiro anúncio
     interstitial.load();
 
-    // Chama imediatamente e depois a cada 30 segundos
+    // Chama imediatamente e depois a cada 60 segundos
     showAdIfLoaded();
 
-    intervalId = setInterval(showAdIfLoaded, 30000);
+    intervalId = setInterval(showAdIfLoaded, 60000);
 
     // Cleanup ao desmontar
     return () => {
@@ -285,7 +288,13 @@ export default function ArticleScreen() {
         </ContentTitle>
 
         <ContentInfo>
-          <Row>
+          <Row
+            onPress={() => {
+              dataUID.fetch({ uid: data.foreign_key });
+
+              router.push("/(tabs)/profile");
+            }}
+          >
             <Thumbnail source={query?.data?.thumbnail} />
 
             <ContentText>

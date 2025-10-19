@@ -250,6 +250,14 @@ export default function InputBody({
     mutate({});
   };
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      handleGenerateArticle();
+    }, 60000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <Container>
       <Controller

@@ -37,7 +37,7 @@ export const ContentInfo = styled.View`
   margin-top: 32px;
 `;
 
-export const Row = styled.View`
+export const Row = styled.TouchableOpacity`
   flex-direction: row;
   gap: 32px;
 `;
