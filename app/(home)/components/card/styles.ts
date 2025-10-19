@@ -10,7 +10,6 @@ export const Container = styled.View`
 export const Content = styled.TouchableOpacity`
   width: 72px;
   height: 92px;
-
   margin-left: 40px;
   margin-right: -24px;
   align-items: center;

@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Blog Club",
-    "slug": "Blog-Club",
+    "slug": "blog-club",
     "platforms": [
       "ios",
       "android"
