@@ -1,25 +1,14 @@
-import { getAuth, signInWithEmailAndPassword, deleteUser } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
-import { useForm, Controller } from "react-hook-form";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Controller, useForm } from "react-hook-form";
+import { z } from "zod";
 
-import google from "../../../../assets/images/logo_google.png";
-import facebook_logo from "../../../../assets/images/facebook_logo.png";
-
-import {
-  Container,
-  ContentButton,
-  ContentText,
-  FooterSocial,
-  Social,
-  RowSocial,
-} from "./styles";
-import { Button, Input, Text } from "@/components/ui";
-import { useRouter } from "expo-router";
+import { Button, Input } from "@/components/ui";
 import { useMutation } from "@tanstack/react-query";
-import { Alert, TouchableOpacity } from "react-native";
-import { Colors } from "@/constants/Colors";
+import { useRouter } from "expo-router";
+import { Alert } from "react-native";
+import { Container, ContentButton } from "./styles";
 
 const schema = z.object({
   email: z
@@ -111,7 +100,7 @@ export default function InputLogin() {
                 clearErrors("password");
               }
             }}
-            title="Password"
+            title="Passwordddd"
             placeholder="Enter with password"
             secureTextEntry={true}
             errors={errors.password}
