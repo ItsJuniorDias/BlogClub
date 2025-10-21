@@ -226,7 +226,7 @@ export default function InputSignUp() {
             }}
             title="Password"
             placeholder="Enter with password"
-            keyboardType="visible-password"
+            keyboardType="default"
             secureTextEntry
             errors={errors.password}
           />

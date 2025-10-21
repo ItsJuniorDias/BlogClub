@@ -100,7 +100,7 @@ export default function InputLogin() {
                 clearErrors("password");
               }
             }}
-            title="Passwordddd"
+            title="Password"
             placeholder="Enter with password"
             secureTextEntry={true}
             errors={errors.password}
