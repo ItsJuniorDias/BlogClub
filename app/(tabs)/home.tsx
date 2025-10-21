@@ -160,7 +160,10 @@ export default function HomeScreen() {
           description="Explore today’s"
         />
 
-        <Card data={queryStoryUsers.data} />
+        <Card
+          data={queryStoryUsers.data}
+          isLoading={queryStoryUsers.isLoading}
+        />
 
         <CarouselComponent
           onSnapToItem={(item) => {
