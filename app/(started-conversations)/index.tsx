@@ -219,6 +219,7 @@ export default function UserChatsScreen() {
               />
 
               <Text
+                numberOfLines={1}
                 title={item.messages.text || "Sem mensagem"}
                 fontFamily="regular"
                 fontSize={14}
