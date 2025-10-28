@@ -1,5 +1,11 @@
 import { useEffect, useState } from "react";
-import { TouchableOpacity, Alert, StyleSheet, Platform } from "react-native";
+import {
+  TouchableOpacity,
+  Alert,
+  StyleSheet,
+  Platform,
+  Pressable,
+} from "react-native";
 import * as Sharing from "expo-sharing";
 
 import mobileAds, {
@@ -24,6 +30,8 @@ import { useRouter } from "expo-router";
 import { useDataStore } from "@/store/useDataStore";
 
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+
+import { franc } from "franc-min";
 
 import {
   deleteDoc,
@@ -65,6 +73,8 @@ import {
   Thumbnail,
 } from "./styles";
 import { useUIDStore } from "@/store/useIDStore";
+import { GlassView } from "expo-glass-effect";
+import { FontAwesome6 } from "@expo/vector-icons";
 
 export default function ArticleScreen() {
   const [isPlay, setIsPlay] = useState(false);
@@ -231,13 +241,32 @@ export default function ArticleScreen() {
   };
 
   const handleSpeak = () => {
-    setIsPlay(true);
+    const text = data.article;
 
-    const thingToSay = data.article;
+    if (!text) return;
 
     if (!isPlay) {
-      Speech.speak(thingToSay, {
-        language: "en-US",
+      setIsPlay(true);
+
+      const langCode = franc(text);
+
+      const langMap = {
+        eng: "en-US",
+        spa: "es-ES",
+        por: "pt-BR",
+        fra: "fr-FR",
+        deu: "de-DE",
+      };
+
+      const language = langMap[langCode as keyof typeof langMap] ?? "en-US"; // fallback padrão
+
+      Speech.speak(text, {
+        language,
+        pitch: 1.0,
+        rate: 1.0,
+        onDone: () => setIsPlay(false),
+        onStopped: () => setIsPlay(false),
+        onError: () => setIsPlay(false),
       });
     } else {
       Speech.stop();
@@ -251,7 +280,7 @@ export default function ArticleScreen() {
 
       <Container>
         <Header>
-          <ButtonBack
+          <Pressable
             onPress={() => {
               queryClient.invalidateQueries({ queryKey: ["userByUID"] });
 
@@ -259,12 +288,14 @@ export default function ArticleScreen() {
               Speech.stop();
             }}
           >
-            <SimpleLineIcons
-              name="arrow-left"
-              size={24}
-              color={Colors.light.darkBlue}
-            />
-          </ButtonBack>
+            <GlassView isInteractive glassEffectStyle="clear">
+              <FontAwesome6
+                name="chevron-left"
+                size={24}
+                color={Colors.light.darkBlue}
+              />
+            </GlassView>
+          </Pressable>
 
           {renderDelete && (
             <TouchableOpacity onPress={() => handleDelete(data.id)}>

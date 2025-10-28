@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
 
-import { StyleSheet, View } from "react-native";
+import { Pressable, StyleSheet, TouchableOpacity, View } from "react-native";
 
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { Text } from "../../components/ui";
@@ -200,13 +200,15 @@ export default function ChatScreen() {
         marginRight: 16,
       }}
     >
-      <ButtonContent onPress={() => router.back()}>
-        <FontAwesome6
-          name="chevron-left"
-          size={24}
-          color={Colors.light.darkBlue}
-        />
-      </ButtonContent>
+      <Pressable onPress={() => router.back()}>
+        <ButtonContent isInteractive glassEffectStyle="clear">
+          <FontAwesome6
+            name="chevron-left"
+            size={24}
+            color={Colors.light.darkBlue}
+          />
+        </ButtonContent>
+      </Pressable>
 
       <GiftedChat
         messages={messages}

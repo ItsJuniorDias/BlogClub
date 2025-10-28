@@ -1,15 +1,14 @@
 import { Colors } from "@/constants/Colors";
+import { GlassView } from "expo-glass-effect";
 import styled from "styled-components/native";
 
 export const Container = styled.View`
   flex: 1;
 `;
 
-export const ButtonContent = styled.TouchableOpacity`
+export const ButtonContent = styled(GlassView)`
   width: 44px;
   height: 44px;
-  border-color: ${Colors.light.darkBlue};
-  border-width: 2px;
   align-items: center;
   justify-content: center;
   margin-top: 64px;

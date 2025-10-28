@@ -23,8 +23,7 @@
             "CFBundleURLSchemes": [
               "com.googleusercontent.apps.482652111919-rf1smagh2da9adn247c21d7q226qp712"
             ]
-          },
-         
+          }
         ]
       }
     },
@@ -87,7 +86,8 @@
           "iosAppId": "ca-app-pub-5426118153355097~4916760349"
         }
       ],
-      "expo-font"
+      "expo-font",
+      "expo-secure-store"
     ],
     "experiments": {
       "typedRoutes": true,

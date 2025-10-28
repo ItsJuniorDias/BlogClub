@@ -1,20 +1,21 @@
 import { Colors } from "@/constants/Colors";
+import { GlassView } from "expo-glass-effect";
 import { Image } from "expo-image";
 import styled from "styled-components/native";
 
 export const Container = styled.View`
   flex: 1;
-  background-color: rgb(255, 255, 255);
+  background-color: "#f2f2f2";
   padding-top: 64px;
   padding-left: 24px;
   padding-right: 24px;
 `;
 
-export const ButtonContent = styled.TouchableOpacity`
+export const ButtonContent = styled(GlassView)`
   width: 44px;
   height: 44px;
-  border-color: ${Colors.light.darkBlue};
-  border-width: 2px;
+  /* border-color: ${Colors.light.darkBlue};
+  border-width: 2px; */
   align-items: center;
   justify-content: center;
   border-radius: 50px;

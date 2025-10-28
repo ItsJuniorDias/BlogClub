@@ -5,6 +5,7 @@ import {
   StyleSheet,
   View,
   Alert,
+  Pressable,
 } from "react-native";
 import {
   arrayUnion,
@@ -261,13 +262,15 @@ export default function UserChatsScreen() {
   const renderHeader = () => {
     return (
       <>
-        <ButtonContent onPress={() => router.back()}>
-          <FontAwesome6
-            name="chevron-left"
-            size={24}
-            color={Colors.light.darkBlue}
-          />
-        </ButtonContent>
+        <Pressable onPress={() => router.back()}>
+          <ButtonContent glassEffectStyle="clear" isInteractive>
+            <FontAwesome6
+              name="chevron-left"
+              size={24}
+              color={Colors.light.darkBlue}
+            />
+          </ButtonContent>
+        </Pressable>
       </>
     );
   };
@@ -277,6 +280,7 @@ export default function UserChatsScreen() {
       {queryMyMessages.isLoading && (
         <>
           {renderHeader()}
+
           {queryMyMessages?.data?.map(() => (
             <Skeleton />
           ))}
