@@ -5,8 +5,11 @@ import {
   StyleSheet,
   Platform,
   Pressable,
+  View,
 } from "react-native";
 import * as Sharing from "expo-sharing";
+
+import { Button, ContextMenu, Host, Picker } from "@expo/ui/swift-ui";
 
 import mobileAds, {
   InterstitialAd,
@@ -78,6 +81,8 @@ import { FontAwesome6 } from "@expo/vector-icons";
 
 export default function ArticleScreen() {
   const [isPlay, setIsPlay] = useState(false);
+
+  const [selectedIndex, setSelectedIndex] = useState(0);
 
   const [loaded, setLoaded] = useState(false);
 
@@ -240,6 +245,24 @@ export default function ArticleScreen() {
     );
   };
 
+  const renderContextMenu = () => {
+    return (
+      <Host style={{ width: 150, height: 50 }}>
+        <ContextMenu>
+          <ContextMenu.Items>
+            <Button systemImage="xmark" onPress={() => handleDelete(data.id)}>
+              Delete
+            </Button>
+          </ContextMenu.Items>
+
+          <ContextMenu.Trigger>
+            <Button variant="bordered">Show Menu</Button>
+          </ContextMenu.Trigger>
+        </ContextMenu>
+      </Host>
+    );
+  };
+
   const handleSpeak = () => {
     const text = data.article;
 
@@ -297,14 +320,18 @@ export default function ArticleScreen() {
             </GlassView>
           </Pressable>
 
-          {renderDelete && (
-            <TouchableOpacity onPress={() => handleDelete(data.id)}>
-              <Feather
-                name="more-horizontal"
-                size={32}
-                color={Colors.light.darkBlue}
-              />
-            </TouchableOpacity>
+          {renderDelete && Platform.OS === "android" ? (
+            <View style={{ marginRight: 24 }}>
+              <TouchableOpacity onPress={() => handleDelete(data.id)}>
+                <Feather
+                  name="more-horizontal"
+                  size={32}
+                  color={Colors.light.darkBlue}
+                />
+              </TouchableOpacity>
+            </View>
+          ) : (
+            <>{renderContextMenu()}</>
           )}
         </Header>
 

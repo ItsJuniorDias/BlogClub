@@ -14,7 +14,6 @@ export const Header = styled.View`
   padding-top: ${Platform.OS === "ios" ?  64 : 32 }px;
   margin-bottom: 24px;
   padding-left: 40px;
-  padding-right: 40px;
 `;
 
 export const ButtonBack = styled.TouchableOpacity`

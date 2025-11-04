@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@expo/metro-runtime": "~6.1.2",
+    "@expo/ui": "^0.2.0-beta.7",
     "@expo/vector-icons": "^15.0.3",
     "@google/genai": "~1.22.0",
     "@google/generative-ai": "~0.24.1",

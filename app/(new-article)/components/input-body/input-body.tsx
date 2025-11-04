@@ -51,6 +51,8 @@ export default function InputBody({
 }: InputProps) {
   const [valueType, setValueType] = useState(tags[0]);
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const [checked, setChecked] = useState({
     technology: true,
     adventure: false,
@@ -222,6 +224,7 @@ export default function InputBody({
   };
 
   const handleGenerateArticle = async () => {
+    setIsLoading(true);
     const randomTag = tags[Math.floor(Math.random() * tags.length)];
 
     setValueType(randomTag);
@@ -233,6 +236,8 @@ export default function InputBody({
     onChecked(randomTag);
 
     const result = await generateArticle(randomTag);
+
+    setIsLoading(false);
 
     console.log(result, "RESULT");
 
@@ -370,7 +375,7 @@ export default function InputBody({
       )}
 
       {/* <Button
-        isLoading={false}
+        isLoading={isLoading}
         title="GENERATE ARTICLE WITH GEMINI"
         onPress={handleGenerateArticle}
       /> */}
