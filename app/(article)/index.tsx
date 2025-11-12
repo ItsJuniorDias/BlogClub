@@ -247,19 +247,26 @@ export default function ArticleScreen() {
 
   const renderContextMenu = () => {
     return (
-      <Host style={{ width: 150, height: 50 }}>
-        <ContextMenu>
-          <ContextMenu.Items>
-            <Button systemImage="xmark" onPress={() => handleDelete(data.id)}>
-              Delete
-            </Button>
-          </ContextMenu.Items>
+      <>
+        {currentUser?.uid === data.foreign_key && (
+          <Host style={{ width: 150, height: 50 }}>
+            <ContextMenu>
+              <ContextMenu.Items>
+                <Button
+                  systemImage="xmark"
+                  onPress={() => handleDelete(data.id)}
+                >
+                  Delete
+                </Button>
+              </ContextMenu.Items>
 
-          <ContextMenu.Trigger>
-            <Button variant="bordered">Show Menu</Button>
-          </ContextMenu.Trigger>
-        </ContextMenu>
-      </Host>
+              <ContextMenu.Trigger>
+                <Button variant="bordered">Show Menu</Button>
+              </ContextMenu.Trigger>
+            </ContextMenu>
+          </Host>
+        )}
+      </>
     );
   };
 

@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Blog Club",
-    "slug": "blog-club",
+    "slug": "Blog-Club",
     "platforms": [
       "ios",
       "android"
@@ -23,8 +23,14 @@
             "CFBundleURLSchemes": [
               "com.googleusercontent.apps.482652111919-rf1smagh2da9adn247c21d7q226qp712"
             ]
+          },
+          {
+            "CFBundleURLSchemes": [
+              "com.googleusercontent.apps.482652111919-rf1smagh2da9adn247c21d7q226qp712"
+            ]
           }
-        ]
+        ],
+        "ITSAppUsesNonExemptEncryption": false
       }
     },
     "android": {
