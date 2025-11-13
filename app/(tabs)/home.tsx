@@ -57,10 +57,27 @@ export default function HomeScreen() {
     queryFn: () => queryUserByUID(user?.currentUser?.uid),
   });
 
+  const getBlocked = async (userId: string | undefined) => {
+    const blockedRef = collection(db, "users", userId ?? "", "blocked");
+
+    const snapshot = await getDocs(blockedRef);
+
+    return snapshot.docs.map((doc) => doc.id);
+  };
+
+  const queryGetBlocked = useQuery({
+    queryKey: ["getBlocked"],
+    queryFn: () => getBlocked(auth.currentUser?.uid),
+  });
+
   const queryStoryUsers = useQuery({
     queryKey: ["userStoryByUID"],
     queryFn: () => getUsersWithPriority(auth.currentUser?.uid),
   });
+
+  const filteredUsers = queryStoryUsers?.data?.filter(
+    (user) => !queryGetBlocked?.data?.includes(user.uid)
+  );
 
   useEffect(() => {
     queryClient.invalidateQueries({ queryKey: ["chatsMyMessages"] });
@@ -160,10 +177,7 @@ export default function HomeScreen() {
           description="Explore today’s"
         />
 
-        <Card
-          data={queryStoryUsers.data}
-          isLoading={queryStoryUsers.isLoading}
-        />
+        <Card data={filteredUsers} isLoading={queryStoryUsers.isLoading} />
 
         <CarouselComponent
           onSnapToItem={(item) => {

@@ -78,6 +78,46 @@ export default function HeaderProfile({
     ? dataUID.data.uid
     : auth.currentUser?.uid;
 
+  const blockUser = async (currentUserId: string, targetUserId: string) => {
+    try {
+      await setDoc(doc(db, "users", currentUserId, "blocked", targetUserId), {
+        blockedAt: serverTimestamp(),
+      });
+
+      // opcional: remover follow/mensagens etc
+      await unfollowUser(currentUserId, targetUserId);
+
+      queryClient.invalidateQueries({ queryKey: ["getBlocked"] });
+      console.log("User blocked successfully");
+    } catch (error) {
+      console.error("Error blocking user:", error);
+    }
+  };
+
+  const unblockUser = async (currentUserId: string, targetUserId: string) => {
+    try {
+      await deleteDoc(doc(db, "users", currentUserId, "blocked", targetUserId));
+
+      queryClient.invalidateQueries({ queryKey: ["getBlocked"] });
+      console.log("User unblocked successfully");
+    } catch (error) {
+      console.error("Error unblocking user:", error);
+    }
+  };
+
+  const getBlocked = async (userId: string | undefined) => {
+    const blockedRef = collection(db, "users", userId ?? "", "blocked");
+
+    const snapshot = await getDocs(blockedRef);
+
+    return snapshot.docs.map((doc) => doc.id);
+  };
+
+  const queryGetBlocked = useQuery({
+    queryKey: ["getBlocked"],
+    queryFn: () => getBlocked(auth.currentUser?.uid),
+  });
+
   const { data } = useQuery({
     queryKey: ["userByUID"],
     queryFn: () => queryUserByUID(queryUserUID),
@@ -413,6 +453,30 @@ export default function HeaderProfile({
                   />
                 </ButtonDelete>
               )}
+
+              <ButtonDelete
+                onPress={() => {
+                  const currentUserId = auth.currentUser?.uid;
+                  const targetUserId = dataUID.data.uid;
+
+                  if (queryGetBlocked.data?.includes(targetUserId)) {
+                    unblockUser(currentUserId, targetUserId);
+                  } else {
+                    blockUser(currentUserId, targetUserId);
+                  }
+                }}
+              >
+                <Text
+                  title={
+                    queryGetBlocked.data?.includes(dataUID.data.uid)
+                      ? "Unblock User"
+                      : "Block User"
+                  }
+                  fontFamily="semi-bold"
+                  fontSize={16}
+                  color={Colors.light.red}
+                />
+              </ButtonDelete>
             </ContentText>
           </Row>
 
