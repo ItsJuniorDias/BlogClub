@@ -9,9 +9,18 @@ import thumbnail from "../../assets/images/thumbnail.png";
 
 import { Container, Thumbnail, Body, Footer, Button } from "./styles";
 import { Colors } from "@/constants/Colors";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function OnboardingScreen() {
   const router = useRouter();
+
+  const saveGuestFlag = async (value) => {
+    try {
+      await AsyncStorage.setItem("isGuest", JSON.stringify(value));
+    } catch (e) {
+      console.log("Erro ao salvar isGuest", e);
+    }
+  };
 
   return (
     <Container>
@@ -36,7 +45,11 @@ export default function OnboardingScreen() {
 
         <Footer>
           <TouchableOpacity
-            onPress={() => router.push("/(tabs)/home")} // ou a tela inicial do app
+            onPress={() => {
+              saveGuestFlag(true);
+
+              router.push("/(tabs)/home");
+            }} // ou a tela inicial do app
             style={{ marginTop: 24 }}
           >
             <Text

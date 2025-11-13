@@ -10,7 +10,7 @@ import BottomSheet from "@/components/ui/bottomsheet";
 import BottomSheetContent from "../(new-article)/components/bottomsheet-content/bottomsheet-content";
 
 import TutorialOverlay from "@/components/ui/tutorial/index";
-import { useRouter } from "expo-router";
+import { useNavigation, useRouter } from "expo-router";
 
 import { auth } from "@/firebaseConfig";
 import { queryUserByUID } from "@/utils/queryUserByUID";
@@ -26,13 +26,15 @@ export default function NewArticle() {
 
   const router = useRouter();
 
+  const navigate = useNavigation();
+
   const user = auth.currentUser;
 
   useEffect(() => {
     const handleNavigate = async () => {
       const currentUser = await queryUserByUID(user?.uid || "");
 
-      if (!currentUser?.acceptedEULA) {
+      if (!currentUser?.acceptedEULA && navigate.isFocused()) {
         return router.push("/(terms)");
       }
     };

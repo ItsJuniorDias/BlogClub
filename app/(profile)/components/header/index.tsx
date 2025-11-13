@@ -454,29 +454,31 @@ export default function HeaderProfile({
                 </ButtonDelete>
               )}
 
-              <ButtonDelete
-                onPress={() => {
-                  const currentUserId = auth.currentUser?.uid;
-                  const targetUserId = dataUID.data.uid;
+              {queryUserUID !== auth.currentUser?.uid ? (
+                <ButtonDelete
+                  onPress={() => {
+                    const currentUserId = auth.currentUser?.uid;
+                    const targetUserId = dataUID.data.uid;
 
-                  if (queryGetBlocked.data?.includes(targetUserId)) {
-                    unblockUser(currentUserId, targetUserId);
-                  } else {
-                    blockUser(currentUserId, targetUserId);
-                  }
-                }}
-              >
-                <Text
-                  title={
-                    queryGetBlocked.data?.includes(dataUID.data.uid)
-                      ? "Unblock User"
-                      : "Block User"
-                  }
-                  fontFamily="semi-bold"
-                  fontSize={16}
-                  color={Colors.light.red}
-                />
-              </ButtonDelete>
+                    if (queryGetBlocked.data?.includes(targetUserId)) {
+                      unblockUser(currentUserId, targetUserId);
+                    } else {
+                      blockUser(currentUserId, targetUserId);
+                    }
+                  }}
+                >
+                  <Text
+                    title={
+                      queryGetBlocked.data?.includes(dataUID.data.uid)
+                        ? "Unblock User"
+                        : "Block User"
+                    }
+                    fontFamily="semi-bold"
+                    fontSize={16}
+                    color={Colors.light.red}
+                  />
+                </ButtonDelete>
+              ) : null}
             </ContentText>
           </Row>
 
