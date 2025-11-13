@@ -22,8 +22,8 @@ const schema = z
       .string("* Required field")
       .min(6, { message: "Password must be at least 6 characters long" }),
     confirmPassword: z.string("* Required field"),
-    profession: z.string("* Required field"),
-    aboutMe: z.string("* Required field"),
+    profession: z.string("* Required field").optional(),
+    aboutMe: z.string("* Required field").optional(),
   })
   .refine(
     (data) =>
@@ -180,7 +180,7 @@ export default function InputSignUp() {
                 clearErrors("profession");
               }
             }}
-            title="Profession"
+            title="Profession (optional)"
             placeholder="Enter with Profession"
             keyboardType="default"
             errors={errors.profession}
@@ -193,7 +193,7 @@ export default function InputSignUp() {
         name="aboutMe"
         render={({ field: { onChange, value } }) => (
           <Input
-            title="About me"
+            title="About me (optional)"
             value={value}
             onChangeText={(text) => {
               onChange(text);

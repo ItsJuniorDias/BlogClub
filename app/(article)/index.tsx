@@ -37,15 +37,18 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { franc } from "franc-min";
 
 import {
+  addDoc,
+  collection,
   deleteDoc,
   doc,
   getDoc,
   increment,
+  serverTimestamp,
   setDoc,
   updateDoc,
 } from "firebase/firestore";
 
-import { db } from "@/firebaseConfig";
+import { auth, db } from "@/firebaseConfig";
 import { getAuth } from "firebase/auth";
 import { StatusBar } from "expo-status-bar";
 import { queryUserByUID } from "@/utils/queryUserByUID";
@@ -245,6 +248,40 @@ export default function ArticleScreen() {
     );
   };
 
+  const reportContent = async ({
+    reportedId,
+    reportedType, // e.g. "post", "comment", "user"
+    reason,
+    details = "",
+  }: {
+    reportedId: string;
+    reportedType: string;
+    reason: string;
+    details?: string;
+  }) => {
+    try {
+      const user = auth.currentUser;
+
+      await addDoc(collection(db, "reports"), {
+        reporterId: user ? user.uid : "anonymous",
+        reportedId,
+        reportedType,
+        reason,
+        details,
+        createdAt: serverTimestamp(),
+      });
+
+      console.log("✅ Report submitted successfully");
+
+      Alert.alert("Thank you", "Your report has been submitted.");
+
+      return { success: true };
+    } catch (error) {
+      console.error("❌ Error submitting report:", error);
+      return { success: false, error };
+    }
+  };
+
   const renderContextMenu = () => {
     return (
       <>
@@ -257,6 +294,19 @@ export default function ArticleScreen() {
                   onPress={() => handleDelete(data.id)}
                 >
                   Delete
+                </Button>
+
+                <Button
+                  systemImage="flag"
+                  onPress={() =>
+                    reportContent({
+                      reportedId: data.id,
+                      reportedType: "post",
+                      reason: "Inappropriate content",
+                    })
+                  }
+                >
+                  Report
                 </Button>
               </ContextMenu.Items>
 

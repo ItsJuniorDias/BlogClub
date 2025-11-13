@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import { useRouter } from "expo-router";
 import Feather from "@expo/vector-icons/Feather";
 
@@ -7,15 +7,7 @@ import { Text } from "../../components/ui";
 
 import thumbnail from "../../assets/images/thumbnail.png";
 
-import {
-  Container,
-  Thumbnail,
-  Body,
-  Title,
-  Description,
-  Footer,
-  Button,
-} from "./styles";
+import { Container, Thumbnail, Body, Footer, Button } from "./styles";
 import { Colors } from "@/constants/Colors";
 
 export default function OnboardingScreen() {
@@ -43,7 +35,18 @@ export default function OnboardingScreen() {
         />
 
         <Footer>
-          <View />
+          <TouchableOpacity
+            onPress={() => router.push("/(tabs)/home")} // ou a tela inicial do app
+            style={{ marginTop: 24 }}
+          >
+            <Text
+              title="Continue as guest"
+              fontFamily="semi-bold"
+              fontSize={16}
+              color={Colors.light.blue}
+              style={{ textAlign: "center" }}
+            />
+          </TouchableOpacity>
 
           <Button onPress={() => router.push("/(sign-in)")} activeOpacity={0.7}>
             <Feather name="arrow-right" size={24} color="white" />

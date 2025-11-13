@@ -31,6 +31,7 @@ export const Footer = styled.View`
   justify-content: space-between;
   margin-bottom: 120px;
   margin-top: 32px;
+  align-items: center;
 `;
 
 export const Button = styled.TouchableOpacity`

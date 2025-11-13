@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { ScrollView, StyleSheet } from "react-native";
 import Toast from "react-native-toast-message";
 import axios from "axios";
@@ -10,6 +10,10 @@ import BottomSheet from "@/components/ui/bottomsheet";
 import BottomSheetContent from "../(new-article)/components/bottomsheet-content/bottomsheet-content";
 
 import TutorialOverlay from "@/components/ui/tutorial/index";
+import { useRouter } from "expo-router";
+
+import { auth } from "@/firebaseConfig";
+import { queryUserByUID } from "@/utils/queryUserByUID";
 
 const UNSPLASH_ACCESS_KEY = "-Jly_R_E6OQDhkCGJdYbdo8065H14QGir9VaDqSxumg";
 
@@ -19,6 +23,22 @@ export default function NewArticle() {
   const [queryUnplash, setQueryUnplash] = useState("");
   const bottomSheetRef = useRef(null);
   const thumbnailRef = useRef("");
+
+  const router = useRouter();
+
+  const user = auth.currentUser;
+
+  useEffect(() => {
+    const handleNavigate = async () => {
+      const currentUser = await queryUserByUID(user?.uid || "");
+
+      if (!currentUser?.acceptedEULA) {
+        return router.push("/(terms)");
+      }
+    };
+
+    handleNavigate();
+  }, []);
 
   // 🧠 Hook TanStack Query com paginação infinita
   const {

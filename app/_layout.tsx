@@ -78,6 +78,13 @@ export default function RootLayout() {
             }}
           />
 
+          <Stack.Screen
+            name="(terms)/index"
+            options={{
+              headerShown: false,
+            }}
+          />
+
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         </Stack>
       </ThemeProvider>

@@ -1,6 +1,5 @@
 import { Icon, Label, NativeTabs } from "expo-router/unstable-native-tabs";
 import { Colors } from "../../constants/Colors";
-import { Ionicons } from "@expo/vector-icons";
 
 export default function Layout() {
   return (
