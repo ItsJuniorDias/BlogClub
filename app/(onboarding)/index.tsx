@@ -22,6 +22,10 @@ export default function OnboardingScreen() {
     }
   };
 
+  useEffect(() => {
+    saveGuestFlag(false);
+  }, []);
+
   return (
     <Container>
       <Thumbnail source={thumbnail} />

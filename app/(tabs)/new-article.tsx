@@ -57,7 +57,7 @@ export default function NewArticle() {
     const handleNavigate = async () => {
       const currentUser = await queryUserByUID(user?.uid || "");
 
-      if (!currentUser?.acceptedEULA && isGuest) {
+      if (!currentUser?.acceptedEULA && !isGuest) {
         return router.push("/(terms)");
       }
     };
