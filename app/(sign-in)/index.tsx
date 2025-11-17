@@ -7,12 +7,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-import {
-  signInWithPopup,
-  FacebookAuthProvider,
-  GoogleAuthProvider,
-  getAuth,
-} from "firebase/auth";
+import { GoogleAuthProvider } from "firebase/auth";
 
 import firebase from "firebase/app";
 import { Colors } from "@/constants/Colors";
@@ -42,6 +37,7 @@ import {
 import AppleLogin from "./components/apple-login";
 import GoogleLogin from "./components/google-login/index";
 import { useRouter } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const provider = new GoogleAuthProvider();
 
@@ -62,6 +58,18 @@ export default function SignInScreen() {
 
   // valor animado do movimento vertical
   const shift = useRef(new Animated.Value(0)).current;
+
+  const saveGuestFlag = async (value) => {
+    try {
+      await AsyncStorage.setItem("isGuest", JSON.stringify(value));
+    } catch (e) {
+      console.log("Erro ao salvar isGuest", e);
+    }
+  };
+
+  useEffect(() => {
+    saveGuestFlag(false);
+  }, []);
 
   useEffect(() => {
     // Listener para quando o teclado abre
