@@ -63,7 +63,7 @@ export default function NewArticle() {
     };
 
     handleNavigate();
-  }, [queryUserByUID, isGuest]);
+  }, [queryUserByUID]);
 
   // 🧠 Hook TanStack Query com paginação infinita
   const {

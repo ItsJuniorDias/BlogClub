@@ -65,8 +65,8 @@ export default function InputSignUp() {
         id: uid,
         email: user.email,
         name: control._formValues.name,
-        aboutMe: control._formValues.aboutMe,
-        profession: control._formValues.profession,
+        aboutMe: control._formValues.aboutMe ?? "",
+        profession: control._formValues.profession ?? "",
         createdAt: new Date(),
       };
 
