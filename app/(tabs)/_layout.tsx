@@ -3,9 +3,13 @@ import { Colors } from "../../constants/Colors";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
 import { auth } from "@/firebaseConfig";
+import { queryUserByUID } from "@/utils/queryUserByUID";
+import { useRouter } from "expo-router";
 
 export default function Layout() {
   const [isGuest, setIsGuest] = useState(null);
+
+  const router = useRouter();
 
   const user = auth.currentUser;
 
@@ -21,11 +25,14 @@ export default function Layout() {
 
   const handleGetGuestFlag = async () => {
     const isGuest = await getGuestFlag();
-    console.log("isGuest:", isGuest);
+
+    const currentUser = await queryUserByUID(user?.uid || "");
 
     setIsGuest(isGuest);
 
-    return isGuest;
+    if (!currentUser?.acceptedEULA && !isGuest) {
+      return router.push("/(terms)");
+    }
   };
 
   useEffect(() => {

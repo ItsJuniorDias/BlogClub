@@ -10,60 +10,15 @@ import BottomSheet from "@/components/ui/bottomsheet";
 import BottomSheetContent from "../(new-article)/components/bottomsheet-content/bottomsheet-content";
 
 import TutorialOverlay from "@/components/ui/tutorial/index";
-import { useNavigation, useRouter } from "expo-router";
-
-import { auth } from "@/firebaseConfig";
-import { queryUserByUID } from "@/utils/queryUserByUID";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const UNSPLASH_ACCESS_KEY = "-Jly_R_E6OQDhkCGJdYbdo8065H14QGir9VaDqSxumg";
 
 export default function NewArticle() {
   const [showTutorial, setShowTutorial] = useState(true);
-  const [isGuest, setIsGuest] = useState(null);
 
   const [queryUnplash, setQueryUnplash] = useState("");
   const bottomSheetRef = useRef(null);
   const thumbnailRef = useRef("");
-
-  const router = useRouter();
-
-  const user = auth.currentUser;
-
-  const getGuestFlag = async () => {
-    try {
-      const value = await AsyncStorage.getItem("isGuest");
-      return value != null ? JSON.parse(value) : null;
-    } catch (e) {
-      console.log("Erro ao ler isGuest", e);
-      return null;
-    }
-  };
-
-  const handleGetGuestFlag = async () => {
-    const isGuest = await getGuestFlag();
-    console.log("isGuest:", isGuest);
-
-    setIsGuest(isGuest);
-
-    return isGuest;
-  };
-
-  useEffect(() => {
-    handleGetGuestFlag();
-  }, []);
-
-  useEffect(() => {
-    const handleNavigate = async () => {
-      const currentUser = await queryUserByUID(user?.uid || "");
-
-      if (!currentUser?.acceptedEULA && !isGuest) {
-        return router.push("/(terms)");
-      }
-    };
-
-    handleNavigate();
-  }, [queryUserByUID]);
 
   // 🧠 Hook TanStack Query com paginação infinita
   const {
