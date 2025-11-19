@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   TouchableOpacity,
   Alert,
@@ -6,8 +6,11 @@ import {
   Platform,
   Pressable,
   View,
+  Animated,
 } from "react-native";
 import * as Sharing from "expo-sharing";
+
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
 import { Button, ContextMenu, Host, Picker } from "@expo/ui/swift-ui";
 
@@ -63,6 +66,16 @@ const interstitial = InterstitialAd.createForAdRequest(interstitialAdUnitId, {
   requestNonPersonalizedAdsOnly: true,
 });
 
+import { useUIDStore } from "@/store/useIDStore";
+import { GlassView } from "expo-glass-effect";
+import { FontAwesome6 } from "@expo/vector-icons";
+
+const genAI = new GoogleGenerativeAI("AIzaSyCgHxrYkgdEpYcSa8ClzLxb8CR9l1uXzPk");
+
+const model = genAI.getGenerativeModel({
+  model: "gemini-2.5-flash",
+});
+
 import {
   Body,
   BodyText,
@@ -78,9 +91,45 @@ import {
   Row,
   Thumbnail,
 } from "./styles";
-import { useUIDStore } from "@/store/useIDStore";
-import { GlassView } from "expo-glass-effect";
-import { FontAwesome6 } from "@expo/vector-icons";
+
+function Skeleton({ width = "100%", height = 14, style = {} }) {
+  const animation = useRef(new Animated.Value(-1)).current;
+
+  useEffect(() => {
+    Animated.loop(
+      Animated.timing(animation, {
+        toValue: 1,
+        duration: 1200,
+        useNativeDriver: true,
+      })
+    ).start();
+  }, []);
+
+  const translateX = animation.interpolate({
+    inputRange: [-1, 1],
+    outputRange: [-200, 200], // movimento horizontal
+  });
+
+  return (
+    <View style={[styles.skeleton, { width, height }, style]}>
+      <Animated.View
+        style={[styles.shimmer, { transform: [{ translateX }] }]}
+      />
+    </View>
+  );
+}
+
+function SkeletonParagraph() {
+  return (
+    <View style={{ marginTop: 10 }}>
+      <Skeleton width="100%" />
+      <Skeleton width="92%" />
+      <Skeleton width="85%" />
+      <Skeleton width="100%" />
+      <Skeleton width="90%" />
+    </View>
+  );
+}
 
 export default function ArticleScreen() {
   const [isPlay, setIsPlay] = useState(false);
@@ -89,11 +138,19 @@ export default function ArticleScreen() {
 
   const [loaded, setLoaded] = useState(false);
 
+  const [isTranslating, setIsTranslating] = useState(false);
+
   const queryClient = useQueryClient();
 
   const { currentUser } = getAuth();
 
   const { data, fetch } = useDataStore((state) => state);
+
+  const [translatedText, setTranslatedText] = useState({
+    title: data.title,
+    description: data.description,
+    article: data.article,
+  });
 
   const dataUID = useUIDStore();
 
@@ -221,6 +278,65 @@ export default function ArticleScreen() {
     }
   };
 
+  async function translateText(text: string, target = "pt") {
+    const prompt = `
+    Translate the following text to ${target}.
+    Return only the translated text.
+    Text: "${text}"
+  `;
+
+    let attempts = 3;
+
+    while (attempts > 0) {
+      try {
+        const result = await model.generateContent(prompt);
+        return result.response.text();
+      } catch (error: any) {
+        console.log("Translation error:", error);
+
+        // erro 503 = servidor sobrecarregado
+        if (error.toString().includes("503")) {
+          attempts--;
+          console.log("⚠️ Model overloaded — retrying...");
+          await new Promise((res) => setTimeout(res, 1200)); // espera 1.2s
+        } else {
+          throw error; // erro real → deve mostrar alerta
+        }
+      }
+    }
+
+    Alert.alert(
+      "Translation unavailable",
+      "The translation service is overloaded. Please try again in a few seconds."
+    );
+
+    return text; // fallback: retorna o original
+  }
+
+  async function handleTranslateAll(targetLanguage: string) {
+    setIsTranslating(true); // inicia skeleton
+
+    try {
+      const newTitle = await translateText(data.title, targetLanguage);
+      const newDescription = await translateText(
+        data.description,
+        targetLanguage
+      );
+      const newArticle = await translateText(data.article, targetLanguage);
+
+      setTranslatedText({
+        title: newTitle || data.title,
+        description: newDescription || data.description,
+        article: newArticle || data.article,
+      });
+    } catch (e) {
+      console.log("Translation Error:", e);
+      setIsTranslating(false);
+    }
+
+    setIsTranslating(false);
+  }
+
   const handleDelete = async (uid: string) => {
     Alert.alert(
       "do you really want to delete the file?",
@@ -309,6 +425,28 @@ export default function ArticleScreen() {
               >
                 Report
               </Button>
+
+              <Picker
+                label="Translate"
+                options={["English", "Spanish", "Portuguese"]}
+                variant="menu"
+                selectedIndex={selectedIndex}
+                onOptionSelected={({ nativeEvent: { index } }) => {
+                  setSelectedIndex(index);
+
+                  if (index === 0) {
+                    handleTranslateAll("en");
+                  }
+
+                  if (index === 1) {
+                    handleTranslateAll("es");
+                  }
+
+                  if (index === 2) {
+                    handleTranslateAll("pt");
+                  }
+                }}
+              />
             </ContextMenu.Items>
 
             <ContextMenu.Trigger>
@@ -393,13 +531,17 @@ export default function ArticleScreen() {
         </Header>
 
         <ContentTitle>
-          <Text
-            title={data.title}
-            fontFamily="semi-bold"
-            fontSize={22}
-            lineHeight={32}
-            color={Colors.light.darkBlue}
-          />
+          {isTranslating ? (
+            <Skeleton width="70%" height={28} />
+          ) : (
+            <Text
+              title={translatedText.title}
+              fontFamily="semi-bold"
+              fontSize={22}
+              lineHeight={32}
+              color={Colors.light.darkBlue}
+            />
+          )}
         </ContentTitle>
 
         <ContentInfo>
@@ -456,20 +598,28 @@ export default function ArticleScreen() {
           <ImageBody source={{ uri: data.thumbnail }} />
 
           <BodyText>
-            <Text
-              title={data.description}
-              fontFamily="semi-bold"
-              fontSize={18}
-              color={Colors.light.darkBlue}
-            />
+            {isTranslating ? (
+              <SkeletonParagraph />
+            ) : (
+              <Text
+                title={translatedText.description}
+                fontFamily="semi-bold"
+                fontSize={18}
+                color={Colors.light.darkBlue}
+              />
+            )}
 
-            <Text
-              title={data.article}
-              fontFamily="regular"
-              fontSize={14}
-              lineHeight={20}
-              color={Colors.light.blueText}
-            />
+            {isTranslating ? (
+              <SkeletonParagraph />
+            ) : (
+              <Text
+                title={translatedText.article}
+                fontFamily="regular"
+                fontSize={14}
+                lineHeight={20}
+                color={Colors.light.blueText}
+              />
+            )}
           </BodyText>
         </Body>
       </Container>
@@ -489,3 +639,18 @@ export default function ArticleScreen() {
     </>
   );
 }
+
+const styles = StyleSheet.create({
+  skeleton: {
+    backgroundColor: "#C0C0C0",
+    borderRadius: 8,
+    overflow: "hidden",
+    marginBottom: 10,
+  },
+  shimmer: {
+    width: "40%",
+    height: "100%",
+    backgroundColor: "rgba(255,255,255,0.3)",
+    opacity: 0.5,
+  },
+});

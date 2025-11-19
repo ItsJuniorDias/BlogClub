@@ -6,7 +6,7 @@
       "ios",
       "android"
     ],
-    "version": "14.0.0",
+    "version": "15.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "blogclub",
@@ -23,18 +23,14 @@
             "CFBundleURLSchemes": [
               "com.googleusercontent.apps.482652111919-rf1smagh2da9adn247c21d7q226qp712"
             ]
-          },
-          {
-            "CFBundleURLSchemes": [
-              "com.googleusercontent.apps.482652111919-rf1smagh2da9adn247c21d7q226qp712"
-            ]
           }
         ],
         "ITSAppUsesNonExemptEncryption": false
-      }
+      },
+      "appleTeamId": "968FPR7Y35"
     },
     "android": {
-      "versionCode": 36,
+      "versionCode": 37,
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/icon.png",
         "backgroundColor": "#ffffff"
@@ -67,24 +63,9 @@
         }
       ]
     },
-    "web": {
-      "output": "static",
-      "favicon": "./assets/images/favicon.png"
-    },
+    "splash": null,
     "plugins": [
       "expo-router",
-      [
-        "expo-splash-screen",
-        {
-          "image": "./assets/images/splash-icon.png",
-          "imageWidth": 200,
-          "resizeMode": "contain",
-          "backgroundColor": "#ffffff",
-          "dark": {
-            "backgroundColor": "#000000"
-          }
-        }
-      ],
       [
         "react-native-google-mobile-ads",
         {
@@ -93,7 +74,8 @@
         }
       ],
       "expo-font",
-      "expo-secure-store"
+      "expo-secure-store",
+      "react-native-localize"
     ],
     "experiments": {
       "typedRoutes": true,

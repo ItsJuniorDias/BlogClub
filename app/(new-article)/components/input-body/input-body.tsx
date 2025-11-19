@@ -24,7 +24,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const genai = new GoogleGenerativeAI("AIzaSyCgHxrYkgdEpYcSa8ClzLxb8CR9l1uXzPk");
 
-const model = genai.getGenerativeModel({
+export const model = genai.getGenerativeModel({
   model: "gemini-2.5-flash",
 });
 
@@ -254,14 +254,6 @@ export default function InputBody({
 
     mutate({});
   };
-
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     handleGenerateArticle();
-  //   }, 60000);
-
-  //   return () => clearInterval(interval);
-  // }, []);
 
   return (
     <Container>
