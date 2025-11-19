@@ -106,6 +106,7 @@ export default function SignInScreen() {
       style={{
         flex: 1,
         transform: [{ translateY: shift }],
+        backgroundColor: Colors.light.background,
       }}
     >
       <Container>

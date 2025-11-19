@@ -28,7 +28,7 @@ export default function OnboardingScreen() {
 
   return (
     <Container>
-      <Thumbnail source={thumbnail} />
+      <Thumbnail contentFit="fill" source={thumbnail} />
 
       <Body>
         <Text

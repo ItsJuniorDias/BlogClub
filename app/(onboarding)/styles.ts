@@ -2,6 +2,9 @@ import styled from "styled-components/native";
 import { Image } from "expo-image";
 import { Colors } from "@/constants/Colors";
 
+import { Dimensions} from "react-native";
+import * as Device from 'expo-device';
+
 export const Container = styled.ScrollView`
   flex: 1;
   background-color: #f9faff;
@@ -9,8 +12,8 @@ export const Container = styled.ScrollView`
 `;
 
 export const Thumbnail = styled(Image)`
-  width: 400px;
-  height: 462px;
+  width: ${Dimensions.get("window").width}px;
+  height: ${Device.deviceType === Device.DeviceType.TABLET ? "900px" : "462px"};
 `;
 
 export const Body = styled.View`
