@@ -428,7 +428,14 @@ export default function ArticleScreen() {
 
               <Picker
                 label="Translate"
-                options={["English", "Spanish", "Portuguese"]}
+                options={[
+                  "English",
+                  "Spanish",
+                  "Portuguese",
+                  "French",
+                  "Chinese",
+                  "Hindustani",
+                ]}
                 variant="menu"
                 selectedIndex={selectedIndex}
                 onOptionSelected={({ nativeEvent: { index } }) => {
@@ -444,6 +451,18 @@ export default function ArticleScreen() {
 
                   if (index === 2) {
                     handleTranslateAll("pt");
+                  }
+
+                  if (index === 3) {
+                    handleTranslateAll("fr");
+                  }
+
+                  if (index === 4) {
+                    handleTranslateAll("zh");
+                  }
+
+                  if (index === 5) {
+                    handleTranslateAll("hi");
                   }
                 }}
               />
