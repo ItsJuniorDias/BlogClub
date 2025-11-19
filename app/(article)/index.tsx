@@ -459,7 +459,7 @@ export default function ArticleScreen() {
   };
 
   const handleSpeak = () => {
-    const text = data.article;
+    const text = translatedText.article;
 
     if (!text) return;
 
