@@ -12,6 +12,7 @@ import { Buffer } from "buffer";
 import * as Crypto from "expo-crypto";
 
 import { NativeModules } from "react-native";
+import Purchases from "react-native-purchases";
 const { IntegrityModule } = NativeModules;
 
 export default function SplashScreen() {
@@ -22,6 +23,16 @@ export default function SplashScreen() {
   const translateX = useRef(new Animated.Value(300)).current;
   const scale = useRef(new Animated.Value(1)).current;
   const opacity = useRef(new Animated.Value(1)).current;
+
+  const initRevenueCat = () => {
+    Purchases.configure({
+      apiKey: "appl_LWGDaeISVDzYjilhDgQEhbklwCr",
+    });
+  };
+
+  useEffect(() => {
+    initRevenueCat();
+  }, []);
 
   async function requestIntegrityToken() {
     try {

@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { TouchableOpacity, View } from "react-native";
+import React, { useEffect, useState } from "react";
+import { Alert, TouchableOpacity, View } from "react-native";
 import { useRouter } from "expo-router";
 import Feather from "@expo/vector-icons/Feather";
 
@@ -11,7 +11,13 @@ import { Container, Thumbnail, Body, Footer, Button } from "./styles";
 import { Colors } from "@/constants/Colors";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+import Purchases, { PurchasesPackage } from "react-native-purchases";
+
 export default function OnboardingScreen() {
+  const [packageToBuy, setPackageToBuy] = useState<PurchasesPackage | null>(
+    null
+  );
+
   const router = useRouter();
 
   const saveGuestFlag = async (value) => {
@@ -25,6 +31,45 @@ export default function OnboardingScreen() {
   useEffect(() => {
     saveGuestFlag(false);
   }, []);
+
+  useEffect(() => {
+    async function load() {
+      try {
+        const offerings = await Purchases.getOfferings();
+
+        console.log("Offerings:", offerings);
+
+        const pkg = offerings.current?.availablePackages[0];
+
+        setPackageToBuy(pkg);
+      } catch (e) {
+        Alert.alert("Erro ao carregar planos", e.message);
+      }
+    }
+
+    load();
+  }, []);
+
+  async function onSubscribe() {
+    try {
+      if (!packageToBuy) {
+        Alert.alert("Erro", "Nenhum pacote disponível para compra");
+        return;
+      }
+
+      const purchase = await Purchases.purchasePackage(packageToBuy);
+
+      console.log("Purchase:", purchase);
+
+      if (purchase.customerInfo.entitlements.active["Blog Club Pro"]) {
+        Alert.alert("Sucesso", "Assinatura ativada!");
+      }
+    } catch (error) {
+      if (!error.userCancelled) {
+        Alert.alert("Erro na compra", error.message);
+      }
+    }
+  }
 
   return (
     <Container>
@@ -65,7 +110,14 @@ export default function OnboardingScreen() {
             />
           </TouchableOpacity>
 
-          <Button onPress={() => router.push("/(sign-in)")} activeOpacity={0.7}>
+          <Button
+            onPress={() => {
+              router.push("/(subscribe)");
+
+              // onSubscribe();
+            }}
+            activeOpacity={0.7}
+          >
             <Feather name="arrow-right" size={24} color="white" />
           </Button>
         </Footer>

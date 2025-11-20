@@ -13,6 +13,8 @@ import {
 
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 import * as ImagePicker from "expo-image-picker";
 
 import {
@@ -66,6 +68,8 @@ export default function HeaderProfile({
   icon,
   posts,
 }: HeaderProfileProps) {
+  const [isGuest, setIsGuest] = useState(null);
+
   const queryClient = useQueryClient();
 
   const router = useRouter();
@@ -77,6 +81,25 @@ export default function HeaderProfile({
   const queryUserUID = dataUID.data.uid
     ? dataUID.data.uid
     : auth.currentUser?.uid;
+
+  const user = auth.currentUser;
+
+  const getGuestFlag = async () => {
+    try {
+      const value = await AsyncStorage.getItem("isGuest");
+
+      setIsGuest(value);
+
+      return value != null ? JSON.parse(value) : null;
+    } catch (e) {
+      console.log("Erro ao ler isGuest", e);
+      return null;
+    }
+  };
+
+  useEffect(() => {
+    getGuestFlag();
+  }, []);
 
   const blockUser = async (currentUserId: string, targetUserId: string) => {
     try {
@@ -136,7 +159,13 @@ export default function HeaderProfile({
         onPress: () => {
           signOut(auth)
             .then(() => {
-              router.replace("/(sign-in)");
+              console.log(isGuest, "is guest");
+
+              if (isGuest) {
+                router.replace("/(onboarding)");
+              } else {
+                router.replace("/(sign-in)");
+              }
 
               GoogleSignin.signOut();
             })
