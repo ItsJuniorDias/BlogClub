@@ -1,3 +1,4 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
 import {
@@ -54,6 +55,14 @@ export default function SubscriptionScreen() {
     loadOfferings();
   }, []);
 
+  const setIsMember = async (value: boolean) => {
+    try {
+      await AsyncStorage.setItem("isMember", JSON.stringify(value));
+    } catch (error) {
+      console.log("Error saving isMember:", error);
+    }
+  };
+
   async function handlePurchase() {
     try {
       if (!selectedPkg) {
@@ -67,6 +76,8 @@ export default function SubscriptionScreen() {
 
       if (purchase.customerInfo.entitlements.active["Blog Club Pro"]) {
         Alert.alert("Success", "Subscription activated!");
+
+        await setIsMember(true);
       }
 
       router.replace("/(sign-in)");
@@ -135,7 +146,7 @@ export default function SubscriptionScreen() {
             <Text style={styles.planTitle}>{annualPkg.product.title}</Text>
 
             <Text style={styles.planPrice}>
-              {annualPkg.product.priceString}
+              {annualPkg.product.pricePerYearString}
             </Text>
 
             <Text style={styles.planDesc}>Annual Billing — Save up to 40%</Text>

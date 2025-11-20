@@ -50,6 +50,17 @@ export default function OnboardingScreen() {
     load();
   }, []);
 
+  const getIsMember = async () => {
+    try {
+      const value = await AsyncStorage.getItem("isMember");
+
+      return value != null ? JSON.parse(value) : false;
+    } catch (error) {
+      console.log("Error reading isMember:", error);
+      return false;
+    }
+  };
+
   async function onSubscribe() {
     try {
       if (!packageToBuy) {
@@ -58,8 +69,6 @@ export default function OnboardingScreen() {
       }
 
       const purchase = await Purchases.purchasePackage(packageToBuy);
-
-      console.log("Purchase:", purchase);
 
       if (purchase.customerInfo.entitlements.active["Blog Club Pro"]) {
         Alert.alert("Sucesso", "Assinatura ativada!");
@@ -111,10 +120,12 @@ export default function OnboardingScreen() {
           </TouchableOpacity>
 
           <Button
-            onPress={() => {
-              router.push("/(subscribe)");
-
-              // onSubscribe();
+            onPress={async () => {
+              if (await getIsMember()) {
+                router.push("/(sign-in)");
+              } else {
+                router.push("/(subscribe)");
+              }
             }}
             activeOpacity={0.7}
           >
