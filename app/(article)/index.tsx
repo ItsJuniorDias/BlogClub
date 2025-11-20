@@ -434,7 +434,7 @@ export default function ArticleScreen() {
                   "Portuguese",
                   "French",
                   "Chinese",
-                  "Hindustani",
+                  "Hindi",
                 ]}
                 variant="menu"
                 selectedIndex={selectedIndex}
