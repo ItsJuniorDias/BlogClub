@@ -493,7 +493,6 @@ export default function ArticleScreen() {
         spa: "es-ES",
         por: "pt-BR",
         fra: "fr-FR",
-        deu: "de-DE",
         zho: "zh-CN",
         hin: "hi-IN",
       };
