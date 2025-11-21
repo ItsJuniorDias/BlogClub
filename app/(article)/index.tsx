@@ -494,6 +494,8 @@ export default function ArticleScreen() {
         por: "pt-BR",
         fra: "fr-FR",
         deu: "de-DE",
+        zho: "zh-CN",
+        hin: "hi-IN",
       };
 
       const language = langMap[langCode as keyof typeof langMap] ?? "en-US"; // fallback padrão
