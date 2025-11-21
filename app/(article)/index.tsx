@@ -13,6 +13,7 @@ import * as Sharing from "expo-sharing";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 import { Button, ContextMenu, Host, Picker } from "@expo/ui/swift-ui";
+import { ContextMenu as ContextMenuAndroid } from "@expo/ui/jetpack-compose";
 
 import mobileAds, {
   InterstitialAd,

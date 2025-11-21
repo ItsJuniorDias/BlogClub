@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Alert,
   StyleSheet,
+  Linking,
 } from "react-native";
 import Purchases from "react-native-purchases";
 
@@ -18,7 +19,6 @@ export default function SubscriptionScreen() {
   const [monthlyPkg, setMonthlyPkg] = useState(null);
   const [annualPkg, setAnnualPkg] = useState(null);
 
-  // pacote selecionado
   const [selectedPkg, setSelectedPkg] = useState(null);
 
   const router = useRouter();
@@ -42,7 +42,6 @@ export default function SubscriptionScreen() {
           setMonthlyPkg(monthly);
           setAnnualPkg(annual);
 
-          // Seleciona o mensal como default
           setSelectedPkg(monthly || annual);
         }
       } catch (error) {
@@ -72,11 +71,8 @@ export default function SubscriptionScreen() {
 
       const purchase = await Purchases.purchasePackage(selectedPkg);
 
-      console.log("Purchase successful:", purchase);
-
       if (purchase.customerInfo.entitlements.active["Blog Club Pro"]) {
         Alert.alert("Success", "Subscription activated!");
-
         await setIsMember(true);
       }
 
@@ -107,66 +103,79 @@ export default function SubscriptionScreen() {
 
   return (
     <View style={styles.container}>
-      {/* TITLE */}
       <Text style={styles.title}>Go Premium</Text>
       <Text style={styles.subtitle}>Unlock all features without limits</Text>
 
-      {/* █████ PLANOS █████ */}
-      <View>
-        {/* Monthly Option */}
-        {monthlyPkg && (
-          <TouchableOpacity
-            onPress={() => setSelectedPkg(monthlyPkg)}
-            style={[
-              styles.card,
-              selectedPkg?.identifier === monthlyPkg?.identifier &&
-                styles.cardSelected,
-            ]}
-          >
-            <Text style={styles.planTitle}>{monthlyPkg.product.title}</Text>
-            <Text style={styles.planPrice}>
-              {monthlyPkg.product.priceString}
-            </Text>
-            <Text style={styles.planDesc}>
-              Monthly Billing — Cancel anytime
-            </Text>
-          </TouchableOpacity>
-        )}
+      {/* monthly */}
+      {monthlyPkg && (
+        <TouchableOpacity
+          onPress={() => setSelectedPkg(monthlyPkg)}
+          style={[
+            styles.card,
+            selectedPkg?.identifier === monthlyPkg?.identifier &&
+              styles.cardSelected,
+          ]}
+        >
+          <Text style={styles.planTitle}>{monthlyPkg.product.title}</Text>
+          <Text style={styles.planPrice}>{monthlyPkg.product.priceString}</Text>
+          <Text style={styles.planDesc}>Monthly Billing — Cancel anytime</Text>
+        </TouchableOpacity>
+      )}
 
-        {/* Annual Option */}
-        {annualPkg && (
-          <TouchableOpacity
-            onPress={() => setSelectedPkg(annualPkg)}
-            style={[
-              styles.card,
-              selectedPkg?.identifier === annualPkg?.identifier &&
-                styles.cardSelected,
-            ]}
-          >
-            <Text style={styles.planTitle}>{annualPkg.product.title}</Text>
+      {/* annual */}
+      {annualPkg && (
+        <TouchableOpacity
+          onPress={() => setSelectedPkg(annualPkg)}
+          style={[
+            styles.card,
+            selectedPkg?.identifier === annualPkg?.identifier &&
+              styles.cardSelected,
+          ]}
+        >
+          <Text style={styles.planTitle}>{annualPkg.product.title}</Text>
+          <Text style={styles.planPrice}>
+            {annualPkg.product.pricePerYearString}
+          </Text>
+          <Text style={styles.planDesc}>Annual Billing — Save up to 40%</Text>
+        </TouchableOpacity>
+      )}
 
-            <Text style={styles.planPrice}>
-              {annualPkg.product.pricePerYearString}
-            </Text>
-
-            <Text style={styles.planDesc}>Annual Billing — Save up to 40%</Text>
-          </TouchableOpacity>
-        )}
-      </View>
-
-      {/* Botão de Assinar */}
+      {/* BOTÃO */}
       <TouchableOpacity style={styles.button} onPress={handlePurchase}>
         <Text style={styles.buttonText}>Subscribe Now</Text>
       </TouchableOpacity>
 
-      {/* FOOTER */}
-      <Text style={styles.footnote}>
-        Billing handled by the App Store / Google Play
-      </Text>
-      <Text style={styles.footnote}>Cancel anytime</Text>
+      {/* █████ REQUIRED BY APPLE █████ */}
+      <View style={styles.footerContainer}>
+        <Text style={styles.footnote}>
+          Billing handled by the App Store / Google Play. Cancel anytime.
+        </Text>
+
+        <TouchableOpacity
+          onPress={() =>
+            Linking.openURL(
+              "https://www.notion.so/Terms-of-Use-Blog-Club-2350df0a2e79800096d4c5f1ca96843e?source=copy_link"
+            )
+          }
+        >
+          <Text style={styles.link}>Terms of Use</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() =>
+            Linking.openURL(
+              "https://www.notion.so/Privacy-Policy-Blog-Club-2b20df0a2e798063a769f2482e902c62?source=copy_link"
+            )
+          }
+        >
+          <Text style={styles.link}>Privacy Policy</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
+
+/* -------------------- STYLES -------------------- */
 
 const styles = StyleSheet.create({
   container: {
@@ -190,7 +199,6 @@ const styles = StyleSheet.create({
     color: "#D00",
   },
 
-  /* Titles */
   title: {
     fontSize: 30,
     fontWeight: "700",
@@ -205,38 +213,32 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 
-  /* Card styles */
   card: {
     padding: 22,
     backgroundColor: "#F5F5F7",
     borderRadius: 20,
     marginBottom: 18,
   },
-
   cardSelected: {
     borderWidth: 2,
     borderColor: "#007AFF",
     backgroundColor: "#E8F0FF",
   },
-
   planTitle: {
     fontSize: 20,
     fontWeight: "600",
     color: "#111827",
   },
-
   planPrice: {
     fontSize: 28,
     fontWeight: "700",
     marginVertical: 8,
   },
-
   planDesc: {
     fontSize: 15,
     color: "#6B7280",
   },
 
-  /* Subscribe button */
   button: {
     backgroundColor: "#007AFF",
     paddingVertical: 16,
@@ -249,10 +251,22 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
 
+  footerContainer: {
+    marginTop: 20,
+    alignItems: "center",
+  },
+
   footnote: {
     textAlign: "center",
-    marginTop: 12,
+    marginTop: 8,
     fontSize: 12,
-    color: "#9CA3AF",
+    color: "#6B7280",
+  },
+
+  link: {
+    marginTop: 10,
+    fontSize: 14,
+    color: "#007AFF",
+    textDecorationLine: "underline",
   },
 });
