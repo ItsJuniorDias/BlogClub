@@ -71,7 +71,7 @@ import { useUIDStore } from "@/store/useIDStore";
 import { GlassView } from "expo-glass-effect";
 import { FontAwesome6 } from "@expo/vector-icons";
 
-const genAI = new GoogleGenerativeAI("AIzaSyCgHxrYkgdEpYcSa8ClzLxb8CR9l1uXzPk");
+const genAI = new GoogleGenerativeAI("");
 
 const model = genAI.getGenerativeModel({
   model: "gemini-2.5-flash",

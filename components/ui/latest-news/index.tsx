@@ -1,4 +1,9 @@
-import { TouchableOpacity, StyleSheet, ActivityIndicator } from "react-native";
+import {
+  TouchableOpacity,
+  StyleSheet,
+  ActivityIndicator,
+  View,
+} from "react-native";
 
 import { SkeletonNews, Text } from "@/components/ui";
 import AntDesign from "@expo/vector-icons/AntDesign";
@@ -17,6 +22,8 @@ import {
 import { useRouter } from "expo-router";
 import { useDataStore } from "@/store/useDataStore";
 import { timeAgo } from "@/utils/timeAgo";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useEffect, useState } from "react";
 
 interface LatestNewsProps {
   id: string;
@@ -33,6 +40,7 @@ interface LatestNewsProps {
   foreign_key: string;
   type: "technology" | "adventure" | "philosophy";
   createdAt: Date;
+  isMember: boolean;
 }
 
 export default function LatestNews({
@@ -50,10 +58,23 @@ export default function LatestNews({
   foreign_key,
   type,
   createdAt,
+  isMember,
 }: LatestNewsProps) {
   const fetch = useDataStore((state) => state.fetch);
 
   const router = useRouter();
+
+  const [isMemberState, setIsMemberState] = useState(false);
+
+  useEffect(() => {
+    const loadMember = async () => {
+      const result = await AsyncStorage.getItem("isMember");
+
+      setIsMemberState(result);
+    };
+
+    loadMember();
+  }, []);
 
   return (
     <>
@@ -74,6 +95,7 @@ export default function LatestNews({
         {!isLoading && (
           <Body
             activeOpacity={0.7}
+            disabled={isMemberState !== isMember}
             onPress={() => {
               fetch({
                 id,
@@ -93,6 +115,17 @@ export default function LatestNews({
             }}
           >
             <Thumbnail source={{ uri: image }} />
+
+            {isMemberState === isMember && (
+              <View style={styles.badge}>
+                <Text
+                  title="MEMBER"
+                  fontFamily="semi-bold"
+                  fontSize={10}
+                  color="#fff"
+                />
+              </View>
+            )}
 
             <ContentBody>
               <ContentTextBody>
@@ -166,5 +199,14 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 3.84,
     elevation: 4,
+  },
+  badge: {
+    position: "absolute",
+    top: 8,
+    left: 8,
+    backgroundColor: "#000000",
+    paddingVertical: 2,
+    paddingHorizontal: 6,
+    borderRadius: 6,
   },
 });

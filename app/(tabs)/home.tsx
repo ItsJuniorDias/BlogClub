@@ -29,6 +29,7 @@ interface ItemProps {
     foreign_key: string;
     type: "technology" | "adventure" | "philosophy";
     createdAt: Date;
+    isMember: boolean;
   };
   index: number;
 }
@@ -145,6 +146,7 @@ export default function HomeScreen() {
           foreign_key={item.foreign_key}
           type={item.type}
           createdAt={item.createdAt}
+          isMember={item.isMember}
         />
 
         {/* ✅ Banner a cada 5 itens */}

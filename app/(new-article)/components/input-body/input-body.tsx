@@ -21,8 +21,9 @@ import { getAuth } from "firebase/auth";
 
 // === Gemini Client ===
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const genai = new GoogleGenerativeAI("AIzaSyCgHxrYkgdEpYcSa8ClzLxb8CR9l1uXzPk");
+const genai = new GoogleGenerativeAI("");
 
 export const model = genai.getGenerativeModel({
   model: "gemini-2.5-flash",
@@ -105,6 +106,7 @@ export default function InputBody({
         foreign_key: user?.uid,
         type: valueType,
         createdAt: new Date(),
+        isMember: await getIsMember(),
       });
       Toast.show({
         type: "success",
@@ -176,6 +178,16 @@ export default function InputBody({
     }
   };
 
+  const getIsMember = async () => {
+    try {
+      const result = await AsyncStorage.getItem("isMember");
+
+      return result;
+    } catch (error) {
+      console.log("Error saving isMember:", error);
+    }
+  };
+
   // === Generate article using Google Gemini ===
   const generateArticle = async (tag: string) => {
     const imageUrl = await fetchUnsplashImageURL(tag);
@@ -193,6 +205,7 @@ export default function InputBody({
         "type":${tag}, 
         "article":"", 
         "foreign_key": "e0Q33RHZT5ajQiWy6vRyLfeEW2h2",
+        "isMember": ${await getIsMember()}
         }`;
 
     try {
