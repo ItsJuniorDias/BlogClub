@@ -530,14 +530,7 @@ export default function ArticleScreen() {
             }}
           >
             <GlassView
-              style={{
-                height: 50,
-                width: 50,
-                justifyContent: "center",
-                alignItems: "center",
-                borderRadius: 50,
-                marginLeft: -16,
-              }}
+              style={styles.buttonBack}
               isInteractive
               glassEffectStyle="clear"
             >
@@ -686,5 +679,13 @@ const styles = StyleSheet.create({
     height: "100%",
     backgroundColor: "rgba(255,255,255,0.3)",
     opacity: 0.5,
+  },
+  buttonBack: {
+    height: 50,
+    width: 50,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 50,
+    marginLeft: -16,
   },
 });

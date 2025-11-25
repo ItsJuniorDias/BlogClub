@@ -377,7 +377,7 @@ export default function HeaderProfile({
           color={Colors.light.darkBlue}
         />
 
-        <TouchableOpacity onPress={handleSignOut}>
+        <TouchableOpacity style={styles.buttonLeave} onPress={handleSignOut}>
           <MaterialIcons name={icon} size={32} color={Colors.light.darkBlue} />
         </TouchableOpacity>
       </Container>
@@ -599,5 +599,13 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.01,
     shadowRadius: 3.84,
     elevation: 5,
+  },
+  buttonLeave: {
+    width: 50,
+    height: 50,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 50,
+    marginRight: -8,
   },
 });
