@@ -529,7 +529,18 @@ export default function ArticleScreen() {
               Speech.stop();
             }}
           >
-            <GlassView isInteractive glassEffectStyle="clear">
+            <GlassView
+              style={{
+                height: 50,
+                width: 50,
+                justifyContent: "center",
+                alignItems: "center",
+                borderRadius: 50,
+                marginLeft: -16,
+              }}
+              isInteractive
+              glassEffectStyle="clear"
+            >
               <FontAwesome6
                 name="chevron-left"
                 size={24}
