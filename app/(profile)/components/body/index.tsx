@@ -59,6 +59,7 @@ export default function Body({ onForeignKey }: BodyProps) {
       numberLike={item.numberLike}
       hours={item.hours}
       isLike={item.isLike}
+      isMember={item.isMember}
     />
   );
 

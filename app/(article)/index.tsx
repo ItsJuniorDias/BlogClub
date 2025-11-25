@@ -162,6 +162,8 @@ export default function ArticleScreen() {
   useEffect(() => {
     console.log("🚀 Iniciando AdMob + intervalo de 30s...");
 
+    if (Platform.OS === "ios") return;
+
     mobileAds()
       .initialize()
       .then(() => console.log("✅ AdMob initialized"));

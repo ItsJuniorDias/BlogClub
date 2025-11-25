@@ -196,7 +196,7 @@ export default function InputBody({
       For the tag: "${tag}", create:
       1. An engaging title
       2. An description of approximately 10 words
-      3. An article of approximately 500 words
+      3. An article of approximately 500 words related to the tag, philosophy(Stoicism, Marcus Aurelius, Seneca, Epictetus), technology(AI, Machine Learning, Programming, JavaScript(Typescript), React, React Native), adventure(Travel, Exploration, Nature).
       5. make the return in this identical pattern
       { 
         "title":"",

@@ -13,6 +13,7 @@ import * as Crypto from "expo-crypto";
 
 import { NativeModules } from "react-native";
 import Purchases from "react-native-purchases";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 const { IntegrityModule } = NativeModules;
 
 export default function SplashScreen() {
@@ -30,8 +31,18 @@ export default function SplashScreen() {
     });
   };
 
+  // const setIsMember = async (value: boolean) => {
+  //   try {
+  //     await AsyncStorage.setItem("isMember", JSON.stringify(value));
+  //   } catch (error) {
+  //     console.log("Error saving isMember:", error);
+  //   }
+  // };
+
   useEffect(() => {
     initRevenueCat();
+
+    // setIsMember(true);
   }, []);
 
   async function requestIntegrityToken() {

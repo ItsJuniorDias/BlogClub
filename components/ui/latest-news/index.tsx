@@ -70,11 +70,13 @@ export default function LatestNews({
     const loadMember = async () => {
       const result = await AsyncStorage.getItem("isMember");
 
-      setIsMemberState(result);
+      setIsMemberState(result === "true");
     };
 
     loadMember();
-  }, []);
+  }, [isMemberState]);
+
+  const disabledRule = isMember && !isMemberState;
 
   return (
     <>
@@ -95,7 +97,7 @@ export default function LatestNews({
         {!isLoading && (
           <Body
             activeOpacity={0.7}
-            disabled={isMemberState !== isMember}
+            disabled={disabledRule}
             onPress={() => {
               fetch({
                 id,
@@ -116,7 +118,7 @@ export default function LatestNews({
           >
             <Thumbnail source={{ uri: image }} />
 
-            {isMemberState === isMember && (
+            {isMember && (
               <View style={styles.badge}>
                 <Text
                   title="MEMBER"

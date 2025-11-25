@@ -9,6 +9,7 @@ import {
   Alert,
   StyleSheet,
   Linking,
+  ScrollView,
 } from "react-native";
 import Purchases from "react-native-purchases";
 
@@ -102,9 +103,27 @@ export default function SubscriptionScreen() {
   }
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <Text style={styles.title}>Go Premium</Text>
-      <Text style={styles.subtitle}>Unlock all features without limits</Text>
+
+      {/* REQUIRED BY APPLE - Subscription Description */}
+      <Text style={styles.subtitle}>
+        Premium members get unlimited access to exclusive articles, early access
+        to new posts, an ad-free reading experience, and weekly Premium content
+        updates.
+      </Text>
+
+      {/* BENEFITS LIST */}
+      <View style={{ marginBottom: 24 }}>
+        <Text style={styles.benefitsTitle}>What’s included:</Text>
+        <Text style={styles.benefitItem}>
+          • Exclusive members-only articles
+        </Text>
+        <Text style={styles.benefitItem}>• Early access to new content</Text>
+        <Text style={styles.benefitItem}>• 100% ad-free experience</Text>
+        <Text style={styles.benefitItem}>• Weekly Premium content updates</Text>
+        <Text style={styles.benefitItem}>• Priority support</Text>
+      </View>
 
       {/* monthly */}
       {monthlyPkg && (
@@ -136,16 +155,16 @@ export default function SubscriptionScreen() {
           <Text style={styles.planPrice}>
             {annualPkg.product.pricePerYearString}
           </Text>
-          <Text style={styles.planDesc}>Annual Billing — Save up to 40%</Text>
+          <Text style={styles.planDesc}>Annual Billing — Cancel anytime</Text>
         </TouchableOpacity>
       )}
 
-      {/* BOTÃO */}
+      {/* BUTTON */}
       <TouchableOpacity style={styles.button} onPress={handlePurchase}>
         <Text style={styles.buttonText}>Subscribe Now</Text>
       </TouchableOpacity>
 
-      {/* █████ REQUIRED BY APPLE █████ */}
+      {/* REQUIRED BY APPLE */}
       <View style={styles.footerContainer}>
         <Text style={styles.footnote}>
           Billing handled by the App Store / Google Play. Cancel anytime.
@@ -171,7 +190,7 @@ export default function SubscriptionScreen() {
           <Text style={styles.link}>Privacy Policy</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
@@ -181,19 +200,22 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 24,
-    justifyContent: "center",
+    paddingTop: 60,
     backgroundColor: "#FFFFFF",
   },
+
   center: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
   },
+
   loadingText: {
     marginTop: 10,
     fontSize: 16,
     color: "#666",
   },
+
   errorText: {
     fontSize: 16,
     color: "#D00",
@@ -206,11 +228,26 @@ const styles = StyleSheet.create({
     marginBottom: 6,
     color: "#0C1A32",
   },
+
   subtitle: {
     textAlign: "center",
     color: "#6B7280",
-    marginBottom: 28,
+    marginBottom: 20,
     fontSize: 16,
+    lineHeight: 22,
+  },
+
+  benefitsTitle: {
+    fontSize: 16,
+    fontWeight: "700",
+    color: "#0C1A32",
+    marginBottom: 6,
+  },
+
+  benefitItem: {
+    fontSize: 14,
+    color: "#4B5563",
+    marginBottom: 4,
   },
 
   card: {
@@ -219,21 +256,25 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     marginBottom: 18,
   },
+
   cardSelected: {
     borderWidth: 2,
     borderColor: "#007AFF",
     backgroundColor: "#E8F0FF",
   },
+
   planTitle: {
     fontSize: 20,
     fontWeight: "600",
     color: "#111827",
   },
+
   planPrice: {
     fontSize: 28,
     fontWeight: "700",
     marginVertical: 8,
   },
+
   planDesc: {
     fontSize: 15,
     color: "#6B7280",
@@ -244,6 +285,7 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     borderRadius: 14,
   },
+
   buttonText: {
     textAlign: "center",
     color: "#FFFFFF",
