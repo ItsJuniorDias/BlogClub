@@ -47,6 +47,6 @@ export const ContentBody = styled.View`
 `;
 
 export const ContentTextBody = styled.View`
-  width: 163px;
+  width: 75%;
   gap: 8px;
 `;

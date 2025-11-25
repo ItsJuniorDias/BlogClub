@@ -150,7 +150,7 @@ export default function HomeScreen() {
         />
 
         {/* ✅ Banner a cada 5 itens */}
-        {(index + 1) % 5 === 0 && (
+        {/* {(index + 1) % 5 === 0 && (
           <View style={styles.bannerContainer}>
             <BannerAd
               unitId={adUnitId}
@@ -160,7 +160,7 @@ export default function HomeScreen() {
               }}
             />
           </View>
-        )}
+        )} */}
       </>
     ),
     [isLoading]
