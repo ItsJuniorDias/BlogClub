@@ -1,4 +1,7 @@
+import { Colors } from "@/constants/Colors";
+import { FontAwesome6 } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { GlassView } from "expo-glass-effect";
 import { useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
 import {
@@ -10,6 +13,7 @@ import {
   StyleSheet,
   Linking,
   ScrollView,
+  Pressable,
 } from "react-native";
 import Purchases from "react-native-purchases";
 
@@ -103,7 +107,28 @@ export default function SubscriptionScreen() {
   }
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView
+      style={styles.container}
+      contentContainerStyle={{ paddingBottom: 40 }}
+    >
+      <Pressable
+        onPress={() => {
+          router.back();
+        }}
+      >
+        <GlassView
+          style={styles.buttonBack}
+          isInteractive
+          glassEffectStyle="clear"
+        >
+          <FontAwesome6
+            name="chevron-left"
+            size={24}
+            color={Colors.light.darkBlue}
+          />
+        </GlassView>
+      </Pressable>
+
       <Text style={styles.title}>Go Premium</Text>
 
       {/* REQUIRED BY APPLE - Subscription Description */}
@@ -203,24 +228,20 @@ const styles = StyleSheet.create({
     paddingTop: 60,
     backgroundColor: "#FFFFFF",
   },
-
   center: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
   },
-
   loadingText: {
     marginTop: 10,
     fontSize: 16,
     color: "#666",
   },
-
   errorText: {
     fontSize: 16,
     color: "#D00",
   },
-
   title: {
     fontSize: 30,
     fontWeight: "700",
@@ -228,7 +249,6 @@ const styles = StyleSheet.create({
     marginBottom: 6,
     color: "#0C1A32",
   },
-
   subtitle: {
     textAlign: "center",
     color: "#6B7280",
@@ -236,79 +256,75 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 22,
   },
-
   benefitsTitle: {
     fontSize: 16,
     fontWeight: "700",
     color: "#0C1A32",
     marginBottom: 6,
   },
-
   benefitItem: {
     fontSize: 14,
     color: "#4B5563",
     marginBottom: 4,
   },
-
   card: {
     padding: 22,
     backgroundColor: "#F5F5F7",
     borderRadius: 20,
     marginBottom: 18,
   },
-
   cardSelected: {
     borderWidth: 2,
     borderColor: "#007AFF",
     backgroundColor: "#E8F0FF",
   },
-
   planTitle: {
     fontSize: 20,
     fontWeight: "600",
     color: "#111827",
   },
-
   planPrice: {
     fontSize: 28,
     fontWeight: "700",
     marginVertical: 8,
   },
-
   planDesc: {
     fontSize: 15,
     color: "#6B7280",
   },
-
   button: {
     backgroundColor: "#007AFF",
     paddingVertical: 16,
     borderRadius: 14,
   },
-
   buttonText: {
     textAlign: "center",
     color: "#FFFFFF",
     fontSize: 18,
     fontWeight: "600",
   },
-
   footerContainer: {
     marginTop: 20,
     alignItems: "center",
   },
-
   footnote: {
     textAlign: "center",
     marginTop: 8,
     fontSize: 12,
     color: "#6B7280",
   },
-
   link: {
     marginTop: 10,
     fontSize: 14,
     color: "#007AFF",
     textDecorationLine: "underline",
+  },
+  buttonBack: {
+    height: 50,
+    width: 50,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 50,
+    marginLeft: -16,
   },
 });

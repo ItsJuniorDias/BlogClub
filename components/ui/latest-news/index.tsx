@@ -24,6 +24,7 @@ import { useDataStore } from "@/store/useDataStore";
 import { timeAgo } from "@/utils/timeAgo";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
+import { Alert } from "react-native";
 
 interface LatestNewsProps {
   id: string;
@@ -76,8 +77,6 @@ export default function LatestNews({
     loadMember();
   }, [isMemberState]);
 
-  const disabledRule = isMember && !isMemberState;
-
   return (
     <>
       <Container style={styles.shadowBox}>
@@ -97,23 +96,43 @@ export default function LatestNews({
         {!isLoading && (
           <Body
             activeOpacity={0.7}
-            disabled={disabledRule}
+            disabled={false}
             onPress={() => {
-              fetch({
-                id,
-                isLike,
-                thumbnail: image,
-                title,
-                description,
-                article,
-                numberLike,
-                hours,
-                foreign_key,
-                type,
-                createdAt,
-              });
+              if (isMember && !isMemberState) {
+                Alert.alert(
+                  "Membership Required",
+                  "You need to be a member to access this content.",
+                  [
+                    {
+                      text: "Cancel",
+                      onPress: () => console.log("Cancel Pressed"),
+                      style: "destructive",
+                    },
+                    {
+                      text: "OK",
+                      onPress: () => {
+                        router.push("/(subscribe)");
+                      },
+                    },
+                  ]
+                );
+              } else {
+                fetch({
+                  id,
+                  isLike,
+                  thumbnail: image,
+                  title,
+                  description,
+                  article,
+                  numberLike,
+                  hours,
+                  foreign_key,
+                  type,
+                  createdAt,
+                });
 
-              router.push("/(article)");
+                router.push("/(article)");
+              }
             }}
           >
             <Thumbnail source={{ uri: image }} />
