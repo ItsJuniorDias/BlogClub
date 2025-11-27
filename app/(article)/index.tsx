@@ -495,7 +495,7 @@ export default function ArticleScreen() {
         spa: "es-ES",
         por: "pt-BR",
         fra: "fr-FR",
-        zho: "zh-CN",
+        cmn: "zh-CN",
         hin: "hi-IN",
       };
 

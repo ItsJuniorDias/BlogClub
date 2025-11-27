@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { TouchableOpacity } from "react-native";
+import { TouchableOpacity, View, Switch } from "react-native";
 import { Colors } from "@/constants/Colors";
 import { Tag, Text, Button } from "@/components/ui";
 import { addDoc, collection } from "firebase/firestore";
@@ -59,6 +59,8 @@ export default function InputBody({
     adventure: false,
     philosophy: false,
   });
+
+  const [isMemberPost, setIsMemberPost] = useState(false);
 
   const queryClient = useQueryClient();
   const auth = getAuth();
@@ -178,13 +180,24 @@ export default function InputBody({
     }
   };
 
+  const toggleIsMember = async (value: boolean) => {
+    try {
+      setIsMemberPost(value);
+
+      await AsyncStorage.setItem("isMemberPost", JSON.stringify(value));
+    } catch (error) {
+      console.log("Error saving member toggle:", error);
+    }
+  };
+
   const getIsMember = async () => {
     try {
-      const result = await AsyncStorage.getItem("isMember");
+      const result = await AsyncStorage.getItem("isMemberPost");
 
-      return result;
+      return result ? JSON.parse(result) : false;
     } catch (error) {
-      console.log("Error saving isMember:", error);
+      console.log("Error reading isMemberPost:", error);
+      return false;
     }
   };
 
@@ -350,6 +363,35 @@ export default function InputBody({
           </Row>
         </Row>
       </ContentTag>
+
+      <View
+        style={{
+          marginTop: 20,
+          marginBottom: 10,
+          gap: 8,
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
+          flexWrap: "wrap",
+        }}
+      >
+        <Text
+          title="Make this article exclusive for members?"
+          fontFamily="semi-bold"
+          fontSize={14}
+          color={Colors.light.darkBlue}
+        />
+
+        <Switch
+          value={isMemberPost}
+          onValueChange={(value) => {
+            // call async setter but don't return a Promise to satisfy SwitchProps typing
+            toggleIsMember(value);
+          }}
+          thumbColor={isMemberPost ? "#ccc" : "#ccc"}
+          trackColor={{ false: "#999", true: Colors.light.blue }}
+        />
+      </View>
 
       <Controller
         control={control}
