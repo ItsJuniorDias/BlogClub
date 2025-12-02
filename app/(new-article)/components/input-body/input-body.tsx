@@ -385,11 +385,10 @@ export default function InputBody({
         <Switch
           value={isMemberPost}
           onValueChange={(value) => {
-            // call async setter but don't return a Promise to satisfy SwitchProps typing
             toggleIsMember(value);
           }}
-          thumbColor={isMemberPost ? "#ccc" : "#ccc"}
-          trackColor={{ false: "#999", true: Colors.light.blue }}
+          thumbColor={"#FFFFFF"}
+          trackColor={{ false: "#dddd", true: Colors.light.blue }}
         />
       </View>
 
