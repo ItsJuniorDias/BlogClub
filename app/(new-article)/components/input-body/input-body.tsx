@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
-import { TouchableOpacity, View, Switch } from "react-native";
+import { TouchableOpacity, View } from "react-native";
+
+import { Host, Switch } from "@expo/ui/swift-ui";
+
 import { Colors } from "@/constants/Colors";
 import { Tag, Text, Button } from "@/components/ui";
 import { addDoc, collection } from "firebase/firestore";
@@ -369,10 +372,8 @@ export default function InputBody({
           marginTop: 20,
           marginBottom: 10,
           gap: 8,
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "space-between",
-          flexWrap: "wrap",
+          flexDirection: "column",
+          alignItems: "flex-start",
         }}
       >
         <Text
@@ -382,14 +383,18 @@ export default function InputBody({
           color={Colors.light.darkBlue}
         />
 
-        <Switch
-          value={isMemberPost}
-          onValueChange={(value) => {
-            toggleIsMember(value);
-          }}
-          thumbColor={"#FFFFFF"}
-          trackColor={{ false: "#dddd", true: Colors.light.blue }}
-        />
+        <View style={{ marginLeft: -8 }}>
+          <Host matchContents>
+            <Switch
+              value={isMemberPost}
+              onValueChange={(checked) => {
+                toggleIsMember(checked);
+              }}
+              color={Colors.light.blue}
+              variant="switch"
+            />
+          </Host>
+        </View>
       </View>
 
       <Controller
