@@ -10,15 +10,29 @@ import BottomSheet from "@/components/ui/bottomsheet";
 import BottomSheetContent from "../(new-article)/components/bottomsheet-content/bottomsheet-content";
 
 import TutorialOverlay from "@/components/ui/tutorial/index";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const UNSPLASH_ACCESS_KEY = "-Jly_R_E6OQDhkCGJdYbdo8065H14QGir9VaDqSxumg";
 
 export default function NewArticle() {
-  const [showTutorial, setShowTutorial] = useState(true);
+  const [showTutorial, setShowTutorial] = useState<boolean | null>(null);
 
   const [queryUnplash, setQueryUnplash] = useState("");
   const bottomSheetRef = useRef(null);
   const thumbnailRef = useRef("");
+
+  useEffect(() => {
+    async function loadFlag() {
+      const value = await AsyncStorage.getItem("hasSeenTutorial");
+
+      if (value === "true") {
+        setShowTutorial(false);
+      } else {
+        setShowTutorial(true);
+      }
+    }
+    loadFlag();
+  }, []);
 
   // 🧠 Hook TanStack Query com paginação infinita
   const {
@@ -76,6 +90,12 @@ export default function NewArticle() {
     return data?.pages?.flatMap((page) => page.results) ?? [];
   }, [data]);
 
+  async function finishTutorial() {
+    await AsyncStorage.setItem("hasSeenTutorial", "true");
+
+    setShowTutorial(false);
+  }
+
   return (
     <>
       <ScrollView
@@ -105,9 +125,7 @@ export default function NewArticle() {
       </ScrollView>
 
       {/* 🪄 Tutorial animado */}
-      {showTutorial && (
-        <TutorialOverlay onFinish={() => setShowTutorial(false)} />
-      )}
+      {showTutorial && <TutorialOverlay onFinish={() => finishTutorial()} />}
 
       <BottomSheet ref={bottomSheetRef}>
         <BottomSheetContent
