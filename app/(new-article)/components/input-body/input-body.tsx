@@ -119,6 +119,7 @@ export default function InputBody({
         createdAt: new Date(),
         isMember: await getIsMember(),
       });
+
       Toast.show({
         type: "success",
         text1: "Post created successfully",
@@ -136,6 +137,18 @@ export default function InputBody({
       setThumbnailRef.current = "";
     } catch (e) {
       console.error("Error adding document: ", e);
+
+      Toast.show({
+        type: "error",
+        text1:
+          "Failed to create post, you need to log in to the application to be able to publish articles.",
+        position: "top",
+        text1Style: {
+          fontFamily: "MontserratSemiBold",
+          color: Colors.light.darkBlue,
+          fontSize: 14,
+        },
+      });
     }
   };
 

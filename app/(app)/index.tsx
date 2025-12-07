@@ -3,7 +3,7 @@ import { useRouter } from "expo-router";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 import React, { useEffect, useRef } from "react";
-import { Animated, Easing } from "react-native";
+import { Animated, Easing, Platform } from "react-native";
 import logo from "../../assets/images/icon.png";
 import { useUserStore } from "../../store/useUserStore";
 import { Container } from "./styles";
@@ -13,7 +13,6 @@ import * as Crypto from "expo-crypto";
 
 import { NativeModules } from "react-native";
 import Purchases from "react-native-purchases";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 const { IntegrityModule } = NativeModules;
 
 export default function SplashScreen() {
@@ -27,7 +26,10 @@ export default function SplashScreen() {
 
   const initRevenueCat = () => {
     Purchases.configure({
-      apiKey: "appl_LWGDaeISVDzYjilhDgQEhbklwCr",
+      apiKey:
+        Platform.OS === "ios"
+          ? "appl_LWGDaeISVDzYjilhDgQEhbklwCr"
+          : "test_GBduyYqVUrOTRSUbbRgkLtvbqAk",
     });
   };
 
@@ -42,7 +44,7 @@ export default function SplashScreen() {
   useEffect(() => {
     initRevenueCat();
 
-    // setIsMember(true);
+    // setIsMember(false);
   }, []);
 
   async function requestIntegrityToken() {

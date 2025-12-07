@@ -15,6 +15,7 @@ import mobileAds, {
   BannerAd,
   BannerAdSize,
 } from "react-native-google-mobile-ads";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 interface ItemProps {
   item: {
@@ -46,8 +47,25 @@ export default function HomeScreen() {
   const [isLoading, setIsLoading] = useState(true);
   const user = getAuth();
 
+  const [isGuest, setIsGuest] = useState<boolean | null>(null);
+
+  const getGuestFlag = async () => {
+    try {
+      const value = await AsyncStorage.getItem("isGuest");
+
+      setIsGuest(value);
+
+      return value != null ? JSON.parse(value) : null;
+    } catch (e) {
+      console.log("Erro ao ler isGuest", e);
+      return null;
+    }
+  };
+
   // 🔹 Inicializa o AdMob ao abrir o app
   useEffect(() => {
+    getGuestFlag();
+
     mobileAds()
       .initialize()
       .then(() => console.log("AdMob inicializado"));
@@ -150,7 +168,7 @@ export default function HomeScreen() {
         />
 
         {/* ✅ Banner a cada 5 itens */}
-        {/* {(index + 1) % 5 === 0 && (
+        {isGuest && (index + 1) % 5 === 0 && (
           <View style={styles.bannerContainer}>
             <BannerAd
               unitId={adUnitId}
@@ -160,7 +178,7 @@ export default function HomeScreen() {
               }}
             />
           </View>
-        )} */}
+        )}
       </>
     ),
     [isLoading]

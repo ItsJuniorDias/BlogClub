@@ -95,6 +95,7 @@ import {
   Row,
   Thumbnail,
 } from "./styles";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 function Skeleton({ width = "100%", height = 14, style = {} }) {
   const animation = useRef(new Animated.Value(-1)).current;
@@ -140,6 +141,8 @@ export default function ArticleScreen() {
 
   const [selectedIndex, setSelectedIndex] = useState(0);
 
+  const [isGuest, setIsGuest] = useState(null);
+
   const [loaded, setLoaded] = useState(false);
 
   const [isTranslating, setIsTranslating] = useState(false);
@@ -162,10 +165,25 @@ export default function ArticleScreen() {
 
   const router = useRouter();
 
+  const getGuestFlag = async () => {
+    try {
+      const value = await AsyncStorage.getItem("isGuest");
+
+      setIsGuest(value);
+
+      return value != null ? JSON.parse(value) : null;
+    } catch (e) {
+      console.log("Erro ao ler isGuest", e);
+      return null;
+    }
+  };
+
   useEffect(() => {
+    getGuestFlag();
+
     console.log("🚀 Iniciando AdMob + intervalo de 30s...");
 
-    if (Platform.OS === "ios" || Platform.OS === "android") return;
+    if (Platform.OS === "ios" || isGuest) return;
 
     mobileAds()
       .initialize()
@@ -222,7 +240,7 @@ export default function ArticleScreen() {
       unsubscribeClosed();
       console.log("🧹 Limpando intervalo e listeners do AdMob");
     };
-  }, []);
+  }, [isGuest]);
 
   const handleAudio = async () => {
     await Audio.setAudioModeAsync({
