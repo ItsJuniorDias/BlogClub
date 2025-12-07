@@ -1,7 +1,13 @@
 import { useEffect, useState } from "react";
-import { TouchableOpacity, View } from "react-native";
+import {
+  Platform,
+  TouchableOpacity,
+  View,
+  Switch as SwitchRN,
+} from "react-native";
 
 import { Host, Switch } from "@expo/ui/swift-ui";
+import { Switch as SwitchAndroid } from "@expo/ui/jetpack-compose";
 
 import { Colors } from "@/constants/Colors";
 import { Tag, Text, Button } from "@/components/ui";
@@ -384,8 +390,19 @@ export default function InputBody({
         />
 
         <View style={{ marginLeft: -8 }}>
-          <Host matchContents>
-            <Switch
+          {Platform.OS === "ios" ? (
+            <Host matchContents>
+              <Switch
+                value={isMemberPost}
+                onValueChange={(checked) => {
+                  toggleIsMember(checked);
+                }}
+                color={Colors.light.blue}
+                variant="switch"
+              />
+            </Host>
+          ) : (
+            <SwitchAndroid
               value={isMemberPost}
               onValueChange={(checked) => {
                 toggleIsMember(checked);
@@ -393,7 +410,7 @@ export default function InputBody({
               color={Colors.light.blue}
               variant="switch"
             />
-          </Host>
+          )}
         </View>
       </View>
 

@@ -13,7 +13,10 @@ import * as Sharing from "expo-sharing";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 import { Button, ContextMenu, Host, Picker } from "@expo/ui/swift-ui";
-import { ContextMenu as ContextMenuAndroid } from "@expo/ui/jetpack-compose";
+import {
+  ContextMenu as ContextMenuAndroid,
+  Button as ButtonAndroid,
+} from "@expo/ui/jetpack-compose";
 
 import mobileAds, {
   InterstitialAd,
@@ -162,7 +165,7 @@ export default function ArticleScreen() {
   useEffect(() => {
     console.log("🚀 Iniciando AdMob + intervalo de 30s...");
 
-    if (Platform.OS === "ios") return;
+    if (Platform.OS === "ios" || Platform.OS === "android") return;
 
     mobileAds()
       .initialize()
@@ -480,6 +483,73 @@ export default function ArticleScreen() {
     );
   };
 
+  const renderContextMenuAndroid = () => {
+    return (
+      <ContextMenuAndroid>
+        <ContextMenuAndroid.Items>
+          {currentUser?.uid === data.foreign_key && (
+            <ButtonAndroid onPress={() => handleDelete(data.id)}>
+              Delete
+            </ButtonAndroid>
+          )}
+
+          <ButtonAndroid
+            onPress={() =>
+              reportContent({
+                reportedId: data.id,
+                reportedType: "post",
+                reason: "Inappropriate content",
+              })
+            }
+          >
+            Report
+          </ButtonAndroid>
+
+          <ButtonAndroid onPress={() => handleTranslateAll("en")}>
+            English
+          </ButtonAndroid>
+
+          <ButtonAndroid onPress={() => handleTranslateAll("es")}>
+            Spanish
+          </ButtonAndroid>
+
+          <ButtonAndroid onPress={() => handleTranslateAll("es")}>
+            Spanish
+          </ButtonAndroid>
+
+          <ButtonAndroid onPress={() => handleTranslateAll("pt")}>
+            Portuguese
+          </ButtonAndroid>
+
+          <ButtonAndroid onPress={() => handleTranslateAll("fr")}>
+            French
+          </ButtonAndroid>
+
+          <ButtonAndroid onPress={() => handleTranslateAll("zh")}>
+            Chinese
+          </ButtonAndroid>
+
+          <ButtonAndroid onPress={() => handleTranslateAll("hi")}>
+            Hindi
+          </ButtonAndroid>
+        </ContextMenuAndroid.Items>
+
+        <ContextMenuAndroid.Trigger>
+          <ButtonAndroid
+            color={Colors.light.blue}
+            style={{
+              width: 124,
+              height: 24,
+              marginRight: 24,
+            }}
+          >
+            Show Menu
+          </ButtonAndroid>
+        </ContextMenuAndroid.Trigger>
+      </ContextMenuAndroid>
+    );
+  };
+
   const handleSpeak = () => {
     const text = translatedText.article;
 
@@ -542,19 +612,9 @@ export default function ArticleScreen() {
             </GlassView>
           </Pressable>
 
-          {renderDelete && Platform.OS === "android" ? (
-            <View style={{ marginRight: 24 }}>
-              <TouchableOpacity onPress={() => handleDelete(data.id)}>
-                <Feather
-                  name="more-horizontal"
-                  size={32}
-                  color={Colors.light.darkBlue}
-                />
-              </TouchableOpacity>
-            </View>
-          ) : (
-            <>{renderContextMenu()}</>
-          )}
+          {Platform.OS === "ios"
+            ? renderContextMenu()
+            : renderContextMenuAndroid()}
         </Header>
 
         <ContentTitle>
