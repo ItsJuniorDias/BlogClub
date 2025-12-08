@@ -10,7 +10,7 @@ type TextCustomProps = {
 };
 
 export const TextCustom = styled.Text<TextCustomProps>`
-  font-family: ${({ fontFamily }) => fontFamily};
+  font-family: "${props => props.fontFamily}";
   font-size: ${({ fontSize }) => fontSize}px;
   color: ${({ color }) => color};
   line-height: ${({ lineHeight }) => `${lineHeight}`};

@@ -13,6 +13,7 @@ import * as Crypto from "expo-crypto";
 
 import { NativeModules } from "react-native";
 import Purchases from "react-native-purchases";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 const { IntegrityModule } = NativeModules;
 
 export default function SplashScreen() {
@@ -29,7 +30,7 @@ export default function SplashScreen() {
       apiKey:
         Platform.OS === "ios"
           ? "appl_LWGDaeISVDzYjilhDgQEhbklwCr"
-          : "test_GBduyYqVUrOTRSUbbRgkLtvbqAk",
+          : "goog_dBbAzhwFurEVQHNNinsBmBinILu",
     });
   };
 
