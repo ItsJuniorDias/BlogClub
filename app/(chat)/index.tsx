@@ -1,6 +1,13 @@
 import React, { useEffect, useState, useCallback } from "react";
 
-import { Pressable, StyleSheet, TouchableOpacity, View } from "react-native";
+import {
+  KeyboardAvoidingView,
+  Pressable,
+  StyleSheet,
+  TouchableOpacity,
+  Platform,
+  View,
+} from "react-native";
 
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { Text } from "../../components/ui";
@@ -190,42 +197,48 @@ export default function ChatScreen() {
   };
 
   return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: "#f2f2f2",
-        paddingBottom: 24,
-        borderRadius: 32,
-        marginLeft: 16,
-        marginRight: 16,
-      }}
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
-      <Pressable onPress={() => router.back()}>
-        <ButtonContent isInteractive glassEffectStyle="clear">
-          <FontAwesome6
-            name="chevron-left"
-            size={24}
-            color={Colors.light.darkBlue}
-          />
-        </ButtonContent>
-      </Pressable>
-
-      <GiftedChat
-        messages={messages}
-        onSend={(messages) => onSend(messages)}
-        user={{
-          _id: auth.currentUser?.uid,
-          name: queryUser?.data?.name ?? "",
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: "#f2f2f2",
+          paddingBottom: 24,
+          borderRadius: 32,
+          marginLeft: 16,
+          marginRight: 16,
         }}
-        renderBubble={renderBubble}
-        renderInputToolbar={renderInputToolbar}
-        renderSend={renderSend}
-        placeholder="Digite sua mensagem..."
-        alwaysShowSend
-        scrollToBottom
-        showAvatarForEveryMessage={false}
-      />
-    </View>
+      >
+        <Pressable onPress={() => router.back()}>
+          <ButtonContent isInteractive glassEffectStyle="clear">
+            <FontAwesome6
+              name="chevron-left"
+              size={24}
+              color={Colors.light.darkBlue}
+            />
+          </ButtonContent>
+        </Pressable>
+
+        <GiftedChat
+          messages={messages}
+          onSend={(messages) => onSend(messages)}
+          user={{
+            _id: auth.currentUser?.uid,
+            name: queryUser?.data?.name ?? "",
+          }}
+          renderBubble={renderBubble}
+          renderInputToolbar={renderInputToolbar}
+          renderSend={renderSend}
+          placeholder="Digite sua mensagem..."
+          alwaysShowSend
+          scrollToBottom
+          showAvatarForEveryMessage={false}
+          keyboardShouldPersistTaps="handled"
+        />
+      </View>
+    </KeyboardAvoidingView>
   );
 }
 

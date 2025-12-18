@@ -37,10 +37,32 @@ export default function OnboardingScreen() {
     }
   };
 
+  async function openStore() {
+    const url =
+      Platform.OS === "android"
+        ? "market://details?id=com.itsjuniordias1997.blogclub"
+        : "https://apps.apple.com/us/app/blog-club/id6755162750";
+
+    const supported = await Linking.canOpenURL(url);
+
+    if (supported) {
+      await Linking.openURL(url);
+    } else {
+      // fallback web
+      await Linking.openURL(
+        Platform.OS === "android"
+          ? "https://play.google.com/store/apps/details?id=com.itsjuniordias1997.blogclub"
+          : "https://apps.apple.com/us/app/blog-club/id6755162750"
+      );
+    }
+  }
+
   useEffect(() => {
     saveGuestFlag(false);
 
     const current = Application.nativeApplicationVersion;
+
+    console.log("Current app version:", current);
 
     const compareVersions = (a: string, b: string) => {
       const pa = a.split(".").map(Number);
@@ -64,10 +86,7 @@ export default function OnboardingScreen() {
         [
           {
             text: "Update Now",
-            onPress: () =>
-              Linking.openURL(
-                "market://details?id=com.itsjuniordias1997.blogclub"
-              ),
+            onPress: () => openStore(),
           },
         ],
         { cancelable: false }

@@ -6,6 +6,26 @@ import { Text, Button } from "../../components/ui";
 import { Colors } from "@/constants/Colors";
 
 export default function ForceUpdateScreen() {
+  async function openStore() {
+    const url =
+      Platform.OS === "android"
+        ? "market://details?id=com.itsjuniordias1997.blogclub"
+        : "https://apps.apple.com/us/app/blog-club/id6755162750";
+
+    const supported = await Linking.canOpenURL(url);
+
+    if (supported) {
+      await Linking.openURL(url);
+    } else {
+      // fallback web
+      await Linking.openURL(
+        Platform.OS === "android"
+          ? "https://play.google.com/store/apps/details?id=com.itsjuniordias1997.blogclub"
+          : "https://apps.apple.com/us/app/blog-club/id6755162750"
+      );
+    }
+  }
+
   return (
     <View
       style={{
@@ -43,9 +63,7 @@ export default function ForceUpdateScreen() {
       {/* CTA */}
       <Button
         title="Update App"
-        onPress={() =>
-          Linking.openURL("market://details?id=com.itsjuniordias1997.blogclub")
-        }
+        onPress={() => openStore()}
         isLoading={false}
         style={{
           height: 52,

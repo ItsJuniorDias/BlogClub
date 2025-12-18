@@ -17,13 +17,14 @@ export const formatMyMessages = async () => {
 
   const resultMyMessage = await fetchAllMessages();
 
+
   const filterMyMessageOne = resultMyMessage.filter(
-    (item) => item?.messages?.participants[0] === auth?.currentUser?.uid
+    (item) => item?.messages?.participants.includes(auth.currentUser?.uid) 
   );
 
   if (!filterMyMessageOne?.length) {
     const filterMyMessageTwo = resultMyMessage.filter(
-      (item) => item?.messages?.participants[1] === auth?.currentUser?.uid
+      (item) => item?.messages?.participants.includes(auth.currentUser?.uid) 
     );
 
     const filterHideMessage = filterMyMessageTwo.filter(
