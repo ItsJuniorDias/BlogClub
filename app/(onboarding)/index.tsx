@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Alert, TouchableOpacity, View } from "react-native";
+import { Alert, TouchableOpacity, Platform } from "react-native";
 import { useRouter } from "expo-router";
 import Feather from "@expo/vector-icons/Feather";
 
@@ -13,10 +13,19 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import Purchases, { PurchasesPackage } from "react-native-purchases";
 
+import * as Application from "expo-application";
+
+import * as Linking from "expo-linking";
+import ForceUpdateScreen from "../(force-update)";
+
+const MIN_VERSION = "16.0.0";
+
 export default function OnboardingScreen() {
   const [packageToBuy, setPackageToBuy] = useState<PurchasesPackage | null>(
     null
   );
+
+  const [mustUpdate, setMustUpdate] = useState(false);
 
   const router = useRouter();
 
@@ -30,6 +39,40 @@ export default function OnboardingScreen() {
 
   useEffect(() => {
     saveGuestFlag(false);
+
+    const current = Application.nativeApplicationVersion;
+
+    const compareVersions = (a: string, b: string) => {
+      const pa = a.split(".").map(Number);
+      const pb = b.split(".").map(Number);
+
+      for (let i = 0; i < Math.max(pa.length, pb.length); i++) {
+        const na = pa[i] || 0;
+        const nb = pb[i] || 0;
+        if (na > nb) return 1;
+        if (na < nb) return -1;
+      }
+      return 0;
+    };
+
+    if (compareVersions(current ?? "0.0.0", MIN_VERSION) === -1) {
+      setMustUpdate(true);
+
+      Alert.alert(
+        "Update Required",
+        "Please update the app to continue using it.",
+        [
+          {
+            text: "Update Now",
+            onPress: () =>
+              Linking.openURL(
+                "market://details?id=com.itsjuniordias1997.blogclub"
+              ),
+          },
+        ],
+        { cancelable: false }
+      );
+    }
   }, []);
 
   useEffect(() => {
@@ -78,6 +121,10 @@ export default function OnboardingScreen() {
         Alert.alert("Erro na compra", error.message);
       }
     }
+  }
+
+  if (mustUpdate) {
+    return <ForceUpdateScreen />;
   }
 
   return (
