@@ -10,6 +10,7 @@ import { useRouter } from "expo-router";
 import { getAuth } from "firebase/auth";
 import { TouchableOpacity } from "react-native";
 import { Container, Content, ContentPointer, Pointer } from "./styles";
+import { useEffect } from "react";
 
 interface HeaderProps {
   title: string;
@@ -28,13 +29,17 @@ export default function Header({ title, description }: HeaderProps) {
 
   const conditionUserTarget = () => {
     if (!queryMyMessages.isLoading) {
-      const result = queryMyMessages?.data[0]?.messages?.participants.indexOf(
+      const result = queryMyMessages?.data[0]?.messages?.participants.includes(
         auth.currentUser?.uid
       );
 
-      return result === 0 ? 0 : 1;
+      return result;
     }
   };
+
+  useEffect(() => {
+    conditionUserTarget();
+  }, [queryMyMessages.data]);
 
   const filterReadAt = () => {
     const result = queryMyMessages?.data?.filter(
@@ -76,7 +81,7 @@ export default function Header({ title, description }: HeaderProps) {
           <Ionicons name="chatbox-outline" size={32} color="black" />
         </TouchableOpacity>
 
-        {filterReadAt() && conditionUserTarget() === 0 && <Pointer />}
+        {filterReadAt() && conditionUserTarget() && <Pointer />}
       </ContentPointer>
     </Container>
   );

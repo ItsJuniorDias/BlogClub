@@ -67,11 +67,11 @@ export default function UserChatsScreen() {
   };
 
   const conditionUserTarget = () => {
-    const result = queryMyMessages?.data[0]?.messages?.participants.indexOf(
+    const result = queryMyMessages?.data[0]?.messages?.participants.includes(
       auth.currentUser?.uid
     );
 
-    return result === 0 ? 0 : 1;
+    return result;
   };
 
   const getThumbnail = (item) => {
@@ -84,69 +84,31 @@ export default function UserChatsScreen() {
       : item.messages.thumbnailTarget;
   };
 
-  async function getAllMessages(chatId: string) {
-    const messagesRef = collection(db, "chats", chatId, "messages");
-
-    const q = query(messagesRef);
-    const querySnapshot = await getDocs(q);
-
-    const messages = querySnapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
-
-    return messages;
-  }
+  const getChatId = (user1: string, user2: string) =>
+    [user1, user2].sort().join("_");
 
   const hideChatForUser = async (item) => {
     try {
-      const refDoc = doc(
-        db,
-        "chats",
-        `${conditionTarget(item)}_${auth.currentUser?.uid}`
-      );
+      const chatId = getChatId(auth.currentUser?.uid, conditionTarget(item));
 
-      const refDocTarget = doc(
-        db,
-        "chats",
-        `${auth.currentUser?.uid}_${conditionTarget(item)}`
-      );
+      const chatRef = doc(db, "chats", chatId);
 
-      const getDocs = getDoc(refDoc);
-
-      if ((await getDocs).exists()) {
-        await setDoc(
-          refDoc,
-          {
-            messages: {
-              ...item.messages,
-              removedFor: arrayUnion(auth.currentUser?.uid),
-            },
+      await setDoc(
+        chatRef,
+        {
+          messages: {
+            ...item.messages,
+            removedFor: arrayUnion(auth.currentUser?.uid),
           },
-          {
-            merge: true,
-          }
-        );
-      } else {
-        await setDoc(
-          refDocTarget,
-          {
-            messages: {
-              ...item.messages,
-              removedFor: arrayUnion(auth.currentUser?.uid),
-            },
-          },
-          {
-            merge: true,
-          }
-        );
-      }
+        },
+        { merge: true }
+      );
 
       queryClient.invalidateQueries({ queryKey: ["chatsMyMessages"] });
 
-      console.log("Conversa oculta para o usuário");
+      console.log("Conversa oculta com sucesso");
     } catch (error) {
-      console.error("Erro ao ocultar a conversa:", error);
+      console.error("Erro ao ocultar conversa:", error);
     }
   };
 
@@ -159,42 +121,38 @@ export default function UserChatsScreen() {
     onSuccess: () => {},
   });
 
-  const handleReadAt = async (item, index) => {
-    const referencia = doc(
-      db,
-      "chats",
-      `${item.messages.participants[0]}_${item.messages.participants[1]}`
-    );
+  const handleReadAt = async (item) => {
+    try {
+      const userId = auth.currentUser?.uid;
 
-    const snapshot = await getDoc(referencia);
+      if (!userId) return;
 
-    if (conditionUserTarget() === 0 && snapshot.exists()) {
+      const targetId = conditionTarget(item);
+
+      const chatId = getChatId(userId, targetId);
+
+      const chatRef = doc(db, "chats", chatId);
+
       await setDoc(
-        doc(
-          db,
-          "chats",
-          `${item.messages.participants[0]}_${item.messages.participants[1]}`
-        ),
+        chatRef,
         {
           messages: {
             ...item.messages,
             readAt: new Date(),
           },
         },
-        {
-          merge: true,
-        }
+        { merge: true }
       );
 
       queryClient.invalidateQueries({ queryKey: ["chatsMyMessages"] });
-    }
 
-    router.push({
-      pathname: "/(chat)",
-      params: {
-        uid: conditionTarget(item, index),
-      },
-    });
+      router.push({
+        pathname: "/(chat)",
+        params: { uid: targetId },
+      });
+    } catch (error) {
+      console.error("Erro ao marcar como lido:", error);
+    }
   };
 
   const renderItem = ({ item, index }) => {
@@ -232,9 +190,7 @@ export default function UserChatsScreen() {
           <ContentNotification>
             <Ionicons name="notifications-outline" size={32} color="black" />
 
-            {!item.messages.readAt && conditionUserTarget() === 0 && (
-              <Pointer />
-            )}
+            {!item.messages.readAt && conditionUserTarget() && <Pointer />}
           </ContentNotification>
         </Row>
 
@@ -306,24 +262,24 @@ export default function UserChatsScreen() {
           rightOpenValue={-75}
           disableRightSwipe
           onRowOpen={(rowKey, rowMap) => {
+            const row = rowMap[rowKey];
+
             setTimeout(() => {
-              if (rowMap[rowKey]) {
-                rowMap[rowKey].closeRow();
-              }
+              row?.closeRow();
             }, 1000);
 
             Alert.alert(
               "Are you sure you want to delete this conversation?",
-              "the conversation will be deleted for both users",
+              "the conversation will be hidden for you",
               [
                 {
                   text: "Cancel",
-                  onPress: () => console.log("Cancel Pressed"),
                   style: "cancel",
+                  onPress: () => row?.closeRow(),
                 },
                 {
                   text: "OK",
-                  onPress: () => mutation.mutate(rowMap.undefined.props.item),
+                  onPress: () => mutation.mutate(row.props.item),
                 },
               ]
             );

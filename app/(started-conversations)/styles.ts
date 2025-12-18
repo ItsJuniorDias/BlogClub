@@ -14,8 +14,6 @@ export const Container = styled.View`
 export const ButtonContent = styled(GlassView)`
   width: 44px;
   height: 44px;
-  /* border-color: ${Colors.light.darkBlue};
-  border-width: 2px; */
   align-items: center;
   justify-content: center;
   border-radius: 50px;

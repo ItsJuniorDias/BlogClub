@@ -5,38 +5,21 @@ import { db } from "../firebaseConfig";
 const auth = getAuth();
 
 export const formatMyMessages = async () => {
-  const fetchAllMessages = async () => {
-    const docRef = collection(db, "chats");
+  const userId = auth.currentUser?.uid;
 
-    const docSnap = await getDocs(docRef);
+  if (!userId) return [];
 
-    return docSnap.docs.map((item) => ({
-      ...item.data(),
-    }));
-  };
+  const chatsRef = collection(db, "chats");
+  const snapshot = await getDocs(chatsRef);
 
-  const resultMyMessage = await fetchAllMessages();
-
-
-  const filterMyMessageOne = resultMyMessage.filter(
-    (item) => item?.messages?.participants.includes(auth.currentUser?.uid) 
-  );
-
-  if (!filterMyMessageOne?.length) {
-    const filterMyMessageTwo = resultMyMessage.filter(
-      (item) => item?.messages?.participants.includes(auth.currentUser?.uid) 
+  return snapshot.docs
+    .map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }))
+    .filter(
+      (item) =>
+        item?.messages?.participants?.includes(userId) &&
+        !item?.messages?.removedFor?.includes(userId)
     );
-
-    const filterHideMessage = filterMyMessageTwo.filter(
-      (item) => !item.messages.removedFor.includes(auth.currentUser?.uid)
-    );
-
-    if (!!filterHideMessage) {
-      return filterHideMessage;
-    }
-
-    return filterMyMessageTwo;
-  }
-
-  return filterMyMessageOne;
 };

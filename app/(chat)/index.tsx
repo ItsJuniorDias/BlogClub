@@ -172,13 +172,7 @@ export default function ChatScreen() {
   };
 
   const renderInputToolbar = (props) => {
-    return (
-      <InputToolbar
-        {...props}
-        containerStyle={styles.inputToolbar}
-        textInputStyle={styles.textInput}
-      />
-    );
+    return <InputToolbar {...props} containerStyle={styles.inputToolbar} />;
   };
 
   const renderSend = (props) => {
@@ -236,6 +230,13 @@ export default function ChatScreen() {
           scrollToBottom
           showAvatarForEveryMessage={false}
           keyboardShouldPersistTaps="handled"
+          textInputProps={{
+            style: {
+              color: "#333",
+              fontSize: 16,
+              fontFamily: "MontserratRegular",
+            },
+          }}
         />
       </View>
     </KeyboardAvoidingView>
@@ -249,12 +250,6 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: "#ddd",
     borderRadius: 32,
-  },
-  textInput: {
-    color: "#333",
-    fontSize: 16,
-    paddingHorizontal: 10,
-    fontFamily: "MontserratRegular",
   },
   sendButton: {
     width: 64,
