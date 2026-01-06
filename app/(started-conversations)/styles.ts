@@ -40,9 +40,11 @@ export const Thumbnail = styled(Image)`
 `;
 
 export const ContentText = styled.View`
+  width: 70%;
   padding-left: 8px;
   padding-right: 8px;
   gap: 8px;
+
 `;
 
 export const Content = styled.View`

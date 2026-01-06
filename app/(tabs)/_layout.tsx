@@ -7,6 +7,8 @@ import { queryUserByUID } from "@/utils/queryUserByUID";
 import { useRouter } from "expo-router";
 
 export default function Layout() {
+  const [hideNewArticleTab, setHideNewArticleTab] = useState(false);
+
   const router = useRouter();
 
   const user = auth.currentUser;
@@ -24,6 +26,8 @@ export default function Layout() {
 
   const handleGetGuestFlag = async () => {
     const isGuest = await getGuestFlag();
+
+    setHideNewArticleTab(isGuest);
 
     const currentUser = await queryUserByUID(user?.uid || "");
 
@@ -57,20 +61,22 @@ export default function Layout() {
         />
       </NativeTabs.Trigger>
 
-      <NativeTabs.Trigger name="new-article">
-        <Label
-          selectedStyle={{
-            color: Colors.light.darkblueInfo,
-          }}
-        >
-          New Article
-        </Label>
-        <Icon
-          sf={"book.fill"}
-          drawable="ic_menu_add"
-          selectedColor={Colors.light.darkblueInfo}
-        />
-      </NativeTabs.Trigger>
+      {!hideNewArticleTab && (
+        <NativeTabs.Trigger name="new-article">
+          <Label
+            selectedStyle={{
+              color: Colors.light.darkblueInfo,
+            }}
+          >
+            New Article
+          </Label>
+          <Icon
+            sf={"book.fill"}
+            drawable="ic_menu_add"
+            selectedColor={Colors.light.darkblueInfo}
+          />
+        </NativeTabs.Trigger>
+      )}
 
       <NativeTabs.Trigger name="profile">
         <Label

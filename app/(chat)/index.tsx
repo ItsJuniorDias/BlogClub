@@ -37,6 +37,7 @@ import { ButtonContent } from "./styles";
 import { useQuery } from "@tanstack/react-query";
 import { queryUserByUID } from "@/utils/queryUserByUID";
 import { FontAwesome6 } from "@expo/vector-icons";
+import { BlurView } from "expo-blur";
 
 export default function ChatScreen() {
   const [messages, setMessages] = useState([]);
@@ -172,9 +173,16 @@ export default function ChatScreen() {
   };
 
   const renderInputToolbar = (props) => {
-    return <InputToolbar {...props} containerStyle={styles.inputToolbar} />;
+    return (
+      <BlurView intensity={80} tint="light" style={styles.glassToolbar}>
+        <InputToolbar
+          {...props}
+          containerStyle={styles.glassInner}
+          primaryStyle={{ alignItems: "center" }}
+        />
+      </BlurView>
+    );
   };
-
   const renderSend = (props) => {
     return (
       <Send {...props}>
@@ -251,6 +259,25 @@ const styles = StyleSheet.create({
     borderTopColor: "#ddd",
     borderRadius: 32,
   },
+  sendText: {
+    color: "white",
+    fontSize: 16,
+  },
+  glassToolbar: {
+    marginHorizontal: 12,
+    marginBottom: Platform.OS === "ios" ? 24 : 12,
+    borderRadius: 24,
+    overflow: "hidden",
+  },
+  glassInner: {
+    backgroundColor: "rgba(255,255,255,0.25)",
+    borderTopWidth: 0,
+    borderRadius: 24,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderWidth: 1,
+    borderColor: "rgba(255,255,255,0.3)",
+  },
   sendButton: {
     width: 64,
     height: 32,
@@ -258,9 +285,5 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     alignItems: "center",
     justifyContent: "center",
-  },
-  sendText: {
-    color: "white",
-    fontSize: 16,
   },
 });
