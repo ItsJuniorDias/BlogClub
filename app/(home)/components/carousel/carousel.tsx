@@ -12,6 +12,7 @@ import { Text } from "../../../../components/ui";
 
 import { Container, Content, LinearGradientCustom, Thumbnail } from "./styles";
 import { Colors } from "@/constants/Colors";
+import { useWindowDimensions } from "react-native";
 
 interface CarouselComponentProps {
   onSnapToItem: (item: number) => void;
@@ -41,6 +42,9 @@ export default function CarouselComponent({
 
   const width = Dimensions.get("window").width;
 
+  const SCREEN_WIDTH = Dimensions.get("window").width;
+  const ITEM_WIDTH = SCREEN_WIDTH * 0.85;
+
   const ref = React.useRef<ICarouselInstance>(null);
   const progress = useSharedValue<number>(0);
 
@@ -61,18 +65,33 @@ export default function CarouselComponent({
     </View>
   );
 
+  function isTablet(): boolean {
+    const { width, height } = useWindowDimensions();
+    const smallestDimension = Math.min(width, height);
+
+    return smallestDimension >= 768;
+  }
+
   return (
     <Container>
       <Carousel
         ref={ref}
         data={DATA}
         loop={false}
-        width={width}
+        width={isTablet() ? ITEM_WIDTH : width}
         height={400}
+        style={{
+          width: isTablet() ? SCREEN_WIDTH : width,
+          justifyContent: "center",
+        }}
         onSnapToItem={(item) => {
           onSnapToItem(item);
         }}
         mode="parallax"
+        modeConfig={{
+          parallaxScrollingScale: isTablet() ? 0.9 : 0.8,
+          parallaxScrollingOffset: isTablet() ? 60 : 90,
+        }}
         onProgressChange={progress}
         renderItem={({ item }) => {
           return <Item title={item.title} image={item.image} />;

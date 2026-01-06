@@ -7,14 +7,16 @@ import { GlassView } from 'expo-glass-effect';
 
 const windowWidth = Dimensions.get("window").width;
 
+const screenHeight = Dimensions.get("window").height;
+
 export const Container = styled.ScrollView`
   flex: 1;
   background-color: ${Colors.light.blue};
 `;
 
 export const BackgroundImage = styled(Image)`
-  width: ${windowWidth};
-  height: 685px;
+  width: ${windowWidth}px;
+  height: ${screenHeight * 0.8}px;
   border-bottom-left-radius: 32px;
   border-bottom-right-radius: 32px;
 `;
