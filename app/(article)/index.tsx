@@ -74,7 +74,9 @@ import { useUIDStore } from "@/store/useIDStore";
 import { GlassView } from "expo-glass-effect";
 import { FontAwesome6 } from "@expo/vector-icons";
 
-const genAI = new GoogleGenerativeAI("");
+const genAI = new GoogleGenerativeAI(
+  process.env.EXPO_PUBLIC_GOOGLE_API_KEY || ""
+);
 
 const model = genAI.getGenerativeModel({
   model: "gemini-2.5-flash",
@@ -525,10 +527,6 @@ export default function ArticleScreen() {
 
           <ButtonAndroid onPress={() => handleTranslateAll("en")}>
             English
-          </ButtonAndroid>
-
-          <ButtonAndroid onPress={() => handleTranslateAll("es")}>
-            Spanish
           </ButtonAndroid>
 
           <ButtonAndroid onPress={() => handleTranslateAll("es")}>

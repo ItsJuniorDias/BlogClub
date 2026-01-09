@@ -32,7 +32,9 @@ import { getAuth } from "firebase/auth";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const genai = new GoogleGenerativeAI("");
+const genai = new GoogleGenerativeAI(
+  process.env.EXPO_PUBLIC_GOOGLE_API_KEY || ""
+);
 
 export const model = genai.getGenerativeModel({
   model: "gemini-2.5-flash",
@@ -124,6 +126,7 @@ export default function InputBody({
         type: "success",
         text1: "Post created successfully",
         position: "top",
+
         text1Style: {
           fontFamily: "MontserratSemiBold",
           color: Colors.light.darkBlue,
